@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
     private static final String SWAGGER_API_VERSION = "1.0";
-    private static final String title = "eureka-sever";
+    private static final String title = "eureka-server";
     private static final String description = "Swagger documentation REST API for Eureka Server";
 
     private ApiInfo apiInfo() {
