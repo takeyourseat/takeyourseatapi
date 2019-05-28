@@ -1,4 +1,4 @@
-package com.stefanini.internship.eurekaserver.config;
+package com.stefanini.internship.applicationlogs.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
     private static final String SWAGGER_API_VERSION = "1.0";
-    private static final String title = "eureka-server";
-    private static final String description = "Swagger documentation REST API for Eureka Server";
+    private static final String title = "application-logs";
+    private static final String description = "Swagger documentation REST API for Application Logs";
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
