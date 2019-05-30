@@ -18,7 +18,7 @@
 		<module>eureka-server</module>
 		<module>oauth-server</module>
 		<module>place-management</module>
-		<module>user-management</module>
+		<module>userId-management</module>
 	</modules>
 
 	<properties>
