@@ -13,16 +13,16 @@ public class PlaceController {
     @Autowired
     PlaceRepository placeRepository;
 
-    @RequestMapping(value = "/places", params = "officeId", method = RequestMethod.GET)
-    public ResponseEntity getPlacesByOfficeId(@RequestParam Long officeId) {
+    @RequestMapping(value = "offices/{officeId}/places", method = RequestMethod.GET)
+    public ResponseEntity getPlacesByOfficeId(@PathVariable Long officeId) {
         if (placeRepository.getPlacesByOfficeId(officeId).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlacesByOfficeId(officeId));
     }
 
-    @RequestMapping(value = "/places", params = "id", method = RequestMethod.GET)
-    public ResponseEntity getPlaceById(@RequestParam Long id) {
+    @RequestMapping(value = "/places/{id}", method = RequestMethod.GET)
+    public ResponseEntity getPlaceById(@PathVariable Long id) {
         if (placeRepository.getPlaceById(id) == null) {
             return ResponseEntity.notFound().build();
         } else
