@@ -20,6 +20,9 @@ public class OfficeController {
 
     @GetMapping("/offices")
     public ResponseEntity getOffices() {
+        if (officeRepository.findAll().isEmpty()){
+            return ResponseEntity.notFound().build();
+        } else
         return ResponseEntity.status(HttpStatus.OK).body(officeRepository.findAll());
     }
 
