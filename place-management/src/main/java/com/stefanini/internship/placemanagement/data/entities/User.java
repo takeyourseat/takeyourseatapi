@@ -1,8 +1,8 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
-public class Long {
+public class User {
 
-    private java.lang.Long id;
+    private Long id;
 
     private String password;
 
@@ -30,11 +30,11 @@ public class Long {
 
     //region Getters and Setters
 
-    public java.lang.Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public Long setId(java.lang.Long id) {
+    public User setId(Long id) {
         this.id = id;
         return this;
     }
@@ -43,7 +43,7 @@ public class Long {
         return username;
     }
 
-    public Long setUsername(String username) {
+    public User setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -52,7 +52,6 @@ public class Long {
         return password;
     }
 
-    public Long setPassword(String password) {
     public User setPassword(String password) {
         this.password = password;
         return this;
@@ -134,7 +133,7 @@ public class Long {
         return accountNonLocked;
     }
 
-    public Long setAccountNonLocked(boolean accountNonLocked) {
+    public User setAccountNonLocked(boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
         return this;
     }
@@ -145,7 +144,7 @@ public class Long {
 
     public Long setManagerId(Long managerId) {
         this.managerId = managerId;
-        return this;
+        return managerId;
     }
     //endregion
 
