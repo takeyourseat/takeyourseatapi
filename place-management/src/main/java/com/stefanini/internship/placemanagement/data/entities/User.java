@@ -1,8 +1,8 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
-public class User {
+public class Long {
 
-    private Long id;
+    private java.lang.Long id;
 
     private String password;
 
@@ -26,13 +26,15 @@ public class User {
 
     private boolean accountNonLocked;
 
+    private Long managerId;
+
     //region Getters and Setters
 
-    public Long getId() {
+    public java.lang.Long getId() {
         return id;
     }
 
-    public User setId(Long id) {
+    public Long setId(java.lang.Long id) {
         this.id = id;
         return this;
     }
@@ -41,7 +43,7 @@ public class User {
         return username;
     }
 
-    public User setUsername(String username) {
+    public Long setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -50,6 +52,7 @@ public class User {
         return password;
     }
 
+    public Long setPassword(String password) {
     public User setPassword(String password) {
         this.password = password;
         return this;
@@ -131,11 +134,19 @@ public class User {
         return accountNonLocked;
     }
 
-    public User setAccountNonLocked(boolean accountNonLocked) {
+    public Long setAccountNonLocked(boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
         return this;
     }
 
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public Long setManagerId(Long managerId) {
+        this.managerId = managerId;
+        return this;
+    }
     //endregion
 
     //region 2 Constructors
@@ -143,7 +154,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked) {
+    public User(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Long managerId) {
         this.id = id;
         this.password = password;
         this.email = email;
@@ -156,8 +167,8 @@ public class User {
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
+        this.managerId = managerId;
     }
-
     //endregion
 
 }
