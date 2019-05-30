@@ -35,12 +35,18 @@ public class PlaceRequest {
     @Column(name = "reviewed_at")
     private java.sql.Timestamp reviewedAt;
 
+    @Column(name = "user")
+    private Long userId;
+
+    @Column(name = "reviewed_by")
+    private Long managerId;
+
     //region 2 Constructors
 
     public PlaceRequest() {
     }
 
-    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, int requestedX, int requestedY, int requestedOfficeFloor, int getRequestedOfficeNumber, String requestedOfficeDescription, Boolean approved, java.sql.Timestamp reviewedAt) {
+    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, int requestedX, int requestedY, int requestedOfficeFloor, int getRequestedOfficeNumber, String requestedOfficeDescription, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
         this.id = id;
         this.dateOf = dateOf;
         this.placeX = requestedX;
@@ -50,6 +56,8 @@ public class PlaceRequest {
         this.officeDescription = requestedOfficeDescription;
         this.approved = approved;
         this.reviewedAt = reviewedAt;
+        this.userId = userId;
+        this.managerId = managerId;
     }
 
     //endregion
@@ -135,6 +143,22 @@ public class PlaceRequest {
     public PlaceRequest setReviewedAt(java.sql.Timestamp reviewedAt) {
         this.reviewedAt = reviewedAt;
         return this;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
     }
 
     //endregion
