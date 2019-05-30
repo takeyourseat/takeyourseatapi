@@ -1,4 +1,4 @@
-package com.stefanini.internship.placemanagement.data.controller;
+package com.stefanini.internship.placemanagement.controller;
 
 import com.stefanini.internship.placemanagement.data.repositories.OfficeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,17 @@ public class OfficeController {
 
     @RequestMapping(value = "/offices", params = "id", method = RequestMethod.GET)
     public ResponseEntity getOfficeById(@RequestParam Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficeById(id));
+        if (officeRepository.getOfficeById(id) == null) {
+            return ResponseEntity.notFound().build();
+        } else
+            return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficeById(id));
     }
 
     @RequestMapping(value = "/offices", params = "floor", method = RequestMethod.GET)
     public ResponseEntity getOfficesByFloor(@RequestParam int floor) {
-        return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficesByFloor(floor));
+        if (officeRepository.getOfficesByFloor(floor).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else
+            return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficesByFloor(floor));
     }
 }
