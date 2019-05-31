@@ -1,8 +1,7 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "place_requests")
