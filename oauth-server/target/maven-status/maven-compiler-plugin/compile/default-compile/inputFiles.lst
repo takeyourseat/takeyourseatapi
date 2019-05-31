@@ -1,0 +1,11 @@
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/repositories/UserRepository.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/dao/Permission.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/config/AuthorizationServiceConfiguration.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/config/WebSecurityConfiguration.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/config/SwaggerConfig.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/service/UserDetailsServiceImpl.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/OauthServerApplication.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/dao/User.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/config/filters/SimpleCorsFilter.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/repositories/RoleRepository.java
+/home/capostol/IdeaProjects/takeyourseatapi/oauth-server/src/main/java/com/stefanini/internship/oauthserver/dao/Role.java

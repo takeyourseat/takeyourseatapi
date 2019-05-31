@@ -1,0 +1,11 @@
+com/stefanini/internship/oauthserver/config/WebSecurityConfiguration.class
+com/stefanini/internship/oauthserver/OauthServerApplication.class
+com/stefanini/internship/oauthserver/service/UserDetailsServiceImpl.class
+com/stefanini/internship/oauthserver/config/filters/SimpleCorsFilter.class
+com/stefanini/internship/oauthserver/dao/Role.class
+com/stefanini/internship/oauthserver/dao/Permission.class
+com/stefanini/internship/oauthserver/repositories/RoleRepository.class
+com/stefanini/internship/oauthserver/config/SwaggerConfig.class
+com/stefanini/internship/oauthserver/config/AuthorizationServiceConfiguration.class
+com/stefanini/internship/oauthserver/repositories/UserRepository.class
+com/stefanini/internship/oauthserver/dao/User.class
