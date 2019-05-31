@@ -12,7 +12,7 @@
 	<artifactId>takeyourseat</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>takeyourseat</name>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
 	<modules>
 		<module>application-logs</module>
