@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  mysql-oauth:
+    image: mysql
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+
+  oauth-app:
+    image: capostol93/oauth-service
+    ports:
+      - '8083:8083'
+    restart: always
+    depends_on:
+      -  mysql-oauth
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-oauth:3306/test'
+      SPRING_PROFILES_ACTIVE: 'mysql'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://192.168.56.112/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+
