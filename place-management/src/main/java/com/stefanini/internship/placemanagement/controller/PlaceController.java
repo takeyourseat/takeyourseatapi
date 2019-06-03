@@ -3,10 +3,14 @@ package com.stefanini.internship.placemanagement.controller;
 import com.stefanini.internship.placemanagement.data.entities.Place;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class PlaceController {
@@ -34,5 +38,24 @@ public class PlaceController {
     public ResponseEntity addPlace(@RequestBody Place place) {
         placeRepository.save(place);
         return ResponseEntity.status(HttpStatus.CREATED).body(place);
+    }
+
+    @RequestMapping(value = "/places/{placeId}", method = RequestMethod.PATCH)
+    public HttpEntity<?> moveUserPlace(@PathVariable("placeId") Long id, @RequestBody Place place) {
+        Place oldPlace = placeRepository.getPlacesByUserId(place.getUserId());
+        Optional<Place> newPlaceOptional = placeRepository.findById(id);
+        if (oldPlace == null) {
+            return new ResponseEntity<>("Old place can't be found", HttpStatus.BAD_REQUEST);
+        }
+        if (!newPlaceOptional.isPresent()) {
+            return new ResponseEntity<>("New place can't be found", HttpStatus.BAD_REQUEST);
+        } else {
+            Place newPlace = newPlaceOptional.get();
+            oldPlace.setUserId(null);
+            newPlace.setUserId(place.getUserId());
+            placeRepository.save(oldPlace);
+            placeRepository.saveAndFlush(newPlace);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        }
     }
 }
