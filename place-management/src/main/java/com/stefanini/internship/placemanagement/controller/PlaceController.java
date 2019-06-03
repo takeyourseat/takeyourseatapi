@@ -1,5 +1,6 @@
 package com.stefanini.internship.placemanagement.controller;
 
+import com.stefanini.internship.placemanagement.data.entities.Place;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,5 +28,11 @@ public class PlaceController {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlaceById(id));
+    }
+
+    @RequestMapping(value = "/places", method = RequestMethod.POST)
+    public ResponseEntity addPlace(@RequestBody Place place) {
+        placeRepository.save(place);
+        return ResponseEntity.status(HttpStatus.CREATED).body(place);
     }
 }
