@@ -1,12 +1,13 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
+import com.stefanini.internship.placemanagement.data.Identifiable;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "place_requests")
-public class PlaceRequest {
+public class PlaceRequest implements Identifiable {
     @Id
     @GeneratedValue
     private Long id;

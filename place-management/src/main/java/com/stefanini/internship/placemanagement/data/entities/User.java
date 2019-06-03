@@ -1,6 +1,8 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
-public class User {
+import com.stefanini.internship.placemanagement.data.Identifiable;
+
+public class User implements Identifiable {
 
     private Long id;
 
