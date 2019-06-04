@@ -1,4 +1,4 @@
-package com.stefanini.internship.authorizationserver;
+package com.stefanini.internship.authorizationserver.utils;
 
 import org.springframework.security.acls.domain.BasePermission;
 

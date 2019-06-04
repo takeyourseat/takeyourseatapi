@@ -1,4 +1,4 @@
-package com.stefanini.internship.authorizationserver;
+package com.stefanini.internship.authorizationserver.utils;
 
 public class AuthorizationResponse {
     boolean authorized;

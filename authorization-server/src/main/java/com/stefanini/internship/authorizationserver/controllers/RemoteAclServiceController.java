@@ -1,7 +1,7 @@
 package com.stefanini.internship.authorizationserver.controllers;
 
-import com.stefanini.internship.authorizationserver.AuthorizationResponse;
-import com.stefanini.internship.authorizationserver.PublicBasePermission;
+import com.stefanini.internship.authorizationserver.utils.AuthorizationResponse;
+import com.stefanini.internship.authorizationserver.utils.PublicBasePermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,6 @@ import org.springframework.security.acls.jdbc.JdbcAclService;
 import org.springframework.security.acls.model.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
