@@ -142,9 +142,9 @@ public class User {
         return managerId;
     }
 
-    public Long setManagerId(Long managerId) {
+    public User setManagerId(Long managerId) {
         this.managerId = managerId;
-        return managerId;
+        return this;
     }
     //endregion
 
