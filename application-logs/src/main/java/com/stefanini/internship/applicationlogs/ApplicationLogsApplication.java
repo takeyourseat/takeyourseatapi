@@ -11,4 +11,7 @@ public class ApplicationLogsApplication {
 	}
 
 	//add a test
+	//another test
+	//third test
+
 }
