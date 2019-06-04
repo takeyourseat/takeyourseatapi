@@ -45,11 +45,11 @@ public class RemoteAclServiceController {
 
         try{
             boolean authorized = acl.isGranted(permission,sids,false);
-            AuthorizationResponse response = new AuthorizationResponse().setAuthorized(authorized);
+            AuthorizationResponse response = new AuthorizationResponse(authorized, "Requested authorization granted");
             return ResponseEntity.ok().body(response);
         }
         catch (NotFoundException e){
-            AuthorizationResponse response = new AuthorizationResponse(false,"One of requested authorizations is not granted ");
+            AuthorizationResponse response = new AuthorizationResponse(false,"Requested authorization is not granted ");
             return ResponseEntity.ok(response);
         }
 
