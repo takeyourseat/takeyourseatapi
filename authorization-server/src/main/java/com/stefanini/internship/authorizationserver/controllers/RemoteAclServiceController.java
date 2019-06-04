@@ -29,11 +29,20 @@ public class RemoteAclServiceController {
             @RequestParam String principal,
             @RequestParam Integer mask
     ){
-        ObjectIdentity objectIdentity = new ObjectIdentityImpl(classname, identifier);
 
-        Acl acl = jdbcAclService.readAclById(objectIdentity, sids);
+        ObjectIdentity objectIdentity = new ObjectIdentityImpl(classname, identifier);
         List<Sid> sids = Arrays.asList(new PrincipalSid(principal));
 
+        Acl acl;
+        try {
+            acl = jdbcAclService.readAclById(objectIdentity, sids);
+        }catch (Exception e){
+            HttpHeaders notFoundHeader = new HttpHeaders();
+            notFoundHeader.add("message","Could not find object identity for class "+classname+" with identifier = "+identifier);
+            return ResponseEntity.notFound().headers(notFoundHeader).build();
+        }
+
+        List<Permission> permission = Arrays.asList(new PublicBasePermission(mask));
 
         try{
             boolean authorized = acl.isGranted(permission,sids,false);
