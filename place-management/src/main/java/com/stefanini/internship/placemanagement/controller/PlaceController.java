@@ -8,9 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
-@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class PlaceController {
@@ -43,14 +41,15 @@ public class PlaceController {
     @RequestMapping(value = "/places/{placeId}", method = RequestMethod.PATCH)
     public HttpEntity<?> moveUserPlace(@PathVariable("placeId") Long id, @RequestBody Place place) {
         Place oldPlace = placeRepository.getPlacesByUserId(place.getUserId());
-        Optional<Place> newPlaceOptional = placeRepository.findById(id);
+        Place newPlace = placeRepository.getPlaceById(id);
         if (oldPlace == null) {
             return new ResponseEntity<>("Old place can't be found", HttpStatus.BAD_REQUEST);
         }
-        if (!newPlaceOptional.isPresent()) {
+        if (newPlace == null) {
             return new ResponseEntity<>("New place can't be found", HttpStatus.BAD_REQUEST);
+        } else if (newPlace.getUserId() != null) {
+            return new ResponseEntity<>("Place is busy", HttpStatus.CONFLICT);
         } else {
-            Place newPlace = newPlaceOptional.get();
             oldPlace.setUserId(null);
             newPlace.setUserId(place.getUserId());
             placeRepository.save(oldPlace);
@@ -59,3 +58,4 @@ public class PlaceController {
         }
     }
 }
+
