@@ -10,8 +10,5 @@ public class ApplicationLogsApplication {
 		SpringApplication.run(ApplicationLogsApplication.class, args);
 	}
 
-	//add a test
-	//another test
-	//third test
 
 }
