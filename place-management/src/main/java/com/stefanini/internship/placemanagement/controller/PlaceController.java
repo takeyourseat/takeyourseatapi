@@ -24,7 +24,7 @@ public class PlaceController {
     @RequestMapping(value = "/places/{id}", method = RequestMethod.GET)
     public ResponseEntity getPlaceById(@PathVariable Long id) {
         if (placeRepository.getPlaceById(id) == null) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>("place not found", HttpStatus.NOT_FOUND);
         } else
             return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlaceById(id));
     }
