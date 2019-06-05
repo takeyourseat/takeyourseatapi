@@ -35,22 +35,6 @@ public class OfficeController {
         if (officeRepository.getOfficesByFloor(floorNumber).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else
-            return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficesByFloor(floor));
-    }
-
-    @GetMapping("/floors")
-    public ResponseEntity getAllFloors() {
-        List<Office> offices = officeRepository.findAll();
-        List<Integer> floors = new ArrayList<>();
-        for (Office office : offices) {
-            if (!floors.contains(office.getFloor())) {
-                floors.add(office.getFloor());
-            }
-        }
-        if (floors.isEmpty()){
-            return ResponseEntity.notFound().build();
-        } else
-        Collections.sort(floors);
-        return ResponseEntity.status(HttpStatus.OK).body(floors);
+            return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficesByFloor(floorNumber));
     }
 }
