@@ -22,17 +22,17 @@ public class OfficeController {
             return ResponseEntity.status(HttpStatus.OK).body(officeRepository.findAll());
     }
 
-    @RequestMapping(value = "/offices", params = "id", method = RequestMethod.GET)
-    public ResponseEntity getOfficeById(@RequestParam Long id) {
+    @GetMapping("/offices/{id}")
+    public ResponseEntity getOfficeById(@PathVariable Long id) {
         if (officeRepository.getOfficeById(id) == null) {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficeById(id));
     }
 
-    @RequestMapping(value = "/offices", params = "floor", method = RequestMethod.GET)
-    public ResponseEntity getOfficesByFloor(@RequestParam int floor) {
-        if (officeRepository.getOfficesByFloor(floor).isEmpty()) {
+    @GetMapping("floors/{floorNumber}/offices")
+    public ResponseEntity getOfficesByFloor(@PathVariable int floorNumber) {
+        if (officeRepository.getOfficesByFloor(floorNumber).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficesByFloor(floor));
