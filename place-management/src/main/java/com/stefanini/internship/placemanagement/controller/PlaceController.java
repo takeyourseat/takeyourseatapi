@@ -13,7 +13,7 @@ public class PlaceController {
     @Autowired
     PlaceRepository placeRepository;
 
-    @RequestMapping(value = "offices/{officeId}/places", method = RequestMethod.GET)
+    @RequestMapping(value = "/offices/{officeId}/places", method = RequestMethod.GET)
     public ResponseEntity getPlacesByOfficeId(@PathVariable Long officeId) {
         if (placeRepository.getPlacesByOfficeId(officeId).isEmpty()) {
             return ResponseEntity.notFound().build();
