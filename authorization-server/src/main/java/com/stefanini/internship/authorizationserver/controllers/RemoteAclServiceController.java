@@ -32,12 +32,12 @@ public class RemoteAclServiceController {
      @Autowired
      AclSidRepository sidRepo;
 
-    @GetMapping(value = "/get-authorization", params = {"classname", "principal","identifier","mask"})
+    @GetMapping(value = "/get-authorization", params = {"classname", "principal","identifier","permission"})
     public ResponseEntity<AuthorizationResponse> checkAuthorization (
             @RequestParam String classname,
             @RequestParam Long identifier,
             @RequestParam String principal,
-            @RequestParam Integer mask
+            @RequestParam String permission
     ){
 
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(classname, identifier);
@@ -53,8 +53,8 @@ public class RemoteAclServiceController {
         }
 
         PermissionFactory permissionFactory = new DefaultPermissionFactory(BasePermission.class);
-        Permission permission = permissionFactory.buildFromMask(mask);
-        List<Permission> permissions = Arrays.asList(permission);
+        Permission requestedPermission = permissionFactory.buildFromName(permission.toUpperCase());
+        List<Permission> permissions = Arrays.asList(requestedPermission);
 
         try{
             boolean authorized = acl.isGranted(permissions,sids,false);

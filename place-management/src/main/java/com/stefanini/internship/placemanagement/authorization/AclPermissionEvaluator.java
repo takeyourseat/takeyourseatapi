@@ -45,19 +45,17 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
     }
 
     @Override
-    public boolean hasPermission(Authentication auth, Serializable targetId, String targetType, Object permissionObject) {
-        if ((auth == null) || (targetType == null) || !(permissionObject instanceof String)) {
+    public boolean hasPermission(Authentication auth, Serializable targetId, String targetType, Object permission) {
+        if ((auth == null) || (targetType == null) || !(permission instanceof String)) {
             return false;
         }
 
-        String permissionString = ((String)permissionObject).toUpperCase();
-        PermissionFactory permissionFactory = new DefaultPermissionFactory(BasePermission.class);
-        Permission permission = permissionFactory.buildFromName(permissionString);
+        String permissionString = ((String)permission).toUpperCase();
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_SERVER_URI+"get-authorization")
                 .queryParam("principal", auth.getName())
                 .queryParam("identifier", targetId)
-                .queryParam("mask", permission.getMask())
+                .queryParam("permission", permissionString)
                 .queryParam("classname", targetType);
 
         AuthorizationResponse authorization = restTemplate.getForObject(builder.build().toString(), AuthorizationResponse.class);
