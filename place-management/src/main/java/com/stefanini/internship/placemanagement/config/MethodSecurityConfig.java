@@ -2,6 +2,7 @@ package com.stefanini.internship.placemanagement.config;
 
 import com.stefanini.internship.placemanagement.authorization.AclPermissionEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -21,10 +22,14 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     @Autowired
     private AclPermissionEvaluator aclPermissionEvaluator;
 
+    @Autowired
+    private ApplicationContext context;
+
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
         DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
         expressionHandler.setPermissionEvaluator(aclPermissionEvaluator);
+        expressionHandler.setApplicationContext(context);
         return expressionHandler;
     }
 
@@ -33,5 +38,6 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     public AclPermissionEvaluator aclPermissionEvaluatorBean(){
         return new AclPermissionEvaluator(restTemplate);
     }
+
 
 }
