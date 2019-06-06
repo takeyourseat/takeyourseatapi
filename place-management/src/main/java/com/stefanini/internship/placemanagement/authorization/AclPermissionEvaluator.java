@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 public class AclPermissionEvaluator implements PermissionEvaluator {
 
-    public static final String AUTHORIZATION_SERVER_URI = "http://localhost:8086/api/get-authorization";
+    public static final String AUTHORIZATION_SERVER_URI = "http://localhost:8086/api/";
 
     private RestTemplate restTemplate;
 
@@ -45,8 +45,8 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
     }
 
     @Override
-    public boolean hasPermission(Authentication auth, Serializable targetId, String targetType, Object permission) {
-        if ((auth == null) || (targetType == null) || !(permission instanceof String)) {
+    public boolean hasPermission(Authentication auth, Serializable targetId, String targetType, Object permissionObject) {
+        if ((auth == null) || (targetType == null) || !(permissionObject instanceof String)) {
             return false;
         }
 
@@ -54,7 +54,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
         PermissionFactory permissionFactory = new DefaultPermissionFactory(BasePermission.class);
         Permission permission = permissionFactory.buildFromName(permissionString);
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_SERVER_URI)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_SERVER_URI+"get-authorization")
                 .queryParam("principal", auth.getName())
                 .queryParam("identifier", targetId)
                 .queryParam("mask", permission.getMask())
