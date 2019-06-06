@@ -3,6 +3,10 @@ package com.stefanini.internship.placemanagement.authorization;
 import com.stefanini.internship.placemanagement.data.Identifiable;
 import org.springframework.http.HttpEntity;
 import org.springframework.security.access.PermissionEvaluator;
+import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.DefaultPermissionFactory;
+import org.springframework.security.acls.domain.PermissionFactory;
+import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -46,12 +50,14 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
             return false;
         }
 
-        AclPermission aclPermission = new AclPermission((String)permission);
+        String permissionString = ((String)permissionObject).toUpperCase();
+        PermissionFactory permissionFactory = new DefaultPermissionFactory(BasePermission.class);
+        Permission permission = permissionFactory.buildFromName(permissionString);
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_SERVER_URI)
                 .queryParam("principal", auth.getName())
                 .queryParam("identifier", targetId)
-                .queryParam("mask", aclPermission.getMask())
+                .queryParam("mask", permission.getMask())
                 .queryParam("classname", targetType);
 
         AuthorizationResponse authorization = restTemplate.getForObject(builder.build().toString(), AuthorizationResponse.class);

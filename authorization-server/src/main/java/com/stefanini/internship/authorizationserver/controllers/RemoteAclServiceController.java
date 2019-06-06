@@ -1,13 +1,13 @@
 package com.stefanini.internship.authorizationserver.controllers;
 
 import com.stefanini.internship.authorizationserver.utils.AuthorizationResponse;
-import com.stefanini.internship.authorizationserver.utils.PublicBasePermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.jdbc.JdbcAclService;
+import org.springframework.security.acls.domain.*;
 import org.springframework.security.acls.model.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,10 +41,12 @@ public class RemoteAclServiceController {
             return ResponseEntity.notFound().headers(notFoundHeader).build();
         }
 
-        List<Permission> permission = Arrays.asList(new PublicBasePermission(mask));
+        PermissionFactory permissionFactory = new DefaultPermissionFactory(BasePermission.class);
+        Permission permission = permissionFactory.buildFromMask(mask);
+        List<Permission> permissions = Arrays.asList(permission);
 
         try{
-            boolean authorized = acl.isGranted(permission,sids,false);
+            boolean authorized = acl.isGranted(permissions,sids,false);
             AuthorizationResponse response = new AuthorizationResponse(authorized, "Requested authorization granted");
             return ResponseEntity.ok().body(response);
         }
