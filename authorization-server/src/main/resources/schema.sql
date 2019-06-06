@@ -51,3 +51,12 @@ CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+CREATE TABLE IF NOT EXISTS `acl_class_permission` (
+   `id` bigint(20) NOT NULL,
+   `acl_class_id` bigint(20) DEFAULT NULL,
+   `mask` int(11) DEFAULT NULL,
+   `sid_id` bigint(20) DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   CONSTRAINT `acl_class_permission_ibfk_1` FOREIGN KEY (`acl_class_id`) REFERENCES `acl_class` (`id`),
+   CONSTRAINT `acl_class_permission_ibfk_2` FOREIGN KEY (`sid_id`) REFERENCES `acl_sid` (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
