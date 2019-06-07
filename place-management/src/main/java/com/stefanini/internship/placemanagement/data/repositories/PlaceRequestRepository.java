@@ -9,6 +9,9 @@ import java.util.List;
 @Repository
 public interface PlaceRequestRepository extends JpaRepository<PlaceRequest, Long> {
     PlaceRequest getPlaceRequestById(Long id);
+
+    PlaceRequest getPlaceRequestByPlaceIdAndUserId(Long placeId, Long userId);
+
     List<PlaceRequest> getPlaceRequestsByUserId(Long userId);
 
     List<PlaceRequest> getPlaceRequestsByManagerId(Long managerId);
