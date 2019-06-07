@@ -15,4 +15,6 @@ public interface PlaceRequestRepository extends JpaRepository<PlaceRequest, Long
     List<PlaceRequest> getPlaceRequestsByUserId(Long userId);
 
     List<PlaceRequest> getPlaceRequestsByManagerId(Long managerId);
+
+    void deletePlaceRequestById(Long placeRequestId);
 }
