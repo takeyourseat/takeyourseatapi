@@ -14,20 +14,8 @@ public class PlaceRequest {
     @Column(name = "date_of", nullable = false)
     private java.sql.Timestamp dateOf;
 
-    @Column(name = "place_x")
-    private int placeX;
-
-    @Column(name = "place_y")
-    private int placeY;
-
-    @Column(name = "office_floor")
-    private int officeFloor;
-
-    @Column(name = "office_number")
-    private int officeNumber;
-
-    @Column(name = "office_description")
-    private String officeDescription;
+    @Column(name = "place_id")
+    private Long placeId;
 
     @Column(name = "approved")
     private Boolean approved;
@@ -46,18 +34,14 @@ public class PlaceRequest {
     public PlaceRequest() {
     }
 
-    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, int requestedX, int requestedY, int requestedOfficeFloor, int getRequestedOfficeNumber, String requestedOfficeDescription, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
+    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Long placeId, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
         this.id = id;
         this.dateOf = dateOf;
-        this.placeX = requestedX;
-        this.placeY = requestedY;
-        this.officeFloor = requestedOfficeFloor;
-        this.officeNumber = getRequestedOfficeNumber;
-        this.officeDescription = requestedOfficeDescription;
         this.approved = approved;
         this.reviewedAt = reviewedAt;
         this.userId = userId;
         this.managerId = managerId;
+        this.placeId = placeId;
     }
 
     //endregion
@@ -82,50 +66,15 @@ public class PlaceRequest {
         return this;
     }
 
-    public int getPlaceX() {
-        return placeX;
+    public Long getPlaceId() {
+        return placeId;
     }
 
-    public PlaceRequest setPlaceX(int placeX) {
-        this.placeX = placeX;
+    public PlaceRequest setPlaceId(Long placeId) {
+        this.placeId = placeId;
         return this;
     }
 
-    public int getPlaceY() {
-        return placeY;
-    }
-
-    public PlaceRequest setPlaceY(int placeY) {
-        this.placeY = placeY;
-        return this;
-    }
-
-    public int getOfficeFloor() {
-        return officeFloor;
-    }
-
-    public PlaceRequest setOfficeFloor(int officeFloor) {
-        this.officeFloor = officeFloor;
-        return this;
-    }
-
-    public int getOfficeNumber() {
-        return officeNumber;
-    }
-
-    public PlaceRequest setOfficeNumber(int officeNumber) {
-        this.officeNumber = officeNumber;
-        return this;
-    }
-
-    public String getOfficeDescription() {
-        return officeDescription;
-    }
-
-    public PlaceRequest setOfficeDescription(String officeDescription) {
-        this.officeDescription = officeDescription;
-        return this;
-    }
 
     public Boolean getApproved() {
         return approved;
