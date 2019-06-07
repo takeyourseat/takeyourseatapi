@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(
         name = "places",
         //The combination of X and Y has to be unique. So x=1 , y=1 and x=1,y=2 will both insert
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"coordinate_x", "coordinate_y", "office_id"}), @UniqueConstraint(columnNames = {"userId"})}
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"coordinate_x", "coordinate_y", "office_id"})}
 )
 
 public class Place {
@@ -26,6 +26,7 @@ public class Place {
     @ManyToOne
     private Office office;
 
+    @Column(name = "userId")
     private Long userId;
 
     //region 2 Constructors
