@@ -3,8 +3,8 @@ package com.stefanini.internship.authorizationserver.dao;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "acl_sid")
-public class AclSid {
+@Table(name = "owa_sid")
+public class OwaSid {
     @Id
     @GeneratedValue
     private Long id;
@@ -17,9 +17,9 @@ public class AclSid {
 
     //region (), (*) constructors
 
-    public AclSid() {}
+    public OwaSid() {}
 
-    public AclSid(boolean principal, String sid) {
+    public OwaSid(boolean principal, String sid) {
         this.principal = principal;
         this.sid = sid;
     }
@@ -32,7 +32,7 @@ public class AclSid {
         return id;
     }
 
-    public AclSid setId(Long id) {
+    public OwaSid setId(Long id) {
         this.id = id;
         return this;
     }
@@ -41,7 +41,7 @@ public class AclSid {
         return principal;
     }
 
-    public AclSid setPrincipal(boolean principal) {
+    public OwaSid setPrincipal(boolean principal) {
         this.principal = principal;
         return this;
     }
@@ -50,7 +50,7 @@ public class AclSid {
         return sid;
     }
 
-    public AclSid setSid(String sid) {
+    public OwaSid setSid(String sid) {
         this.sid = sid;
         return this;
     }
