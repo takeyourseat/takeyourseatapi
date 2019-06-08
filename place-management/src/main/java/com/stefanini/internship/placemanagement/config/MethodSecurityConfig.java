@@ -1,6 +1,6 @@
 package com.stefanini.internship.placemanagement.config;
 
-import com.stefanini.internship.placemanagement.authorization.AclPermissionEvaluator;
+import com.stefanini.internship.placemanagement.authorization.OwaPermissionEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     private RestTemplate restTemplate;
 
     @Autowired
-    private AclPermissionEvaluator aclPermissionEvaluator;
+    private OwaPermissionEvaluator aclPermissionEvaluator;
 
     @Autowired
     private ApplicationContext context;
@@ -35,8 +35,8 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
 
     @Bean
-    public AclPermissionEvaluator aclPermissionEvaluatorBean(){
-        return new AclPermissionEvaluator(restTemplate);
+    public OwaPermissionEvaluator aclPermissionEvaluatorBean(){
+        return new OwaPermissionEvaluator(restTemplate);
     }
 
 
