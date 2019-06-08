@@ -3,8 +3,8 @@ package com.stefanini.internship.authorizationserver.dao;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "acl_class")
-public class AclClass {
+@Table(name = "owa_class")
+public class OwaClass {
     @GeneratedValue
     @Id
     Long id;
@@ -14,9 +14,9 @@ public class AclClass {
 
     //region (), (*) constructors
 
-    public AclClass() {}
+    public OwaClass() {}
 
-    public AclClass(String classname) {
+    public OwaClass(String classname) {
         this.classname = classname;
     }
 
@@ -28,7 +28,7 @@ public class AclClass {
         return id;
     }
 
-    public AclClass setId(Long id) {
+    public OwaClass setId(Long id) {
         this.id = id;
         return this;
     }
@@ -37,7 +37,7 @@ public class AclClass {
         return classname;
     }
 
-    public AclClass setClassname(String classname) {
+    public OwaClass setClassname(String classname) {
         this.classname = classname;
         return this;
     }
