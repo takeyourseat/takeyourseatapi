@@ -52,7 +52,7 @@ public class AuthorizeController {
             return ResponseEntity.notFound().headers(notFoundHeader).build();
         }
 
-        OwaObject owaObject = objectRepository.findByOwaClassAndIdentifier(owaClass, identifier);
+            OwaObject owaObject = objectRepository.findByOwaClassClassnameAndIdentifier(classname, identifier);
         if (owaObject == null) {
             HttpHeaders notFoundHeader = new HttpHeaders();
             notFoundHeader.add("message", "Could not find " + classname + " class with identifier=" + identifier);
