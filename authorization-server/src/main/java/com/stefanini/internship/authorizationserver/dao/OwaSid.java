@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "owa_sid")
 public class OwaSid {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "principal")

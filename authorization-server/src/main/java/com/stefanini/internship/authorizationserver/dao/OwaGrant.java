@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "owa_grant")
 public class OwaGrant {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

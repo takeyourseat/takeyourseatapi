@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "owa_class")
 public class OwaClass {
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     Long id;
 

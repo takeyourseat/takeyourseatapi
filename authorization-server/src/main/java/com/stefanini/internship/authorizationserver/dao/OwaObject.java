@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "owa_object")
 public class OwaObject {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "owa_class_grant")
 public class OwaClassGrant {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
