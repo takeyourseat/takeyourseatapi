@@ -1,5 +1,6 @@
 package com.stefanini.internship.authorizationserver.dao.classes;
 
+import com.stefanini.internship.authorizationserver.dao.OwaRole;
 
 public class User  {
 
@@ -17,7 +18,7 @@ public class User  {
     private boolean accountNonExpired;
     private boolean credentialsNonExpired;
     private boolean accountNonLocked;
-
+    private OwaRole role;
 
     //region Getters and Setters
 
@@ -137,14 +138,23 @@ public class User  {
         this.accountNonLocked = accountNonLocked;
         return this;
     }
-    //endregion
 
+    public OwaRole getRole() {
+        return role;
+    }
+
+    public User setRole(OwaRole role) {
+        this.role = role;
+        return this;
+    }
+
+    //endregion
 
     //region 2 Constructors
 
     public User(){}
 
-    public User(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, User manager, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked) {
+    public User(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, User manager, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, OwaRole role) {
         this.id = id;
         this.password = password;
         this.email = email;
@@ -158,6 +168,7 @@ public class User  {
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
+        this.role = role;
     }
 
     //endregion
