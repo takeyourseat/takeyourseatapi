@@ -18,18 +18,16 @@ public class PlaceController {
 
     @RequestMapping(value = "/offices/{officeId}/places", method = RequestMethod.GET)
     public ResponseEntity getPlacesByOfficeId(@PathVariable Long officeId) {
-        if (placeRepository.getPlacesByOfficeId(officeId).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else
-            return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlacesByOfficeId(officeId));
+        return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlacesByOfficeId(officeId));
     }
 
     @RequestMapping(value = "/places/{id}", method = RequestMethod.GET)
     public ResponseEntity getPlaceById(@PathVariable Long id) {
         if (placeRepository.getPlaceById(id) == null) {
             return new ResponseEntity<>("place not found", HttpStatus.NOT_FOUND);
-        } else
+        } else {
             return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlaceById(id));
+        }
     }
 
     @RequestMapping(value = "/places", method = RequestMethod.POST)
@@ -38,7 +36,7 @@ public class PlaceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(place);
     }
 
-    @RequestMapping(value = "/places/{placeId}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/places/{placeId}", method = RequestMethod.PUT)
     public HttpEntity<?> moveUserPlace(@PathVariable("placeId") Long id, @RequestBody Place place) {
         Place oldPlace = placeRepository.getPlacesByUserId(place.getUserId());
         Place newPlace = placeRepository.getPlaceById(id);
