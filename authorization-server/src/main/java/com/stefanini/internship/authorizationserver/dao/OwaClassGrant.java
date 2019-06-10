@@ -3,7 +3,9 @@ package com.stefanini.internship.authorizationserver.dao;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "owa_class_grant")
+@Table(name = "owa_class_grant",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"owa_class_id", "permission", "role_id"}))
 public class OwaClassGrant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +18,14 @@ public class OwaClassGrant {
     private int permission;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private OwaSid sid;
+    private OwaRole role;
 
     //region (), (*) constructors
 
-    public OwaClassGrant(OwaClass owaClass, int permission, OwaSid sid) {
+    public OwaClassGrant(OwaClass owaClass, int permission, OwaRole sid) {
         this.owaClass = owaClass;
         this.permission = permission;
-        this.sid = sid;
+        this.role = sid;
     }
 
     public OwaClassGrant() {}
@@ -59,12 +61,12 @@ public class OwaClassGrant {
         return this;
     }
 
-    public OwaSid getSid() {
-        return sid;
+    public OwaRole getRole() {
+        return role;
     }
 
-    public OwaClassGrant setSid(OwaSid sid) {
-        this.sid = sid;
+    public OwaClassGrant setRole(OwaRole role) {
+        this.role = role;
         return this;
     }
 
