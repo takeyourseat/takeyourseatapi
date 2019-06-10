@@ -9,19 +9,19 @@ public class OwaSid {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "principal")
-    boolean principal;
+    @Column(name = "sid", nullable = false, unique = true)
+    private String sid;
 
-    @Column(name = "sid", nullable = false)
-    String sid;
+    @ManyToOne(optional = false)
+    private OwaRole role;
 
     //region (), (*) constructors
 
     public OwaSid() {}
 
-    public OwaSid(boolean principal, String sid) {
-        this.principal = principal;
+    public OwaSid(String sid, OwaRole role) {
         this.sid = sid;
+        this.role = role;
     }
 
     //endregion
@@ -37,14 +37,6 @@ public class OwaSid {
         return this;
     }
 
-    public boolean isPrincipal() {
-        return principal;
-    }
-
-    public OwaSid setPrincipal(boolean principal) {
-        this.principal = principal;
-        return this;
-    }
 
     public String getSid() {
         return sid;
@@ -55,6 +47,14 @@ public class OwaSid {
         return this;
     }
 
+    public OwaRole getRole() {
+        return role;
+    }
+
+    public OwaSid setRole(OwaRole role) {
+        this.role = role;
+        return this;
+    }
 
     //endregion
 }
