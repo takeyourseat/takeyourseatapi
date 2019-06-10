@@ -6,16 +6,17 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import java.io.Serializable;
 
 
-public class AclPermissionEvaluator implements PermissionEvaluator {
+public class OwaPermissionEvaluator implements PermissionEvaluator {
 
-    public static final String AUTHORIZATION_SERVER_URI = "http://localhost:8086/api/get-authorization";
+    public static final String AUTHORIZATION_SERVER_URI = "http://localhost:8086/api/v01/";
 
     private RestTemplate restTemplate;
 
-    public AclPermissionEvaluator(RestTemplate restTemplate){
+    public OwaPermissionEvaluator(RestTemplate restTemplate){
         this.restTemplate = restTemplate;
     }
 
@@ -34,9 +35,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
             identifiableTarget = (Identifiable)targetDomainObject;
         }
 
-
-        String targetType = identifiableTarget.getClass().getSimpleName().toUpperCase();
-
+        String targetType = identifiableTarget.getClass().getSimpleName();
         return hasPermission(auth, identifiableTarget.getId(), targetType, permission);
     }
 
@@ -46,20 +45,16 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
             return false;
         }
 
-        AclPermission aclPermission = new AclPermission((String)permission);
+        String permissionString = (String)permission;
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_SERVER_URI)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_SERVER_URI+"authorize")
                 .queryParam("principal", auth.getName())
                 .queryParam("identifier", targetId)
-                .queryParam("mask", aclPermission.getMask())
+                .queryParam("permission", permissionString)
                 .queryParam("classname", targetType);
 
         AuthorizationResponse authorization = restTemplate.getForObject(builder.build().toString(), AuthorizationResponse.class);
-
-        if(authorization.message!=null)
-            System.out.println(authorization.message);
         return authorization.authorized;
-
     }
 }
 
