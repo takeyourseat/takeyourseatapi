@@ -3,7 +3,9 @@ package com.stefanini.internship.authorizationserver.dao;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "owa_object")
+@Table(name = "owa_object",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"owa_class_id", "identifier"}))
 public class OwaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +58,5 @@ public class OwaObject {
     }
 
     //endregion
-
 
 }

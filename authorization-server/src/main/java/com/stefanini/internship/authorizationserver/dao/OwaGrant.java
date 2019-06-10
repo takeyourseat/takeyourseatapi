@@ -3,7 +3,9 @@ package com.stefanini.internship.authorizationserver.dao;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "owa_grant")
+@Table(name = "owa_grant",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"object_id", "permission", "sid_id"}))
 public class OwaGrant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
