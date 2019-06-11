@@ -6,9 +6,13 @@ import com.stefanini.internship.usermanagement.dao.repository.RoleRepository;
 import com.stefanini.internship.usermanagement.dao.repository.UserRepository;
 import org.hibernate.Hibernate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
+@RequestMapping("/api/v01/")
 public class UsersController {
 
     private UserRepository userRepo;
@@ -19,8 +23,7 @@ public class UsersController {
         this.roleRepo = roleRepo;
     }
 
-    //Using GetMapping for testing convenience, to be changed to PostMapping
-    @GetMapping("/api/v01/users")
+    @PostMapping("users")
     public ResponseEntity createUser(){
         Role role = roleRepo.findById(1L).get();
         User manager = userRepo.findById(1L).get();
@@ -34,5 +37,22 @@ public class UsersController {
                 .setPassword("");
         userRepo.save(newUser);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("users")
+    @PostAuthorize("@ClassGrantService.hasClassGrant(authentication,'user', 'read')")
+    public ResponseEntity getReadableUsers(){
+        List<User> toReturn = userRepo.findAll();
+        toReturn.forEach(user -> user.setRole((Role)Hibernate.unproxy(user.getRole())));
+        return ResponseEntity.ok(toReturn);
+    }
+
+    @GetMapping("users/{id}")
+    @PreAuthorize("hasPermission(#id, 'user','read')")
+    public ResponseEntity<User> GetUserById(@PathVariable Long id){
+        User user = userRepo.findById(id).get();
+        user.setRole((Role)Hibernate.unproxy(user.getRole()));
+        user.setManager(null);
+        return ResponseEntity.ok(user);
     }
 }
