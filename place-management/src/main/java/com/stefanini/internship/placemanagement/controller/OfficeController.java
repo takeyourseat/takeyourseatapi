@@ -30,11 +30,11 @@ public class OfficeController {
             return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficeById(id));
     }
 
-    @GetMapping("floors/{floorNumber}/offices")
-    public ResponseEntity getOfficesByFloor(@PathVariable int floorNumber) {
-        if (officeRepository.getOfficesByFloor(floorNumber).isEmpty()) {
-            return ResponseEntity.notFound().build();
+    @RequestMapping(value = "/offices", params = "floor", method = RequestMethod.GET)
+    public ResponseEntity getOfficesByFloor(@RequestParam int floor) {
+        if (officeRepository.getOfficesByFloor(floor).isEmpty()) {
+            return new ResponseEntity<>("Offices not found", HttpStatus.OK);
         } else
-            return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficesByFloor(floorNumber));
+            return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficesByFloor(floor));
     }
 }
