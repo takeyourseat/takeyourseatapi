@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role implements Identifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

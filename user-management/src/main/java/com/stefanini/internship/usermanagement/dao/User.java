@@ -9,7 +9,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuthorizationRegistrationListener.class)
-public class User  {
+public class User implements Identifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
