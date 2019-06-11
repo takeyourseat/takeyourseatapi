@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api")
 public class OfficeController {
@@ -15,11 +16,14 @@ public class OfficeController {
 
     @GetMapping("/offices")
     public ResponseEntity getOffices() {
-        return ResponseEntity.status(HttpStatus.OK).body(officeRepository.findAll());
+        if (officeRepository.findAll().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else
+            return ResponseEntity.status(HttpStatus.OK).body(officeRepository.findAll());
     }
 
-    @RequestMapping(value = "/offices", params = "id", method = RequestMethod.GET)
-    public ResponseEntity getOfficeById(@RequestParam Long id) {
+    @GetMapping("/offices/{id}")
+    public ResponseEntity getOfficeById(@PathVariable Long id) {
         if (officeRepository.getOfficeById(id) == null) {
             return ResponseEntity.notFound().build();
         } else
@@ -29,7 +33,7 @@ public class OfficeController {
     @RequestMapping(value = "/offices", params = "floor", method = RequestMethod.GET)
     public ResponseEntity getOfficesByFloor(@RequestParam int floor) {
         if (officeRepository.getOfficesByFloor(floor).isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>("Offices not found", HttpStatus.OK);
         } else
             return ResponseEntity.status(HttpStatus.OK).body(officeRepository.getOfficesByFloor(floor));
     }

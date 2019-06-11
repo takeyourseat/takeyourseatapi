@@ -1,15 +1,13 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
-import com.stefanini.internship.placemanagement.data.Identifiable;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "place_requests")
-public class PlaceRequest implements Identifiable {
+@Table(name = "reviewed_requests")
+public class ReviewedRequest {
     @Id
-    @GeneratedValue
     private Long id;
 
     @Column(name = "date_of", nullable = false)
@@ -32,10 +30,10 @@ public class PlaceRequest implements Identifiable {
 
     //region 2 Constructors
 
-    public PlaceRequest() {
+    public ReviewedRequest() {
     }
 
-    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Long placeId, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
+    public ReviewedRequest(Long id, @NotNull java.sql.Timestamp dateOf, Long placeId, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
         this.id = id;
         this.dateOf = dateOf;
         this.approved = approved;
@@ -53,7 +51,7 @@ public class PlaceRequest implements Identifiable {
         return id;
     }
 
-    public PlaceRequest setId(Long id) {
+    public ReviewedRequest setId(Long id) {
         this.id = id;
         return this;
     }
@@ -62,7 +60,7 @@ public class PlaceRequest implements Identifiable {
         return dateOf;
     }
 
-    public PlaceRequest setDateOf(java.sql.Timestamp dateOf) {
+    public ReviewedRequest setDateOf(java.sql.Timestamp dateOf) {
         this.dateOf = dateOf;
         return this;
     }
@@ -71,7 +69,7 @@ public class PlaceRequest implements Identifiable {
         return placeId;
     }
 
-    public PlaceRequest setPlaceId(Long placeId) {
+    public ReviewedRequest setPlaceId(Long placeId) {
         this.placeId = placeId;
         return this;
     }
@@ -81,7 +79,7 @@ public class PlaceRequest implements Identifiable {
         return approved;
     }
 
-    public PlaceRequest setApproved(Boolean approved) {
+    public ReviewedRequest setApproved(Boolean approved) {
         this.approved = approved;
         return this;
     }
@@ -90,7 +88,7 @@ public class PlaceRequest implements Identifiable {
         return reviewedAt;
     }
 
-    public PlaceRequest setReviewedAt(java.sql.Timestamp reviewedAt) {
+    public ReviewedRequest setReviewedAt(java.sql.Timestamp reviewedAt) {
         this.reviewedAt = reviewedAt;
         return this;
     }

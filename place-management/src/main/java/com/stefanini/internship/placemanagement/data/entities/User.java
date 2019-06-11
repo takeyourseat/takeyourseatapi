@@ -28,6 +28,8 @@ public class User implements Identifiable {
 
     private boolean accountNonLocked;
 
+    private Long managerId;
+
     //region Getters and Setters
 
     public Long getId() {
@@ -138,6 +140,14 @@ public class User implements Identifiable {
         return this;
     }
 
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public User setManagerId(Long managerId) {
+        this.managerId = managerId;
+        return this;
+    }
     //endregion
 
     //region 2 Constructors
@@ -145,7 +155,7 @@ public class User implements Identifiable {
     public User() {
     }
 
-    public User(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked) {
+    public User(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Long managerId) {
         this.id = id;
         this.password = password;
         this.email = email;
@@ -158,8 +168,8 @@ public class User implements Identifiable {
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
+        this.managerId = managerId;
     }
-
     //endregion
 
 }
