@@ -78,10 +78,10 @@ public class AuthorizeController {
     }
 
 
-    @GetMapping(params = {"classname", "role", "permission"})
+    @GetMapping(params = {"classname", "principal", "permission"})
     public ResponseEntity<AuthorizationResponse> checkClassAuthorization(
             @RequestParam String classname,
-            @RequestParam String role,
+            @RequestParam String principal,
             @RequestParam String permission
     ) {
         OwaClass owaClass = classRepository.findByClassname(classname);
@@ -90,17 +90,22 @@ public class AuthorizeController {
             notFoundHeader.add("message", "Could not find OWA class " + classname);
             return ResponseEntity.notFound().headers(notFoundHeader).build();
         }
-
-        OwaRole owaRole = roleRepository.findByName(role);
-        if (owaRole == null) {
+        OwaSid owaSid = sidRepository.findBySid(principal);
+        if (owaSid == null) {
             HttpHeaders notFoundHeader = new HttpHeaders();
-            notFoundHeader.add("message", "Could not find SID(user) " + role);
+            notFoundHeader.add("message", "Could not find SID(user) " + principal);
+            return ResponseEntity.notFound().headers(notFoundHeader).build();
+        }
+
+        if (owaSid.getRole() == null) {
+            HttpHeaders notFoundHeader = new HttpHeaders();
+            notFoundHeader.add("message", "Could not find SID(user) " + owaSid.getRole().getName());
             return ResponseEntity.notFound().headers(notFoundHeader).build();
         }
 
         Permission owaPermission = permissionFactory.buildFromName(permission.toUpperCase());
 
-        boolean result = classGrantRepository.existsByOwaClassAndRoleAndPermission(owaClass, owaRole, owaPermission.getMask());
+        boolean result = classGrantRepository.existsByOwaClassAndRoleAndPermission(owaClass, owaSid.getRole(), owaPermission.getMask());
         return ResponseEntity.ok(new AuthorizationResponse(result, null));
     }
 }
