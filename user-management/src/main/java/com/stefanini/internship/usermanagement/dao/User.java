@@ -1,5 +1,6 @@
 package com.stefanini.internship.usermanagement.dao;
 
+import com.stefanini.internship.usermanagement.authorization.AuthorizationRegistrationListener;
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -7,6 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
+@EntityListeners(AuthorizationRegistrationListener.class)
 public class User  {
 
     @Id
