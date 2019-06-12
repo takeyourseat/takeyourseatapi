@@ -67,7 +67,7 @@ public class PlaceRequestController {
     @PostMapping("/requests/{placeId}")
     public ResponseEntity createPlaceRequest(@RequestBody PlaceRequest placeRequest, @PathVariable Long placeId) {
         User manager = new User()
-                .setId(2L)
+                .setId(3L)
                 .setFirstName("Mang")
                 .setLastName("Nal")
                 .setEmail("ggw@gmail.com")
@@ -76,9 +76,10 @@ public class PlaceRequestController {
                 .setEnabled(true)
                 .setAccountNonExpired(true)
                 .setCredentialsNonExpired(true)
+                .setUsername("GGManager")
                 .setAccountNonLocked(true);
         User user = new User()
-                .setId(1L)
+                .setId(2L)
                 .setFirstName("Eric")
                 .setLastName("Gutu")
                 .setEmail("gutsueric@gmail.com")
@@ -88,6 +89,7 @@ public class PlaceRequestController {
                 .setAccountNonExpired(true)
                 .setCredentialsNonExpired(true)
                 .setAccountNonLocked(true)
+                .setUsername("user")
                 .setManagerId(manager.getId());
 
         if (placeRepository.getPlaceById(placeId) == null) {
