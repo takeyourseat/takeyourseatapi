@@ -1,5 +1,6 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
+import com.stefanini.internship.placemanagement.authorization.PlaceRequestRegistrationListener;
 import com.stefanini.internship.placemanagement.data.Identifiable;
 import com.sun.istack.NotNull;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "place_requests")
+@EntityListeners(PlaceRequestRegistrationListener.class)
 public class PlaceRequest implements Identifiable {
     @Id
     @GeneratedValue
