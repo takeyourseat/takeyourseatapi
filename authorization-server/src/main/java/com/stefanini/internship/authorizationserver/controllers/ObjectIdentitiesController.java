@@ -46,7 +46,7 @@ public class ObjectIdentitiesController {
             user.setRole(userRole);
         }
 
-        OwaSid userSid = new OwaSid(user.getUsername(), user.getRole());
+        OwaSid userSid = new OwaSid(user.getId(), user.getUsername(), user.getRole());
 
         sidRepository.save(userSid);
 

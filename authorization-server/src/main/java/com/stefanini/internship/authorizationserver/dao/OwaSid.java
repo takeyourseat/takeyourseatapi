@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "owa_sid")
 public class OwaSid {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "sid", nullable = false, unique = true)
@@ -19,7 +18,8 @@ public class OwaSid {
 
     public OwaSid() {}
 
-    public OwaSid(String sid, OwaRole role) {
+    public OwaSid(Long id, String sid, OwaRole role) {
+        this.id = id;
         this.sid = sid;
         this.role = role;
     }
