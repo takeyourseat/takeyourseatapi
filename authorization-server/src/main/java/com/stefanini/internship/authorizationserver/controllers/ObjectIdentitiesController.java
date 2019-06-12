@@ -4,13 +4,13 @@ import com.stefanini.internship.authorizationserver.dao.*;
 import com.stefanini.internship.authorizationserver.dao.classes.PlaceRequest;
 import com.stefanini.internship.authorizationserver.dao.classes.User;
 import com.stefanini.internship.authorizationserver.dao.repositories.*;
+import com.stefanini.internship.authorizationserver.utils.EntityValidation;
 import com.stefanini.internship.authorizationserver.utils.OwaPermission;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,6 @@ public class ObjectIdentitiesController {
     @PostMapping("/users")
     @Transactional
     public ResponseEntity createUserAndSid(@RequestBody User user){
-
         Long identifier = user.getId();
         OwaClass owaClass = classRepository.findByClassname("USER");
 
@@ -48,7 +47,9 @@ public class ObjectIdentitiesController {
         }
 
         OwaSid userSid = new OwaSid(user.getUsername(), user.getRole());
+
         sidRepository.save(userSid);
+
         OwaObject userObject = new OwaObject(owaClass, identifier);
         objectRepository.save(userObject);
 
@@ -56,11 +57,9 @@ public class ObjectIdentitiesController {
         if(user.getManager()!=null){
             String manager = user.getManager().getUsername();
             OwaSid managerSid = sidRepository.findBySid(manager);
-            if(managerSid == null){
-                HttpHeaders notFoundHeader = new HttpHeaders();
-                notFoundHeader.add("message", "Could not find manager " + manager);
-                return ResponseEntity.notFound().headers(notFoundHeader).build();
-            }
+
+            EntityValidation.AssertValidResult(managerSid,manager);
+
             grants.add(new OwaGrant(userObject,managerSid, OwaPermission.READ_MASK));
             grants.add(new OwaGrant(userObject,managerSid, OwaPermission.ADMINISTER_MASK));
         }
@@ -77,11 +76,8 @@ public class ObjectIdentitiesController {
 
         String username = placeRequest.getUser().getUsername();
         OwaSid user = sidRepository.findBySid(username);
-        if(user == null){
-            HttpHeaders notFoundHeader = new HttpHeaders();
-            notFoundHeader.add("message", "Could not find user " + username);
-            return ResponseEntity.notFound().headers(notFoundHeader).build();
-        }
+
+        EntityValidation.AssertValidResult(user,username);
 
         OwaObject toAdd = new OwaObject(owaClass,placeRequest.getId());
         objectRepository.save(toAdd);
@@ -91,11 +87,8 @@ public class ObjectIdentitiesController {
         if(placeRequest.getUser().getManager()!= null){
             String managerUsername = placeRequest.getUser().getManager().getUsername();
             OwaSid manager = sidRepository.findBySid(managerUsername);
-            if(manager == null){
-                HttpHeaders notFoundHeader = new HttpHeaders();
-                notFoundHeader.add("message", "Could not find manager " + managerUsername);
-                return ResponseEntity.notFound().headers(notFoundHeader).build();
-            }
+            EntityValidation.AssertValidResult(manager,managerUsername);
+
             grants.add(new OwaGrant(toAdd,manager,OwaPermission.READ_MASK));
             grants.add(new OwaGrant(toAdd,manager,OwaPermission.ADMINISTER_MASK));
         }

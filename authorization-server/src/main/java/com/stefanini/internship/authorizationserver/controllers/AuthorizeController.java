@@ -6,6 +6,7 @@ import com.stefanini.internship.authorizationserver.dao.OwaSid;
 import com.stefanini.internship.authorizationserver.dao.OwaRole;
 import com.stefanini.internship.authorizationserver.dao.repositories.*;
 import com.stefanini.internship.authorizationserver.utils.AuthorizationResponse;
+import com.stefanini.internship.authorizationserver.utils.EntityValidation;
 import com.stefanini.internship.authorizationserver.utils.OwaPermission;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -50,25 +51,16 @@ public class AuthorizeController {
             @RequestParam String permission
     ) {
         OwaSid owaSid = sidRepository.findBySid(principal);
-        if (owaSid == null) {
-            HttpHeaders notFoundHeader = new HttpHeaders();
-            notFoundHeader.add("message", "Could not find SID(user) " + principal);
-            return ResponseEntity.notFound().headers(notFoundHeader).build();
-        }
+        EntityValidation.AssertValidResult(owaSid,principal);
+
         if(owaSid.getRole() != null) {
-            ResponseEntity<AuthorizationResponse> classGrantCheck = checkClassAuthorization(classname, owaSid.getRole().getName(), permission);
+            ResponseEntity<AuthorizationResponse> classGrantCheck = checkClassAuthorization(classname, owaSid.getSid(), permission);
             if (classGrantCheck.getStatusCode() == HttpStatus.OK && classGrantCheck.getBody() != null && classGrantCheck.getBody().isAuthorized())
                 return classGrantCheck;
         }
 
-            OwaObject owaObject = objectRepository.findByOwaClassClassnameAndIdentifier(classname, identifier);
-        if (owaObject == null) {
-            HttpHeaders notFoundHeader = new HttpHeaders();
-            notFoundHeader.add("message", "Could not find " + classname + " class with identifier=" + identifier);
-            return ResponseEntity.notFound().headers(notFoundHeader).build();
-        }
-
-
+        OwaObject owaObject = objectRepository.findByOwaClassClassnameAndIdentifier(classname, identifier);
+        EntityValidation.AssertValidResult(owaObject, classname, identifier);
 
         Permission owaPermission = permissionFactory.buildFromName(permission.toUpperCase());
 
@@ -85,25 +77,16 @@ public class AuthorizeController {
             @RequestParam String permission
     ) {
         OwaClass owaClass = classRepository.findByClassname(classname);
-        if (owaClass == null) {
-            HttpHeaders notFoundHeader = new HttpHeaders();
-            notFoundHeader.add("message", "Could not find OWA class " + classname);
-            return ResponseEntity.notFound().headers(notFoundHeader).build();
-        }
-        OwaSid owaSid = sidRepository.findBySid(principal);
-        if (owaSid == null) {
-            HttpHeaders notFoundHeader = new HttpHeaders();
-            notFoundHeader.add("message", "Could not find SID(user) " + principal);
-            return ResponseEntity.notFound().headers(notFoundHeader).build();
-        }
+        EntityValidation.AssertValidResult(owaClass, classname);
 
-        if (owaSid.getRole() == null) {
-            HttpHeaders notFoundHeader = new HttpHeaders();
-            notFoundHeader.add("message", "Could not find SID(user) " + owaSid.getRole().getName());
-            return ResponseEntity.notFound().headers(notFoundHeader).build();
-        }
+        OwaSid owaSid = sidRepository.findBySid(principal);
+        EntityValidation.AssertValidResult(owaSid, principal);
 
         Permission owaPermission = permissionFactory.buildFromName(permission.toUpperCase());
+
+        if(owaSid.getRole()==null)
+            return ResponseEntity.ok(new AuthorizationResponse(false, "User has no role in the OWA database"));
+
 
         boolean result = classGrantRepository.existsByOwaClassAndRoleAndPermission(owaClass, owaSid.getRole(), owaPermission.getMask());
         return ResponseEntity.ok(new AuthorizationResponse(result, null));
