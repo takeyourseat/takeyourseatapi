@@ -4,6 +4,7 @@ import com.stefanini.internship.authorizationserver.dao.*;
 import com.stefanini.internship.authorizationserver.dao.classes.PlaceRequest;
 import com.stefanini.internship.authorizationserver.dao.classes.User;
 import com.stefanini.internship.authorizationserver.dao.repositories.*;
+import com.stefanini.internship.authorizationserver.exceptions.ResourceNotFoundException;
 import com.stefanini.internship.authorizationserver.utils.EntityValidation;
 import com.stefanini.internship.authorizationserver.utils.OwaPermission;
 import org.springframework.http.HttpHeaders;
@@ -74,23 +75,24 @@ public class ObjectIdentitiesController {
     public ResponseEntity createPlaceRequest(@RequestBody PlaceRequest placeRequest){
         OwaClass owaClass = classRepository.findByClassname("PLACEREQUEST");
 
-        String username = placeRequest.getUser().getUsername();
-        OwaSid user = sidRepository.findBySid(username);
-
-        EntityValidation.AssertValidResult(user,username);
+        OwaSid user = sidRepository
+                .findById(placeRequest.getUserId())
+                .orElseThrow(()->new ResourceNotFoundException("User with id "+placeRequest.getUserId()) );
 
         OwaObject toAdd = new OwaObject(owaClass,placeRequest.getId());
         objectRepository.save(toAdd);
 
+        /*Add here call to user management for retrieving user manager*/
+        //Get user's manager
+        //Get manager's SID
+        //assume the first SID is the manager for now
+        OwaSid managerSid = sidRepository.findAll().get(0);
+
         List<OwaGrant> grants = new ArrayList<>(3);
 
-        if(placeRequest.getUser().getManager()!= null){
-            String managerUsername = placeRequest.getUser().getManager().getUsername();
-            OwaSid manager = sidRepository.findBySid(managerUsername);
-            EntityValidation.AssertValidResult(manager,managerUsername);
-
-            grants.add(new OwaGrant(toAdd,manager,OwaPermission.READ_MASK));
-            grants.add(new OwaGrant(toAdd,manager,OwaPermission.ADMINISTER_MASK));
+        if(managerSid!= null){
+            grants.add(new OwaGrant(toAdd,managerSid,OwaPermission.READ_MASK));
+            grants.add(new OwaGrant(toAdd,managerSid,OwaPermission.ADMINISTER_MASK));
         }
         else{
             grants.add(new OwaGrant(toAdd, user,OwaPermission.ADMINISTER_MASK ));
