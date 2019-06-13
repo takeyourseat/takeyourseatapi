@@ -1,10 +1,12 @@
 package com.stefanini.internship.placemanagement.authorization;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.PostPersist;
 
-import static com.stefanini.internship.placemanagement.authorization.AuthorizationConstants.AUTHORIZATION_API;
+import static com.stefanini.internship.placemanagement.authorization.AuthorizationUtils.AUTHORIZATION_API;
 
 public class PlaceRequestRegistrationListener {
 
@@ -16,6 +18,7 @@ public class PlaceRequestRegistrationListener {
 
     @PostPersist
     public void registerObjectToAuthorizationServer(final Object persistedEntity) {
-       restTemplate.postForEntity(AUTHORIZATION_API+"objects/place-requests",persistedEntity,Object.class);
+        HttpEntity<Object> request = new HttpEntity<>(persistedEntity, AuthorizationUtils.getAuthorizationHeader());
+        restTemplate.exchange(AUTHORIZATION_API+"objects/place-requests", HttpMethod.POST, request, Object.class);
     }
 }

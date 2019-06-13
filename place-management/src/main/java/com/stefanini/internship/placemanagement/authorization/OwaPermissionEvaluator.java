@@ -2,6 +2,8 @@ package com.stefanini.internship.placemanagement.authorization;
 
 import com.stefanini.internship.placemanagement.data.Identifiable;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.client.RestTemplate;
@@ -9,10 +11,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.Serializable;
 
+import static com.stefanini.internship.placemanagement.authorization.AuthorizationUtils.AUTHORIZATION_API;
+
 
 public class OwaPermissionEvaluator implements PermissionEvaluator {
 
-    public static final String AUTHORIZATION_SERVER_URI = "http://localhost:8086/api/v01/";
 
     private RestTemplate restTemplate;
 
@@ -44,17 +47,18 @@ public class OwaPermissionEvaluator implements PermissionEvaluator {
         if ((auth == null) || (targetType == null) || !(permission instanceof String)) {
             return false;
         }
-
         String permissionString = (String)permission;
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_SERVER_URI+"authorize")
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(AUTHORIZATION_API+"authorize")
                 .queryParam("principal", auth.getName())
                 .queryParam("identifier", targetId)
                 .queryParam("permission", permissionString)
                 .queryParam("classname", targetType);
 
-        AuthorizationResponse authorization = restTemplate.getForObject(builder.build().toString(), AuthorizationResponse.class);
-        return authorization.authorized;
+        HttpEntity<String> request = new HttpEntity<>(AuthorizationUtils.getAuthorizationHeader());
+        ResponseEntity<AuthorizationResponse> authorization = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, AuthorizationResponse.class);
+
+        return authorization.getBody().authorized;
     }
 }
 
