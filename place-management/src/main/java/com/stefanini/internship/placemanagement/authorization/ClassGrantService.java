@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static com.stefanini.internship.placemanagement.authorization.OwaPermissionEvaluator.AUTHORIZATION_SERVER_URI;
+import static com.stefanini.internship.placemanagement.authorization.AuthorizationUtils.AUTHORIZATION_API;
 
 @Component("ClassGrantService")
 public class ClassGrantService {
@@ -22,7 +22,7 @@ public class ClassGrantService {
             return false;
         }
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_SERVER_URI+"authorize")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(AUTHORIZATION_API+"authorize")
                 .queryParam("principal", auth.getName())
                 .queryParam("permission", permission)
                 .queryParam("classname", classname);
