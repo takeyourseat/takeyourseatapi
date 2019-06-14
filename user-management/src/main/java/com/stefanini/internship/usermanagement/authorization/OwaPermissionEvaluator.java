@@ -1,7 +1,10 @@
 package com.stefanini.internship.usermanagement.authorization;
 
+import com.stefanini.internship.usermanagement.authentication.AuthenticationUtils;
 import com.stefanini.internship.usermanagement.dao.Identifiable;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.client.RestTemplate;
@@ -53,8 +56,9 @@ public class OwaPermissionEvaluator implements PermissionEvaluator {
                 .queryParam("permission", permissionString)
                 .queryParam("classname", targetType);
 
-        AuthorizationResponse authorization = restTemplate.getForObject(builder.build().toString(), AuthorizationResponse.class);
-        return authorization.authorized;
+        HttpEntity<String> request = new HttpEntity<>(AuthenticationUtils.getAuthorizationHeader());
+        ResponseEntity<AuthorizationResponse> authorization = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, request, AuthorizationResponse.class);
+        return authorization.getBody().authorized;
     }
 
 }

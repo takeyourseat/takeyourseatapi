@@ -1,5 +1,8 @@
 package com.stefanini.internship.usermanagement.authorization;
 
+import com.stefanini.internship.usermanagement.authentication.AuthenticationUtils;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.PostPersist;
@@ -16,6 +19,7 @@ public class AuthorizationRegistrationListener {
 
     @PostPersist
     public void registerObjectToAuthorizationServer(final Object persistedEntity) {
-       Object weird =  restTemplate.postForObject(AUTHORIZATION_API+"objects/users",persistedEntity, Object.class);
+        HttpEntity<Object> request = new HttpEntity<>(persistedEntity, AuthenticationUtils.getAuthorizationHeader());
+        restTemplate.exchange(AUTHORIZATION_API+"objects/users", HttpMethod.POST, request, Object.class);
     }
 }
