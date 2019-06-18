@@ -16,7 +16,6 @@ import java.util.List;
 public class User implements UserDetails, Identifiable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "password")
