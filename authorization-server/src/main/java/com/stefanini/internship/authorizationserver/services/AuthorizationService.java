@@ -48,7 +48,7 @@ public class AuthorizationService {
         if (owaSid.getRole() == null)
             return new AuthorizationResponse(false, "User has no role in the OWA database");
 
-        OwaClass owaClass = classRepository.findByClassname(classname);
+        OwaClass owaClass = classRepository.findByClassname(classname.toUpperCase());
         validationService.AssertValidResult(owaClass, classname);
 
         Permission owaPermission = permissionFactory.buildFromName(permission.toUpperCase());
