@@ -1,7 +1,7 @@
 package com.stefanini.internship.oauthserver.service;
 
 import com.stefanini.internship.oauthserver.dao.User;
-import com.stefanini.internship.oauthserver.repositories.UserRepository;
+import com.stefanini.internship.oauthserver.dao.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetails;
