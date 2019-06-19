@@ -62,7 +62,8 @@ public class PlaceRequestController {
 
     @PostMapping("/requests/{placeId}")
     public ResponseEntity createPlaceRequest(@RequestBody PlaceRequest placeRequest, @PathVariable Long placeId) {
-        User user = userRepository.getUserById(placeRequest.getUserId());
+        Long userId = 4L;
+        User user = userRepository.getUserById(userId);
         if (placeRepository.getPlaceById(placeId) == null) {
             return new ResponseEntity<>("Place not found", HttpStatus.NOT_FOUND);
         }
