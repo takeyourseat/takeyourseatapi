@@ -75,10 +75,10 @@ public class PlaceRequestController {
         if (place.getUserId() != null) {
             return new ResponseEntity<>("This place is occupied", HttpStatus.CONFLICT);
         }
-        if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserId(placeId, placeRequest.getUserId()) != null) {
-            if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserId(placeId, placeRequest.getUserId()).getApproved() == null) {
+        if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt()) != null) {
+            if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(),placeRequest.getReviewedAt()).getApproved() == null) {
                 return new ResponseEntity<>("such placeRequest is pending", HttpStatus.CONFLICT);
-            } else if (!placeRequestRepository.getPlaceRequestByPlaceIdAndUserId(placeId, placeRequest.getUserId()).getApproved())
+            } else if (!placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(),placeRequest.getReviewedAt()).getApproved())
                 return ResponseEntity.ok().body(placeRequestRepository.save(placeRequest));
         }
         return ResponseEntity.ok().body(placeRequestRepository.save(placeRequest));
