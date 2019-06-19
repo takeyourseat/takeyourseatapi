@@ -5,6 +5,7 @@ import com.stefanini.internship.placemanagement.data.entities.PlaceRequest;
 import com.stefanini.internship.placemanagement.data.entities.User;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRequestRepository;
+import com.stefanini.internship.placemanagement.data.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ public class PlaceRequestController {
     PlaceRequestRepository placeRequestRepository;
     @Autowired
     PlaceRepository placeRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/requests")
     public ResponseEntity getAllPlaceRequests() {
@@ -59,8 +62,7 @@ public class PlaceRequestController {
 
     @PostMapping("/requests/{placeId}")
     public ResponseEntity createPlaceRequest(@RequestBody PlaceRequest placeRequest, @PathVariable Long placeId) {
-        Long userId = placeRequest.getUserId();
-        User user = UserRepository.getUserById(userId);
+        User user = userRepository.getUserById(placeRequest.getUserId());
         if (placeRepository.getPlaceById(placeId) == null) {
             return new ResponseEntity<>("Place not found", HttpStatus.NOT_FOUND);
         }
