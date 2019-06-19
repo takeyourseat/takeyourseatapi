@@ -59,30 +59,8 @@ public class PlaceRequestController {
 
     @PostMapping("/requests/{placeId}")
     public ResponseEntity createPlaceRequest(@RequestBody PlaceRequest placeRequest, @PathVariable Long placeId) {
-        User manager = new User()
-                .setId(2L)
-                .setFirstName("Mang")
-                .setLastName("Nal")
-                .setEmail("ggw@gmail.com")
-                .setJobTitle("JManag")
-                .setPassword("root")
-                .setEnabled(true)
-                .setAccountNonExpired(true)
-                .setCredentialsNonExpired(true)
-                .setAccountNonLocked(true);
-        User user = new User()
-                .setId(1L)
-                .setFirstName("Eric")
-                .setLastName("Gutu")
-                .setEmail("gutsueric@gmail.com")
-                .setJobTitle("JR Software Developer")
-                .setPassword("root")
-                .setEnabled(true)
-                .setAccountNonExpired(true)
-                .setCredentialsNonExpired(true)
-                .setAccountNonLocked(true)
-                .setManagerId(manager.getId());
-
+        Long userId = placeRequest.getUserId();
+        User user = UserRepository.getUserById(userId);
         if (placeRepository.getPlaceById(placeId) == null) {
             return new ResponseEntity<>("Place not found", HttpStatus.NOT_FOUND);
         }
