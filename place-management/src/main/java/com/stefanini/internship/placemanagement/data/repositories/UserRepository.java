@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    User getUsersById(Long Id);
+    User getUserById(Long id);
 
     List<User> getUsersByManagerId(Long id);
 }
