@@ -2,11 +2,9 @@ package com.stefanini.internship.placemanagement.controller;
 
 import com.stefanini.internship.placemanagement.data.entities.Place;
 import com.stefanini.internship.placemanagement.data.entities.PlaceRequest;
-import com.stefanini.internship.placemanagement.data.entities.ReviewedRequest;
 import com.stefanini.internship.placemanagement.data.entities.User;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRequestRepository;
-import com.stefanini.internship.placemanagement.data.repositories.ReviewedRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api")
 public class PlaceRequestController {
@@ -25,10 +22,6 @@ public class PlaceRequestController {
     PlaceRequestRepository placeRequestRepository;
     @Autowired
     PlaceRepository placeRepository;
-    @Autowired
-    ReviewedRequestRepository reviewedRequestRepository;
-    private ReviewedRequest reviewedRequest = new ReviewedRequest();
-
 
     @GetMapping("/requests")
     public ResponseEntity getAllPlaceRequests() {
