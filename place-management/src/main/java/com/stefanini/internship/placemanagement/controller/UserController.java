@@ -21,12 +21,12 @@ public class UserController {
 
 
     @GetMapping("/users/{id}")
-    public ResponseEntity getUsersById(@PathVariable Long id) {
+    public ResponseEntity getUserById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUserById(id));
     }
 
-    @GetMapping("/users/managers/{id}")
-    public ResponseEntity getUsersByManagerId(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUsersByManagerId(id));
+    @RequestMapping(value = "/users", params = "managerId", method = RequestMethod.GET)
+    public ResponseEntity getUsersByManagerId(@RequestParam Long managerId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUsersByManagerId(managerId));
     }
 }
