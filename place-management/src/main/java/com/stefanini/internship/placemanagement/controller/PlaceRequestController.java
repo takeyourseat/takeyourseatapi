@@ -96,11 +96,8 @@ public class PlaceRequestController {
         PlaceRequest newPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         newPlaceRequest.setApproved(false);
         newPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
-        deletePlaceRequest(id);
-        reviewedRequestRepository.save(createReviewedRequestByPlaceRequest(newPlaceRequest));
-        return ResponseEntity.ok().body(createReviewedRequestByPlaceRequest(newPlaceRequest));
+        return ResponseEntity.ok().body(newPlaceRequest);
     }
-
 
     @Transactional
     @PatchMapping("/requests/{id}")
@@ -118,9 +115,7 @@ public class PlaceRequestController {
         placeById.setUserId(updatedPlaceRequest.getUserId());
         declineAllPlaceRequestsIfPlaceAccepted(id);
         declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUserId());
-        reviewedRequestRepository.save(createReviewedRequestByPlaceRequest(updatedPlaceRequest));
         placeRepository.save(placeById);
-        deletePlaceRequest(id);
         return ResponseEntity.ok().body(updatedPlaceRequest);
     }
 
@@ -131,8 +126,6 @@ public class PlaceRequestController {
             if (placeRequest.getPlaceId().equals(placeId) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
-                reviewedRequestRepository.save(createReviewedRequestByPlaceRequest(placeRequest));
-                deletePlaceRequest(placeRequest.getId());
             }
         }
     }
@@ -144,26 +137,7 @@ public class PlaceRequestController {
             if (placeRequest.getUserId().equals(userId) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
-                reviewedRequestRepository.save(createReviewedRequestByPlaceRequest(placeRequest));
-                deletePlaceRequest(placeRequest.getId());
             }
         }
-    }
-
-    private ReviewedRequest createReviewedRequestByPlaceRequest(PlaceRequest placeRequest) {
-        reviewedRequest.setId(placeRequest.getId());
-        reviewedRequest.setUserId(placeRequest.getUserId());
-        reviewedRequest.setApproved(placeRequest.getApproved());
-        reviewedRequest.setDateOf(placeRequest.getDateOf());
-        reviewedRequest.setPlaceId(placeRequest.getPlaceId());
-        reviewedRequest.setReviewedAt(placeRequest.getReviewedAt());
-        reviewedRequest.setManagerId(placeRequest.getManagerId());
-        reviewedRequest.setId(placeRequest.getId());
-        return reviewedRequest;
-    }
-
-    @Transactional
-    public void deletePlaceRequest(Long placeRequestId) {
-        placeRequestRepository.deletePlaceRequestById(placeRequestId);
     }
 }
