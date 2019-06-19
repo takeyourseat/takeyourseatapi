@@ -1,26 +1,28 @@
 package com.stefanini.internship.authorizationserver.dao;
 
+
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "owa_sid")
-public class OwaSid {
+@Table(name = "user")
+public class User {
     @Id
     private Long id;
 
-    @Column(name = "sid", nullable = false, unique = true)
-    private String sid;
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
 
     @ManyToOne(optional = false)
-    private OwaRole role;
+    private Role role;
 
     //region (), (*) constructors
 
-    public OwaSid() {}
+    public User() {}
 
-    public OwaSid(Long id, String sid, OwaRole role) {
+    public User(Long id, String username, Role role) {
         this.id = id;
-        this.sid = sid;
+        this.username = username;
         this.role = role;
     }
 
@@ -32,26 +34,26 @@ public class OwaSid {
         return id;
     }
 
-    public OwaSid setId(Long id) {
+    public User setId(Long id) {
         this.id = id;
         return this;
     }
 
 
-    public String getSid() {
-        return sid;
+    public String getUsername() {
+        return username;
     }
 
-    public OwaSid setSid(String sid) {
-        this.sid = sid;
+    public User setUsername(String username) {
+        this.username = username;
         return this;
     }
 
-    public OwaRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public OwaSid setRole(OwaRole role) {
+    public User setRole(Role role) {
         this.role = role;
         return this;
     }

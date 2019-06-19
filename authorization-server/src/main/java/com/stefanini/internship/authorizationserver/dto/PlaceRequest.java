@@ -1,4 +1,4 @@
-package com.stefanini.internship.authorizationserver.dao.classes;
+package com.stefanini.internship.authorizationserver.dto;
 import com.sun.istack.NotNull;
 
 public class PlaceRequest  {

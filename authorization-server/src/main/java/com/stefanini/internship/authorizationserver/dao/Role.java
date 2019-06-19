@@ -3,8 +3,8 @@ package com.stefanini.internship.authorizationserver.dao;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "owa_role")
-public class OwaRole {
+@Table(name = "role")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,7 +18,7 @@ public class OwaRole {
         return id;
     }
 
-    public OwaRole setId(Long id) {
+    public Role setId(Long id) {
         this.id = id;
         return this;
     }
@@ -27,7 +27,7 @@ public class OwaRole {
         return name;
     }
 
-    public OwaRole setName(String name) {
+    public Role setName(String name) {
         this.name = name;
         return this;
     }
@@ -36,11 +36,11 @@ public class OwaRole {
 
     //region (), (*) constructors
 
-    public OwaRole(String name) {
+    public Role(String name) {
         this.name = name;
     }
 
-    public OwaRole() {
+    public Role() {
     }
 
 //endregion

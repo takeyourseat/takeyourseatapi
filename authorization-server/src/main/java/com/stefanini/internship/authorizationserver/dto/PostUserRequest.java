@@ -1,8 +1,9 @@
-package com.stefanini.internship.authorizationserver.dao.classes;
+package com.stefanini.internship.authorizationserver.dto;
 
-import com.stefanini.internship.authorizationserver.dao.OwaRole;
 
-public class User  {
+import com.stefanini.internship.authorizationserver.dao.Role;
+
+public class PostUserRequest {
 
     private Long id;
 
@@ -13,12 +14,12 @@ public class User  {
     private String lastName;
     private String jobTitle;
     private String profileImage;
-    private User manager;
+    private PostUserRequest manager;
     private boolean enabled;
     private boolean accountNonExpired;
     private boolean credentialsNonExpired;
     private boolean accountNonLocked;
-    private OwaRole role;
+    private Role role;
 
     //region Getters and Setters
 
@@ -26,7 +27,7 @@ public class User  {
         return id;
     }
 
-    public User setId(Long id) {
+    public PostUserRequest setId(Long id) {
         this.id = id;
         return this;
     }
@@ -35,7 +36,7 @@ public class User  {
         return username;
     }
 
-    public User setUsername(String username) {
+    public PostUserRequest setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -44,7 +45,7 @@ public class User  {
         return password;
     }
 
-    public User setPassword(String password) {
+    public PostUserRequest setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -53,7 +54,7 @@ public class User  {
         return email;
     }
 
-    public User setEmail(String email) {
+    public PostUserRequest setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -62,7 +63,7 @@ public class User  {
         return firstName;
     }
 
-    public User setFirstName(String firstName) {
+    public PostUserRequest setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -71,7 +72,7 @@ public class User  {
         return lastName;
     }
 
-    public User setLastName(String lastName) {
+    public PostUserRequest setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -80,7 +81,7 @@ public class User  {
         return jobTitle;
     }
 
-    public User setJobTitle(String jobTitle) {
+    public PostUserRequest setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
         return this;
     }
@@ -89,16 +90,16 @@ public class User  {
         return profileImage;
     }
 
-    public User setProfileImage(String profileImage) {
+    public PostUserRequest setProfileImage(String profileImage) {
         this.profileImage = profileImage;
         return this;
     }
 
-    public User getManager() {
+    public PostUserRequest getManager() {
         return manager;
     }
 
-    public User setManager(User manager) {
+    public PostUserRequest setManager(PostUserRequest manager) {
         this.manager = manager;
         return this;
     }
@@ -107,7 +108,7 @@ public class User  {
         return enabled;
     }
 
-    public User setEnabled(boolean enabled) {
+    public PostUserRequest setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -116,7 +117,7 @@ public class User  {
         return accountNonExpired;
     }
 
-    public User setAccountNonExpired(boolean accountNonExpired) {
+    public PostUserRequest setAccountNonExpired(boolean accountNonExpired) {
         this.accountNonExpired = accountNonExpired;
         return this;
     }
@@ -125,7 +126,7 @@ public class User  {
         return credentialsNonExpired;
     }
 
-    public User setCredentialsNonExpired(boolean credentialsNonExpired) {
+    public PostUserRequest setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
         return this;
     }
@@ -134,16 +135,16 @@ public class User  {
         return accountNonLocked;
     }
 
-    public User setAccountNonLocked(boolean accountNonLocked) {
+    public PostUserRequest setAccountNonLocked(boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
         return this;
     }
 
-    public OwaRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public User setRole(OwaRole role) {
+    public PostUserRequest setRole(Role role) {
         this.role = role;
         return this;
     }
@@ -152,9 +153,9 @@ public class User  {
 
     //region 2 Constructors
 
-    public User(){}
+    public PostUserRequest(){}
 
-    public User(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, User manager, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, OwaRole role) {
+    public PostUserRequest(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, PostUserRequest manager, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Role role) {
         this.id = id;
         this.password = password;
         this.email = email;

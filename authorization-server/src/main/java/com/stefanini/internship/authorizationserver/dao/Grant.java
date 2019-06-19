@@ -3,32 +3,32 @@ package com.stefanini.internship.authorizationserver.dao;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "owa_class_grant",
+@Table(name = "role_permission",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"owa_class_id", "permission", "role_id"}))
-public class OwaClassGrant {
+        @UniqueConstraint(columnNames={"data_type_id", "permission", "role_id"}))
+public class Grant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private OwaClass owaClass;
+    private DataType dataType;
 
     @Column(name = "permission")
     private int permission;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private OwaRole role;
+    private Role role;
 
     //region (), (*) constructors
 
-    public OwaClassGrant(OwaClass owaClass, int permission, OwaRole sid) {
-        this.owaClass = owaClass;
+    public Grant(DataType dataType, int permission, Role sid) {
+        this.dataType = dataType;
         this.permission = permission;
         this.role = sid;
     }
 
-    public OwaClassGrant() {}
+    public Grant() {}
 
     //endregion
 
@@ -38,17 +38,17 @@ public class OwaClassGrant {
         return id;
     }
 
-    public OwaClassGrant setId(Long id) {
+    public Grant setId(Long id) {
         this.id = id;
         return this;
     }
 
-    public OwaClass getOwaClass() {
-        return owaClass;
+    public DataType getDataType() {
+        return dataType;
     }
 
-    public OwaClassGrant setOwaClass(OwaClass owaClass) {
-        this.owaClass = owaClass;
+    public Grant setDataType(DataType dataType) {
+        this.dataType = dataType;
         return this;
     }
 
@@ -56,16 +56,16 @@ public class OwaClassGrant {
         return permission;
     }
 
-    public OwaClassGrant setPermission(int permission) {
+    public Grant setPermission(int permission) {
         this.permission = permission;
         return this;
     }
 
-    public OwaRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public OwaClassGrant setRole(OwaRole role) {
+    public Grant setRole(Role role) {
         this.role = role;
         return this;
     }
