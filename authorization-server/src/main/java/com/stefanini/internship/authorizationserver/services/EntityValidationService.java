@@ -1,27 +1,20 @@
 package com.stefanini.internship.authorizationserver.services;
 
-import com.stefanini.internship.authorizationserver.dao.OwaClass;
-import com.stefanini.internship.authorizationserver.dao.OwaObject;
-import com.stefanini.internship.authorizationserver.dao.OwaSid;
+import com.stefanini.internship.authorizationserver.dao.DataType;
+import com.stefanini.internship.authorizationserver.dao.User;
 import com.stefanini.internship.authorizationserver.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EntityValidationService {
 
-    public void AssertValidResult(OwaSid sid, String expected){
+    public void AssertValidResult(User sid, String expected){
         if(sid == null)
            throw new ResourceNotFoundException("User "+expected+" could not be found");
     }
 
-    public void AssertValidResult(OwaObject object, String classname, Long identifier){
-        if(object == null)
-            throw new ResourceNotFoundException("Object of class "+classname+" with identifier "+ identifier +" could not be found");
-    }
-
-    public void AssertValidResult(OwaClass owaClass, String classname){
-        if(owaClass == null)
+    public void AssertValidResult(DataType dataType, String classname){
+        if(dataType == null)
             throw new ResourceNotFoundException("Class "+classname+" could not be found in the OWA database");
     }
-
 }
