@@ -61,8 +61,9 @@ public class PlaceRequestController {
     }
 
     @PostMapping("/requests/{placeId}")
-    public ResponseEntity createPlaceRequest(@RequestBody PlaceRequest placeRequest, @PathVariable Long placeId) {
+    public ResponseEntity createPlaceRequest(@PathVariable Long placeId) {
         Long userId = 4L;
+        PlaceRequest placeRequest = new PlaceRequest();
         User user = userRepository.getUserById(userId);
         if (placeRepository.getPlaceById(placeId) == null) {
             return new ResponseEntity<>("Place not found", HttpStatus.NOT_FOUND);
@@ -104,7 +105,7 @@ public class PlaceRequestController {
 
     @Transactional
     @PatchMapping("/requests/{id}")
-    public ResponseEntity acceptPlaceRequest(@RequestBody PlaceRequest placeRequest, @PathVariable Long id) {
+    public ResponseEntity acceptPlaceRequest(@PathVariable Long id) {
         if (placeRequestRepository.getPlaceRequestById(id) == null)
             return new ResponseEntity<>("placeRequest not found", HttpStatus.NOT_FOUND);
         if (placeRequestRepository.getPlaceRequestById(id).getApproved() != null)
@@ -113,7 +114,7 @@ public class PlaceRequestController {
         Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlaceId());
         if (placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId()) != null)
             placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId()).setUserId(null);
-        updatedPlaceRequest.setApproved(placeRequest.getApproved());
+        updatedPlaceRequest.setApproved(true);
         updatedPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
         placeById.setUserId(updatedPlaceRequest.getUserId());
         declineAllPlaceRequestsIfPlaceAccepted(id);
