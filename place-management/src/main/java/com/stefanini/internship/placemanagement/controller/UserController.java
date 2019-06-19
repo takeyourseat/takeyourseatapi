@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity getUsersById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUsersById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUserById(id));
     }
 
     @GetMapping("/users/managers/{id}")
