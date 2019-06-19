@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -57,7 +58,15 @@ public class PlaceRequestController {
         if (placeRequests.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(placeRequests);
+        List<PlaceRequest> nonApprovedPlaceRequests = new ArrayList<>();
+        for (PlaceRequest placeRequest: placeRequests){
+            if (placeRequest.getApproved() == null)
+                nonApprovedPlaceRequests.add(placeRequest);
+        }
+        if (nonApprovedPlaceRequests.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(nonApprovedPlaceRequests);
     }
 
     @PostMapping("/requests/{placeId}")
