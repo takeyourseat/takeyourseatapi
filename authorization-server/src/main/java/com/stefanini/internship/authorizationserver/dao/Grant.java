@@ -11,13 +11,13 @@ public class Grant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private DataType dataType;
 
     @Column(name = "permission")
     private int permission;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Role role;
 
     //region (), (*) constructors
