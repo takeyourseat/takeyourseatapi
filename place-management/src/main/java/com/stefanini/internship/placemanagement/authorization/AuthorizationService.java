@@ -1,5 +1,6 @@
 package com.stefanini.internship.placemanagement.authorization;
 
+import com.stefanini.internship.placemanagement.data.entities.PlaceRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +31,17 @@ public class AuthorizationService {
 
         return authorization.getBody().authorized;
     }
+
+    public boolean hasPermissionForPlaceRequest(PlaceRequest object, String permission){
+        if ((object == null) || (permission == null))
+            return false;
+
+        String requestURI = AUTHORIZATION_API+"authorizations/placerequests/permissions/"+permission;
+        HttpEntity<PlaceRequest> request = new HttpEntity<>(object,AuthorizationUtils.getAuthorizationHeader());
+
+        ResponseEntity<AuthorizationResponse> authorization = restTemplate.exchange(requestURI, HttpMethod.POST, request, AuthorizationResponse.class);
+
+        return authorization.getBody().authorized;
+    }
+
 }
