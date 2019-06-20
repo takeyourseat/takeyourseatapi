@@ -73,7 +73,7 @@ public class PlaceRequestController {
 
     @PostMapping("/requests/{placeId}")
     public ResponseEntity createPlaceRequest(@PathVariable Long placeId) {
-        Long userId = 4L;
+        Long userId = 5L;
         PlaceRequest placeRequest = new PlaceRequest();
         User user = userRepository.getUserById(userId);
         if (placeRepository.getPlaceById(placeId) == null) {
@@ -128,7 +128,7 @@ public class PlaceRequestController {
         updatedPlaceRequest.setApproved(true);
         updatedPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
         placeById.setUserId(updatedPlaceRequest.getUserId());
-        declineAllPlaceRequestsIfPlaceAccepted(id);
+        declineAllPlaceRequestsIfPlaceAccepted(updatedPlaceRequest.getPlaceId());
         declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUserId());
         placeRepository.save(placeById);
         return ResponseEntity.ok().body(updatedPlaceRequest);
@@ -141,6 +141,7 @@ public class PlaceRequestController {
             if (placeRequest.getPlaceId().equals(placeId) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
+                placeRequestRepository.save(placeRequest);
             }
         }
     }
@@ -152,6 +153,7 @@ public class PlaceRequestController {
             if (placeRequest.getUserId().equals(userId) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
+                placeRequestRepository.save(placeRequest);
             }
         }
     }
