@@ -22,7 +22,7 @@ public class UsersController {
         this.userRepo = userRepo;
         this.roleRepo = roleRepo;
     }
-    @PreAuthorize("@ClassGrantService.hasClassGrant('user', 'write')")
+    @PreAuthorize("@AuthorizationService.hasPermission('user', 'write')")
     @PostMapping("users")
     public ResponseEntity createUser(){
         Role role = roleRepo.findById(1L).get();
@@ -40,7 +40,7 @@ public class UsersController {
     }
 
     @GetMapping("users")
-    @PostAuthorize("@ClassGrantService.hasClassGrant('user', 'read')")
+    @PreAuthorize("@AuthorizationService.hasPermission('user', 'read')")
     public ResponseEntity getReadableUsers(){
         List<User> toReturn = userRepo.findAll();
         toReturn.forEach(user -> user.setRole((Role)Hibernate.unproxy(user.getRole())));
@@ -48,7 +48,7 @@ public class UsersController {
     }
 
     @GetMapping("users/{id}")
-    @PreAuthorize("hasPermission(#id, 'user','read')")
+    @PreAuthorize("@AuthorizationService.hasPermission('user', 'read')")
     public ResponseEntity<User> GetUserById(@PathVariable Long id){
         User user = userRepo.findById(id).get();
         user.setRole((Role)Hibernate.unproxy(user.getRole()));
