@@ -1,6 +1,8 @@
 package com.stefanini.internship.placemanagement.controller;
 
+import com.stefanini.internship.placemanagement.data.entities.Office;
 import com.stefanini.internship.placemanagement.data.entities.Place;
+import com.stefanini.internship.placemanagement.data.repositories.OfficeRepository;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
 import com.stefanini.internship.placemanagement.exception.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class PlaceController {
     @Autowired
     PlaceRepository placeRepository;
 
+    @Autowired
+    OfficeRepository officeRepository;
+
     @RequestMapping(value = "/offices/{officeId}/places", method = RequestMethod.GET)
     public ResponseEntity getPlacesByOfficeId(@PathVariable Long officeId) {
         return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlacesByOfficeId(officeId));
@@ -31,6 +36,11 @@ public class PlaceController {
 
     @RequestMapping(value = "/places", method = RequestMethod.POST)
     public ResponseEntity addPlace(@RequestBody Place place) {
+        Long officeId = place.getOffice().getId();
+        Office office = officeRepository.getOfficeById(officeId);
+        if (office.getSizeX() < place.getCoordinateX() || office.getSizeY() < place.getCoordinateY()) {
+            return new ResponseEntity<>("Can't add place with following coordinates", HttpStatus.CONFLICT);
+        }
         placeRepository.save(place);
         return ResponseEntity.status(HttpStatus.CREATED).body(place);
     }
