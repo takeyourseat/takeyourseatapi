@@ -57,16 +57,10 @@ public class PlaceRequestController {
     @RequestMapping(value = "/requests", params = "manager", method = RequestMethod.GET)
     public ResponseEntity getPlaceRequestsByManager(@RequestParam Long manager) {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByManagerId(manager);
-        if (placeRequests.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         List<PlaceRequest> nonApprovedPlaceRequests = new ArrayList<>();
         for (PlaceRequest placeRequest: placeRequests){
             if (placeRequest.getApproved() == null)
                 nonApprovedPlaceRequests.add(placeRequest);
-        }
-        if (nonApprovedPlaceRequests.isEmpty()) {
-            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(nonApprovedPlaceRequests);
     }
