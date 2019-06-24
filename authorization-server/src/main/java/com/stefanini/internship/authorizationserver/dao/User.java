@@ -16,14 +16,18 @@ public class User {
     @ManyToOne(optional = false)
     private Role role;
 
+    @Column(name="enabled")
+    private boolean enabled;
+
     //region (), (*) constructors
 
     public User() {}
 
-    public User(Long id, String username, Role role) {
+    public User(Long id, String username, Role role, boolean enabled) {
         this.id = id;
         this.username = username;
         this.role = role;
+        this.enabled = enabled;
     }
 
     //endregion
@@ -38,7 +42,6 @@ public class User {
         this.id = id;
         return this;
     }
-
 
     public String getUsername() {
         return username;
@@ -57,6 +60,16 @@ public class User {
         this.role = role;
         return this;
     }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public User setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
 
     //endregion
 }
