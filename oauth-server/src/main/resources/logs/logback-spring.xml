@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <springProperty scope="context" name="oauth-server" source="com.stefanini.internship.oauthserver"/>
-
-    <property name="CONSOLE_LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [${springAppName},%X{X-B3-TraceId:-}] %m%n"/>
-    <!-- appenders omitted ... -->
-</configuration>

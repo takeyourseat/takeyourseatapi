@@ -21,10 +21,10 @@ public class SpringOneController {
 		String response = restTemplate.getForObject("http://localhost:8082/server", String.class);
 		log.info("After Calling The Server");
 
-//		String name ="kk";
-//		if(name.length() == 2) {
-//			throw  new RuntimeException("Opps exception has occured");
-//		}
+		String name ="kk";
+		if(name.length() == 2) {
+			throw  new RuntimeException("Opps exception has occured");
+		}
 
 		return "SPRINGoNE [" + response + "]";
 	}

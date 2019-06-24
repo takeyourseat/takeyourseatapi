@@ -3,10 +3,10 @@
     <property resource="application.properties" />
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <springProperty scope="context" name="oauth-server" source="com.stefanini.internship.oauthserver" />
+    <springProperty scope="context" name="authorization-server" source="com.stefanini.internship.authorizationserver" />
     <property name="DEV_HOME" value="${BUILD_FOLDER:-logs}/${springAppName}" />
     <property name="CONSOLE_LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss} %5p [${springAppName},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] ${PID:-} --- [%thread] %logger{36} : %message%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss} %-5level [${springAppName},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] ${PID:-} --- [%thread] %logger{36} : %message%n"/>
 
     <!-- Properties resources -->
     <property resource="bootstrap.yml" />
@@ -64,7 +64,7 @@
     </appender>
 
     <!-- Send logs to both console and file audit -->
-    <logger name="com.stefanini.internship.oauthserver" level="info" additivity="false">
+    <logger name="com.stefanini.internship.authorizationserver" level="info" additivity="false">
         <appender-ref ref="FILE-AUDIT" />
         <appender-ref ref="STDOUT" />
     </logger>
