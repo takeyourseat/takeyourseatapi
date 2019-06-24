@@ -48,9 +48,6 @@ public class PlaceRequestController {
     @RequestMapping(value = "/requests", params = "user", method = RequestMethod.GET)
     public ResponseEntity getPlaceRequestsByUser(@RequestParam Long user) {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByUserId(user);
-        if (placeRequests.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok().body(placeRequests);
     }
 
