@@ -55,7 +55,7 @@ public class PlaceRequestController {
     public ResponseEntity getPlaceRequestsByManager(@RequestParam Long manager) {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByManagerId(manager);
         List<PlaceRequest> nonApprovedPlaceRequests = new ArrayList<>();
-        for (PlaceRequest placeRequest: placeRequests){
+        for (PlaceRequest placeRequest : placeRequests) {
             if (placeRequest.getApproved() == null)
                 nonApprovedPlaceRequests.add(placeRequest);
         }
@@ -72,7 +72,7 @@ public class PlaceRequestController {
         }
         Place place = placeRepository.getPlaceById(placeId);
         placeRequest.setUserId(user.getId());
-        placeRequest.setPlaceId(place.getId());
+        placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
         placeRequest.setManagerId(user.getManagerId());
         if (placeRequest.getUserId().equals(place.getUserId())) {
@@ -82,9 +82,9 @@ public class PlaceRequestController {
             return new ResponseEntity<>("This place is occupied", HttpStatus.CONFLICT);
         }
         if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt()) != null) {
-            if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(),placeRequest.getReviewedAt()).getApproved() == null) {
+            if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt()).getApproved() == null) {
                 return new ResponseEntity<>("such placeRequest is pending", HttpStatus.CONFLICT);
-            } else if (!placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(),placeRequest.getReviewedAt()).getApproved())
+            } else if (!placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt()).getApproved())
                 return ResponseEntity.ok().body(placeRequestRepository.save(placeRequest));
         }
         return ResponseEntity.ok().body(placeRequestRepository.save(placeRequest));
@@ -113,13 +113,13 @@ public class PlaceRequestController {
         if (placeRequestRepository.getPlaceRequestById(id).getApproved() != null)
             return new ResponseEntity<>("placeRequest already has a response", HttpStatus.CONFLICT);
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
-        Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlaceId());
+        Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlace().getId());
         if (placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId()) != null)
             placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId()).setUserId(null);
         updatedPlaceRequest.setApproved(true);
         updatedPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
         placeById.setUserId(updatedPlaceRequest.getUserId());
-        declineAllPlaceRequestsIfPlaceAccepted(updatedPlaceRequest.getPlaceId());
+        declineAllPlaceRequestsIfPlaceAccepted(updatedPlaceRequest.getPlace().getId());
         declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUserId());
         placeRepository.save(placeById);
         return ResponseEntity.ok().body(updatedPlaceRequest);
@@ -129,7 +129,7 @@ public class PlaceRequestController {
     public void declineAllPlaceRequestsIfPlaceAccepted(Long placeId) {
         List<PlaceRequest> placeRequests = placeRequestRepository.findAll();
         for (PlaceRequest placeRequest : placeRequests) {
-            if (placeRequest.getPlaceId().equals(placeId) && placeRequest.getApproved() == null) {
+            if (placeRequest.getPlace().getId().equals(placeId) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
                 placeRequestRepository.save(placeRequest);

@@ -3,6 +3,7 @@ package com.stefanini.internship.placemanagement.data.entities;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "place_requests")
@@ -14,8 +15,8 @@ public class PlaceRequest {
     @Column(name = "date_of", nullable = false)
     private java.sql.Timestamp dateOf;
 
-    @Column(name = "place_id")
-    private Long placeId;
+    @ManyToOne()
+    private Place place;
 
     @Column(name = "approved")
     private Boolean approved;
@@ -34,14 +35,14 @@ public class PlaceRequest {
     public PlaceRequest() {
     }
 
-    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Long placeId, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
+    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Place place, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
         this.id = id;
         this.dateOf = dateOf;
         this.approved = approved;
         this.reviewedAt = reviewedAt;
         this.userId = userId;
         this.managerId = managerId;
-        this.placeId = placeId;
+        this.place = place;
     }
 
     //endregion
@@ -52,46 +53,40 @@ public class PlaceRequest {
         return id;
     }
 
-    public PlaceRequest setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
-    public java.sql.Timestamp getDateOf() {
+    public Timestamp getDateOf() {
         return dateOf;
     }
 
-    public PlaceRequest setDateOf(java.sql.Timestamp dateOf) {
+    public void setDateOf(Timestamp dateOf) {
         this.dateOf = dateOf;
-        return this;
     }
 
-    public Long getPlaceId() {
-        return placeId;
+    public Place getPlace() {
+        return place;
     }
 
-    public PlaceRequest setPlaceId(Long placeId) {
-        this.placeId = placeId;
-        return this;
+    public void setPlace(Place place) {
+        this.place = place;
     }
-
 
     public Boolean getApproved() {
         return approved;
     }
 
-    public PlaceRequest setApproved(Boolean approved) {
+    public void setApproved(Boolean approved) {
         this.approved = approved;
-        return this;
     }
 
-    public java.sql.Timestamp getReviewedAt() {
+    public Timestamp getReviewedAt() {
         return reviewedAt;
     }
 
-    public PlaceRequest setReviewedAt(java.sql.Timestamp reviewedAt) {
+    public void setReviewedAt(Timestamp reviewedAt) {
         this.reviewedAt = reviewedAt;
-        return this;
     }
 
     public Long getUserId() {
