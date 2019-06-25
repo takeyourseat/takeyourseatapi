@@ -19,21 +19,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Optional<User> optionalUser = repository.findByUsername(name);
+        User user = repository.findByUsername(name);
 
-        optionalUser.orElseThrow( () -> new UsernameNotFoundException("Username or password is wrong"));
-        User userDetails = optionalUser.get();
+        if (user == null)
+            throw new UsernameNotFoundException("Username or password is wrong");
 
-        new AccountStatusUserDetailsChecker().check(userDetails);
+        new AccountStatusUserDetailsChecker().check(user);
 
         return new org.springframework.security.core.userdetails.User (
-                userDetails.getUsername(),
-                userDetails.getPassword(),
-                userDetails.isEnabled(),
-                userDetails.isAccountNonExpired(),
-                userDetails.isCredentialsNonExpired(),
-                userDetails.isAccountNonLocked(),
-                userDetails.getAuthorities()
+                user.getUsername(),
+                user.getPassword(),
+                user.isEnabled(),
+                user.isAccountNonExpired(),
+                user.isCredentialsNonExpired(),
+                user.isAccountNonLocked(),
+                user.getAuthorities()
         );
     }
 }

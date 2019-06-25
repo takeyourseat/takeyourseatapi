@@ -2,15 +2,12 @@ package com.stefanini.internship.oauthserver.controllers;
 
 import com.stefanini.internship.oauthserver.dao.User;
 import com.stefanini.internship.oauthserver.dao.repositories.UserRepository;
-import com.stefanini.internship.oauthserver.exceptions.DuplicateUserException;
 import com.stefanini.internship.oauthserver.exceptions.UserNotFoundException;
 import com.stefanini.internship.oauthserver.service.UserValidationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 import static com.stefanini.internship.oauthserver.utils.AppConstants.API_ROOT_URL;
 
@@ -44,11 +41,13 @@ public class UsersController {
         return ResponseEntity.status(201).build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{username}")
     @PreAuthorize("@AuthorizationService.hasPermission('User','write')")
-    public ResponseEntity deactivateUser(@PathVariable Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        User user = optionalUser.orElseThrow(() -> new UserNotFoundException("User with id = "+id+" could not be found"));
+    public ResponseEntity deactivateUser(@PathVariable String username) {
+        User user = userRepository.findByUsername(username);
+
+        if(user == null)
+            throw new UserNotFoundException("User with username = "+username+" could not be found");
 
         user.setEnabled(false);
         userRepository.save(user);
