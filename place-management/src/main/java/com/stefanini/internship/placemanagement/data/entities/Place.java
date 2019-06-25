@@ -1,5 +1,6 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
+import com.stefanini.internship.placemanagement.data.Identifiable;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
         uniqueConstraints = {@UniqueConstraint(columnNames = {"coordinate_x", "coordinate_y", "office_id"})}
 )
 
-public class Place {
+public class Place implements Identifiable {
     @Id
     @GeneratedValue
     private Long id;

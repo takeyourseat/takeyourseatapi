@@ -1,10 +1,11 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
 import javax.persistence.*;
+import com.stefanini.internship.placemanagement.data.Identifiable;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Identifiable{
     @Id
     @GeneratedValue
     private Long id;

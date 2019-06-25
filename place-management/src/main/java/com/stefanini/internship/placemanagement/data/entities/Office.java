@@ -1,10 +1,12 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
+import com.stefanini.internship.placemanagement.data.Identifiable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "offices")
-public class Office {
+public class Office implements Identifiable {
     @Id
     @GeneratedValue
     private Long id;

@@ -9,6 +9,7 @@ import com.stefanini.internship.placemanagement.data.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,6 +68,7 @@ public class PlaceRequestController {
         Long userId = 5L;
         PlaceRequest placeRequest = new PlaceRequest();
         User user = userRepository.getUserById(userId);
+
         if (placeRepository.getPlaceById(placeId) == null) {
             return new ResponseEntity<>("Place not found", HttpStatus.NOT_FOUND);
         }
