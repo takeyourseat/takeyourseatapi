@@ -93,10 +93,11 @@ public class PlaceRequestService {
     }
 
     @Transactional
+    @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest declinePlaceRequest(Long id) {
         logger.info(String.format("Manager tries to decline place request with id %d", id));
-        PlaceRequestErrorHandler(id);
         PlaceRequest newPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
+        PlaceRequestErrorHandler(newPlaceRequest);
         newPlaceRequest.setApproved(false);
         newPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
         return newPlaceRequest;
@@ -106,11 +107,11 @@ public class PlaceRequestService {
     @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest acceptPlaceRequest(Long id) {
         logger.info(String.format("Manager accepted place request with id %d", id));
-        PlaceRequestErrorHandler(id);
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
+        PlaceRequestErrorHandler(updatedPlaceRequest);
         Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlace().getId());
-        if (placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId()) != null)
-            placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId()).setUserId(null);
+        if (placeById.getUserId() != null)
+            placeById.setUserId(null);
         updatedPlaceRequest.setApproved(true);
         updatedPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
         placeById.setUserId(updatedPlaceRequest.getUserId());
@@ -120,12 +121,12 @@ public class PlaceRequestService {
         return updatedPlaceRequest;
     }
 
-    private void PlaceRequestErrorHandler(@PathVariable Long id) {
-        if (placeRequestRepository.getPlaceRequestById(id) == null) {
-            throw new ResourceNotFoundException("Place request with id = " + id + " doesn't exists");
+    private void PlaceRequestErrorHandler(PlaceRequest placeRequest) {
+        if (placeRequest == null) {
+            throw new ResourceNotFoundException("Place request doesn't exists");
         }
-        if (placeRequestRepository.getPlaceRequestById(id).getApproved() != null) {
-            throw new DuplicateResourceException("Place request with id = " + id + " already has a response");
+        if (placeRequest.getApproved() != null) {
+            throw new DuplicateResourceException("Place request already has a response");
         }
     }
 
