@@ -13,10 +13,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User implements UserDetails, Identifiable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "password")
@@ -38,17 +37,9 @@ public class User implements UserDetails {
     @Column(name = "account_non_locked")
     private boolean accountNonLocked;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Role role;
-
-    @Override(/*UserDetails Interface*/)
+    @Override()
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        getRole().getPermissions().forEach(permission ->
-                grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName() ))
-        );
-        return grantedAuthorities;
+        return new ArrayList<>();
     }
 
     //region Getters and Setters
@@ -122,16 +113,6 @@ public class User implements UserDetails {
         return this;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public User setRole(Role role) {
-        this.role = role;
-        return this;
-    }
-
-
     //endregion
 
 
@@ -139,7 +120,7 @@ public class User implements UserDetails {
 
     public User(){}
 
-    public User(Long id, String password, String username, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, @NotNull Role role) {
+    public User(Long id, String password, String username, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked) {
         this.id = id;
         this.password = password;
         this.username = username;
@@ -147,7 +128,6 @@ public class User implements UserDetails {
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
-        this.role = role;
     }
 
     //endregion
