@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -24,12 +25,15 @@ import java.util.List;
 @RequestMapping("/api")
 public class PlaceRequestController {
 
+    private final static Logger logger = Logger.getLogger(PlaceRequestController.class);
+
     @Autowired
     PlaceRequestRepository placeRequestRepository;
     @Autowired
     PlaceRepository placeRepository;
     @Autowired
     UserRepository userRepository;
+
 
     @GetMapping("/requests")
     public ResponseEntity getAllPlaceRequests() {
@@ -52,7 +56,7 @@ public class PlaceRequestController {
     @RequestMapping(value = "/requests", params = "user", method = RequestMethod.GET)
     public ResponseEntity getPlaceRequestsByUser(@RequestParam Long user) {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByUserId(user);
-        if (placeRequests.isEmpty()){
+        if (placeRequests.isEmpty()) {
             RuntimeException exception = new ResourceNotFoundException("The user with id = " + user + " has no place requests");
             throw exception;
         }
@@ -62,8 +66,9 @@ public class PlaceRequestController {
     @RequestMapping(value = "/requests", params = "manager", method = RequestMethod.GET)
     public ResponseEntity getPlaceRequestsByManager(@RequestParam Long manager) {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByManagerId(manager);
-        if (placeRequests.isEmpty()){
+        if (placeRequests.isEmpty()) {
             RuntimeException exception = new ResourceNotFoundException("The manager with id = " + manager + " has no place requests");
+            logger.info("Manager has no requests", exception);
             throw exception;
         }
         List<PlaceRequest> nonApprovedPlaceRequests = new ArrayList<>();
@@ -71,8 +76,9 @@ public class PlaceRequestController {
             if (placeRequest.getApproved() == null)
                 nonApprovedPlaceRequests.add(placeRequest);
         }
-        if (nonApprovedPlaceRequests.isEmpty()){
+        if (nonApprovedPlaceRequests.isEmpty()) {
             RuntimeException exception = new ResourceNotFoundException("The manager with id = " + manager + " has no pending place requests");
+            logger.info("Manager has no peding requests", exception);
             throw exception;
         }
         return ResponseEntity.ok().body(nonApprovedPlaceRequests);
@@ -83,13 +89,16 @@ public class PlaceRequestController {
         Long userId = 5L;
         PlaceRequest placeRequest = new PlaceRequest();
         User user = userRepository.getUserById(userId);
-        if (user == null){
+        logger.info("User created request");
+        if (user == null) {
             RuntimeException exception = new ResourceNotFoundException("User with id = " + userId + " doesn't exists");
+            logger.info("User not found", exception);
             throw exception;
         }
         Place place = placeRepository.getPlaceById(placeId);
         if (place == null) {
             RuntimeException exception = new ResourceNotFoundException("Place with id = " + placeId + " doesn't exists");
+            logger.info("Place not found", exception);
             throw exception;
         }
         placeRequest.setUserId(user.getId());
@@ -97,11 +106,11 @@ public class PlaceRequestController {
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
         placeRequest.setManagerId(user.getManagerId());
         if (placeRequest.getUserId().equals(place.getUserId())) {
-            RuntimeException exception = new DuplicateResourceException("The user with id = " + userId + "is already on the place with id = "+ placeId);
+            RuntimeException exception = new DuplicateResourceException("The user with id = " + userId + "is already on the place with id = " + placeId);
             throw exception;
         }
         if (place.getUserId() != null) {
-            RuntimeException exception = new DuplicateResourceException("The place with id = " + placeId +" is occupied by another user");
+            RuntimeException exception = new DuplicateResourceException("The place with id = " + placeId + " is occupied by another user");
             throw exception;
         }
         if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt()) != null) {
@@ -117,6 +126,7 @@ public class PlaceRequestController {
     @Transactional
     @PutMapping(value = "/requests/{id}")
     public ResponseEntity declinePlaceRequest(@PathVariable Long id) {
+        logger.info(String.format("Manager tries to decline place request with id %d", id));
         PlaceRequestErrorHandler(id);
         PlaceRequest newPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         newPlaceRequest.setApproved(false);
@@ -127,6 +137,7 @@ public class PlaceRequestController {
     @Transactional
     @PatchMapping("/requests/{id}")
     public ResponseEntity acceptPlaceRequest(@PathVariable Long id) {
+        logger.info(String.format("Manager accepted place request with id %d", id));
         PlaceRequestErrorHandler(id);
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlace().getId());
