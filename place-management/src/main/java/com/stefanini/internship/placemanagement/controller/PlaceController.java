@@ -4,12 +4,14 @@ import com.stefanini.internship.placemanagement.data.entities.Office;
 import com.stefanini.internship.placemanagement.data.entities.Place;
 import com.stefanini.internship.placemanagement.data.repositories.OfficeRepository;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
-import com.stefanini.internship.placemanagement.exception.ResourceNotFound;
+import com.stefanini.internship.placemanagement.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("http://localhost:4200")
 
@@ -25,12 +27,17 @@ public class PlaceController {
 
     @RequestMapping(value = "/offices/{officeId}/places", method = RequestMethod.GET)
     public ResponseEntity getPlacesByOfficeId(@PathVariable Long officeId) {
-        return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlacesByOfficeId(officeId));
+        List<Place> places = placeRepository.getPlacesByOfficeId(officeId);
+        if (places.isEmpty()){
+            RuntimeException exception = new ResourceNotFoundException("There is no places in office with id = " + officeId);
+            throw exception;
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(places);
     }
 
     @RequestMapping(value = "/places/{id}", method = RequestMethod.GET)
-    public ResponseEntity getPlaceById(@PathVariable Long id) throws ResourceNotFound {
-        Place place = placeRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Place with id " + id + " not found"));
+    public ResponseEntity getPlaceById(@PathVariable Long id) {
+        Place place = placeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Place with id " + id + " not found"));
         return ResponseEntity.ok().body(place);
     }
 

@@ -2,6 +2,7 @@ package com.stefanini.internship.placemanagement.controller;
 
 import com.stefanini.internship.placemanagement.data.entities.Office;
 import com.stefanini.internship.placemanagement.data.repositories.OfficeRepository;
+import com.stefanini.internship.placemanagement.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,8 @@ public class FloorController {
             }
         }
         if (floors.isEmpty()) {
-            return new ResponseEntity<>("There is no floors", HttpStatus.NOT_FOUND);
+            RuntimeException exception = new ResourceNotFoundException("There is no floors");
+            throw exception;
         } else
             Collections.sort(floors);
         return ResponseEntity.status(HttpStatus.OK).body(floors);
