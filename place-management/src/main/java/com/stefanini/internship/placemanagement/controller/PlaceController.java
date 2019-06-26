@@ -28,10 +28,6 @@ public class PlaceController {
     @RequestMapping(value = "/offices/{officeId}/places", method = RequestMethod.GET)
     public ResponseEntity getPlacesByOfficeId(@PathVariable Long officeId) {
         List<Place> places = placeRepository.getPlacesByOfficeId(officeId);
-        if (places.isEmpty()){
-            RuntimeException exception = new ResourceNotFoundException("There is no places in office with id = " + officeId);
-            throw exception;
-        }
         return ResponseEntity.status(HttpStatus.OK).body(places);
     }
 
