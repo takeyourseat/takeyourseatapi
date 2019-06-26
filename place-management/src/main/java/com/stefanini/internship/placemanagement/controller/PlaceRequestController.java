@@ -11,7 +11,6 @@ import com.stefanini.internship.placemanagement.exception.ResourceNotFoundExcept
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -118,14 +117,7 @@ public class PlaceRequestController {
     @Transactional
     @PutMapping(value = "/requests/{id}")
     public ResponseEntity declinePlaceRequest(@PathVariable Long id) {
-        if (placeRequestRepository.getPlaceRequestById(id) == null) {
-            RuntimeException exception = new ResourceNotFoundException("Place request with id = " + id + " doesn't exists");
-            throw exception;
-        }
-        if (placeRequestRepository.getPlaceRequestById(id).getApproved() != null) {
-            RuntimeException exception = new DuplicateResourceException("Place request with id = " + id + " already has a response");
-            throw exception;
-        }
+        PlaceRequestErrorHandler(id);
         PlaceRequest newPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         newPlaceRequest.setApproved(false);
         newPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
@@ -135,14 +127,7 @@ public class PlaceRequestController {
     @Transactional
     @PatchMapping("/requests/{id}")
     public ResponseEntity acceptPlaceRequest(@PathVariable Long id) {
-        if (placeRequestRepository.getPlaceRequestById(id) == null) {
-            RuntimeException exception = new ResourceNotFoundException("Place request with id = " + id + " doesn't exists");
-            throw exception;
-        }
-        if (placeRequestRepository.getPlaceRequestById(id).getApproved() != null) {
-            RuntimeException exception = new DuplicateResourceException("Place request with id = " + id + " already has a response");
-            throw exception;
-        }
+        PlaceRequestErrorHandler(id);
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlace().getId());
         if (placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId()) != null)
@@ -154,6 +139,17 @@ public class PlaceRequestController {
         declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUserId());
         placeRepository.save(placeById);
         return ResponseEntity.ok().body(updatedPlaceRequest);
+    }
+
+    private void PlaceRequestErrorHandler(@PathVariable Long id) {
+        if (placeRequestRepository.getPlaceRequestById(id) == null) {
+            RuntimeException exception = new ResourceNotFoundException("Place request with id = " + id + " doesn't exists");
+            throw exception;
+        }
+        if (placeRequestRepository.getPlaceRequestById(id).getApproved() != null) {
+            RuntimeException exception = new DuplicateResourceException("Place request with id = " + id + " already has a response");
+            throw exception;
+        }
     }
 
     @Transactional
