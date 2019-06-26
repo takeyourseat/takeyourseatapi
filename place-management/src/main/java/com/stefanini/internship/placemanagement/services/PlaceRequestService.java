@@ -9,9 +9,10 @@ import com.stefanini.internship.placemanagement.data.repositories.UserRepository
 import com.stefanini.internship.placemanagement.exception.DuplicateResourceException;
 import com.stefanini.internship.placemanagement.exception.ResourceNotFoundException;
 import org.apache.log4j.Logger;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,7 +21,6 @@ import java.util.List;
 public class PlaceRequestService {
 
     private final static Logger logger = Logger.getLogger(PlaceRequestService.class);
-
 
     private PlaceRequestRepository placeRequestRepository;
     private PlaceRepository placeRepository;
@@ -32,6 +32,7 @@ public class PlaceRequestService {
         this.userRepository = userRepository;
     }
 
+    @PostFilter("@AuthorizationService.hasPermissionForPlaceRequest(filterObject, 'read')")
     public List<PlaceRequest> getPlaceRequestsByUser(Long user) {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByUserId(user);
         if (placeRequests.isEmpty()) {
@@ -40,6 +41,7 @@ public class PlaceRequestService {
         return placeRequests;
     }
 
+    @PostFilter("@AuthorizationService.hasPermissionForPlaceRequest(filterObject, 'approve')")
     public List<PlaceRequest> getPlaceRequestsByManager() {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByApprovedIsNull();
         if (placeRequests.isEmpty()) {
@@ -50,6 +52,7 @@ public class PlaceRequestService {
         return placeRequests;
     }
 
+    //Todo Authorize for creating a place request
     public PlaceRequest createPlaceRequest(Long placeId) {
         Long userId = 3L;
         PlaceRequest placeRequest = new PlaceRequest();
@@ -76,10 +79,11 @@ public class PlaceRequestService {
         if (place.getUserId() != null) {
             throw new DuplicateResourceException("The place with id = " + placeId + " is occupied by another user");
         }
-        if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt()) != null) {
-            if (placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt()).getApproved() == null) {
+        PlaceRequest identicalPlaceRequest = placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt());
+        if (identicalPlaceRequest != null) {
+            if (identicalPlaceRequest.getApproved() == null) {
                 throw new DuplicateResourceException("such place request is pending");
-            } else if (!placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt()).getApproved()) {
+            } else if (!identicalPlaceRequest.getApproved()) {
                 placeRequestRepository.save(placeRequest);
                 return placeRequest;
             }
@@ -99,6 +103,7 @@ public class PlaceRequestService {
     }
 
     @Transactional
+    @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest acceptPlaceRequest(Long id) {
         logger.info(String.format("Manager accepted place request with id %d", id));
         PlaceRequestErrorHandler(id);
