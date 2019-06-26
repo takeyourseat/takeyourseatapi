@@ -6,9 +6,9 @@ import com.stefanini.internship.usermanagement.dao.repository.RoleRepository;
 import com.stefanini.internship.usermanagement.dao.repository.UserRepository;
 import org.hibernate.Hibernate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
