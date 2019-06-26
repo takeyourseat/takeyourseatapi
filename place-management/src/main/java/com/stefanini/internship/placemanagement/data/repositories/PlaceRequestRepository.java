@@ -16,9 +16,6 @@ public interface PlaceRequestRepository extends JpaRepository<PlaceRequest, Long
 
     List<PlaceRequest> getPlaceRequestsByUserId(Long userId);
 
-    List<PlaceRequest> getPlaceRequestsByManagerId(Long managerId);
-
-    @PostFilter("@AuthorizationService.hasPermissionForPlaceRequest(filterObject, 'approve')")
     List<PlaceRequest> getPlaceRequestsByApprovedIsNull();
 
 }
