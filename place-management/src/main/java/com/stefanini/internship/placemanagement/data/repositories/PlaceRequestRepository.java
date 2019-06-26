@@ -2,6 +2,7 @@ package com.stefanini.internship.placemanagement.data.repositories;
 
 import com.stefanini.internship.placemanagement.data.entities.PlaceRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -16,4 +17,8 @@ public interface PlaceRequestRepository extends JpaRepository<PlaceRequest, Long
     List<PlaceRequest> getPlaceRequestsByUserId(Long userId);
 
     List<PlaceRequest> getPlaceRequestsByManagerId(Long managerId);
+
+    @PostFilter("@AuthorizationService.hasPermissionForPlaceRequest(filterObject, 'approve')")
+    List<PlaceRequest> getPlaceRequestsByApprovedIsNull();
+
 }

@@ -11,6 +11,7 @@ import com.stefanini.internship.placemanagement.exception.ResourceNotFoundExcept
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.apache.log4j.Logger;
@@ -35,14 +36,14 @@ public class PlaceRequestController {
     UserRepository userRepository;
 
 
-    @GetMapping("/requests")
-    public ResponseEntity getAllPlaceRequests() {
-        if (placeRequestRepository.findAll().isEmpty()) {
-            RuntimeException exception = new ResourceNotFoundException("There are no place requests");
-            throw exception;
-        } else
-            return ResponseEntity.status(HttpStatus.OK).body(placeRequestRepository.findAll());
-    }
+//    @GetMapping("/requests")
+//    public ResponseEntity getAllPlaceRequests() {
+//        if (placeRequestRepository.findAll().isEmpty()) {
+//            RuntimeException exception = new ResourceNotFoundException("There are no place requests");
+//            throw exception;
+//        } else
+//            return ResponseEntity.status(HttpStatus.OK).body(placeRequestRepository.findAll());
+//    }
 
     @GetMapping("/requests/{id}")
     public ResponseEntity getPlaceRequestById(@PathVariable Long id) {
@@ -63,25 +64,16 @@ public class PlaceRequestController {
         return ResponseEntity.ok().body(placeRequests);
     }
 
-    @RequestMapping(value = "/requests", params = "manager", method = RequestMethod.GET)
-    public ResponseEntity getPlaceRequestsByManager(@RequestParam Long manager) {
-        List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByManagerId(manager);
+
+    @RequestMapping(value = "/requests", method = RequestMethod.GET)
+    public ResponseEntity getPlaceRequestsByManager() {
+        List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByApprovedIsNull();
         if (placeRequests.isEmpty()) {
-            RuntimeException exception = new ResourceNotFoundException("The manager with id = " + manager + " has no place requests");
-            logger.info("Manager has no requests", exception);
+            RuntimeException exception = new ResourceNotFoundException("There are no pending place requests");
+            logger.info("There are no pending place requests", exception);
             throw exception;
         }
-        List<PlaceRequest> nonApprovedPlaceRequests = new ArrayList<>();
-        for (PlaceRequest placeRequest : placeRequests) {
-            if (placeRequest.getApproved() == null)
-                nonApprovedPlaceRequests.add(placeRequest);
-        }
-        if (nonApprovedPlaceRequests.isEmpty()) {
-            RuntimeException exception = new ResourceNotFoundException("The manager with id = " + manager + " has no pending place requests");
-            logger.info("Manager has no peding requests", exception);
-            throw exception;
-        }
-        return ResponseEntity.ok().body(nonApprovedPlaceRequests);
+        return ResponseEntity.ok().body(placeRequests);
     }
 
     @PostMapping("/requests/{placeId}")
