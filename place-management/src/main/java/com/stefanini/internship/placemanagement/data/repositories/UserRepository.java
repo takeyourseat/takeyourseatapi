@@ -10,5 +10,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User getUserById(Long id);
 
-    List<User> getUsersByManagerId(Long id);
+    List<User> getUsersByManagerUsername(String managerUsername);
 }

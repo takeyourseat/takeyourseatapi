@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", params = "managerId", method = RequestMethod.GET)
-    public ResponseEntity getUsersByManagerId(@RequestParam Long managerId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUsersByManagerId(managerId));
+    public ResponseEntity getUserByManagerUsername(@RequestParam String managerUsername) {
+        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUsersByManagerUsername(managerUsername));
     }
 }

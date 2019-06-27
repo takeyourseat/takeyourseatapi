@@ -25,8 +25,8 @@ public class User implements Identifiable{
     @Column(name = "profileimage")
     private String profileImage;
 
-    @Column(name = "managerid")
-    private Long managerId;
+    @Column(name = "manager_username")
+    private String managerUsername;
 
     //region Getters and Setters
 
@@ -84,12 +84,12 @@ public class User implements Identifiable{
         return this;
     }
 
-    public Long getManagerId() {
-        return managerId;
+    public String getManagerUsername() {
+        return managerUsername;
     }
 
-    public User setManagerId(Long managerId) {
-        this.managerId = managerId;
+    public User setManagerUsername(String managerUsername) {
+        this.managerUsername = managerUsername;
         return this;
     }
     //endregion
@@ -99,14 +99,14 @@ public class User implements Identifiable{
     public User() {
     }
 
-    public User(Long id, String username, String firstName, String lastName, String jobTitle, String profileImage, Long managerId) {
+    public User(Long id, String username, String firstName, String lastName, String jobTitle, String profileImage, String managerUsername) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.jobTitle = jobTitle;
         this.profileImage = profileImage;
-        this.managerId = managerId;
+        this.managerUsername = managerUsername;
     }
     //endregion
 

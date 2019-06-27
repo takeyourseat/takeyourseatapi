@@ -72,7 +72,7 @@ public class PlaceRequestService {
         placeRequest.setUsername(user.getUsername());
         placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
-        placeRequest.setManagerId(user.getManagerId());
+        placeRequest.setManagerUsername(user.getManagerUsername());
         if (placeRequest.getUsername().equals(place.getUsername())) {
             throw new DuplicateResourceException("The user with id = " + Username + " is already on the place with id = " + placeId);
         }
