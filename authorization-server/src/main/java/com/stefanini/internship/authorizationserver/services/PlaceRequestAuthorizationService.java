@@ -48,11 +48,10 @@ public class PlaceRequestAuthorizationService {
     private AuthorizationResponse canUserReadPlaceRequest(PlaceRequest placeRequest){
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.debug(String.format("Checking read permission for User='%s' for PlaceRequest with id = '%d'",authenticatedUserName,placeRequest.getId()));
-        User requestedManager = userService.getUserManager(placeRequest.getUsername());
-
-        boolean isViewedByCreator = authenticatedUserName.equals(placeRequest.getUsername());
-        boolean isViewedByManager = authenticatedUserName.equals(requestedManager.getUsername());
-
+        User authenticatedUser = userRepository.findByUsername(authenticatedUserName);
+        User requestedManager = userService.getUserManager(placeRequest.getId());
+        boolean isViewedByCreator = placeRequest.getUserId().equals(authenticatedUser.getId());
+        boolean isViewedByManager = requestedManager.getUsername().equals(authenticatedUserName);
         logger.debug(String.format("Responding with authorization based on isViedByCreator='%s' or isViewedByManager='%s'", isViewedByCreator, isViewedByManager));
         return new AuthorizationResponse(isViewedByCreator || isViewedByManager,null);
     }
@@ -60,7 +59,7 @@ public class PlaceRequestAuthorizationService {
     private AuthorizationResponse canUserApprovePlaceRequest(PlaceRequest placeRequest){
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        User requestManager = userService.getUserManager(placeRequest.getUsername());
+        User requestManager = userService.getUserManager(placeRequest.getUserId());
 
         boolean isAuthorized = requestManager.getUsername().equals(authenticatedUserName);
         logger.debug(String.format("Responding with authorization based on isViewedByManager='%s'", isAuthorized));
