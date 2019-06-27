@@ -20,7 +20,7 @@ public class PlaceRequestController {
     }
 
     @RequestMapping(value = "/requests", params = "user", method = RequestMethod.GET)
-    public ResponseEntity getPlaceRequestsByUser(@RequestParam Long user) {
+    public ResponseEntity getPlaceRequestsByUser(@RequestParam String user) {
         List<PlaceRequest> placeRequests = placeRequestService.getPlaceRequestsByUser(user);
         return ResponseEntity.ok().body(placeRequests);
     }

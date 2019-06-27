@@ -50,18 +50,18 @@ public class PlaceController {
 
     @RequestMapping(value = "/places/{placeId}", method = RequestMethod.PUT)
     public HttpEntity<?> moveUserPlace(@PathVariable("placeId") Long id, @RequestBody Place place) {
-        Place oldPlace = placeRepository.getPlacesByUserId(place.getUserId());
+        Place oldPlace = placeRepository.getPlacesByUsername(place.getUsername());
         Place newPlace = placeRepository.getPlaceById(id);
         if (oldPlace == null) {
             return new ResponseEntity<>("Old place can't be found", HttpStatus.BAD_REQUEST);
         }
         if (newPlace == null) {
             return new ResponseEntity<>("New place can't be found", HttpStatus.BAD_REQUEST);
-        } else if (newPlace.getUserId() != null) {
+        } else if (newPlace.getUsername() != null) {
             return new ResponseEntity<>("Place is busy", HttpStatus.CONFLICT);
         } else {
-            oldPlace.setUserId(null);
-            newPlace.setUserId(place.getUserId());
+            oldPlace.setUsername(null);
+            newPlace.setUsername(place.getUsername());
             placeRepository.save(oldPlace);
             placeRepository.saveAndFlush(newPlace);
             return new ResponseEntity<>("Success", HttpStatus.OK);

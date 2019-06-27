@@ -26,7 +26,7 @@ public class PlaceRequest implements Identifiable {
     private java.sql.Timestamp reviewedAt;
 
     @Column(name = "user")
-    private Long userId;
+    private String username;
 
     @Column(name = "reviewed_by")
     private Long managerId;
@@ -36,12 +36,12 @@ public class PlaceRequest implements Identifiable {
     public PlaceRequest() {
     }
 
-    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Place place, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
+    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Place place, Boolean approved, java.sql.Timestamp reviewedAt, String username, Long managerId) {
         this.id = id;
         this.dateOf = dateOf;
         this.approved = approved;
         this.reviewedAt = reviewedAt;
-        this.userId = userId;
+        this.username = username;
         this.managerId = managerId;
         this.place = place;
     }
@@ -90,12 +90,12 @@ public class PlaceRequest implements Identifiable {
         this.reviewedAt = reviewedAt;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getManagerId() {

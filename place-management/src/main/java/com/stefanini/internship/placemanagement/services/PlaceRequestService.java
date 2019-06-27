@@ -33,8 +33,8 @@ public class PlaceRequestService {
     }
 
     @PostFilter("@AuthorizationService.hasPermissionForPlaceRequest(filterObject, 'read')")
-    public List<PlaceRequest> getPlaceRequestsByUser(Long user) {
-        List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByUserId(user);
+    public List<PlaceRequest> getPlaceRequestsByUser(String user) {
+        List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByUsername(user);
         if (placeRequests.isEmpty()) {
             throw new ResourceNotFoundException("The user with id = " + user + " has no place requests");
         }
@@ -54,12 +54,12 @@ public class PlaceRequestService {
 
     //Todo Authorize for creating a place request
     public PlaceRequest createPlaceRequest(Long placeId) {
-        Long userId = 3L;
+        Long Username = 3L;
         PlaceRequest placeRequest = new PlaceRequest();
-        User user = userRepository.getUserById(userId);
+        User user = userRepository.getUserById(Username);
         logger.info("User created request");
         if (user == null) {
-            RuntimeException exception = new ResourceNotFoundException("User with id = " + userId + " doesn't exists");
+            RuntimeException exception = new ResourceNotFoundException("User with id = " + Username + " doesn't exists");
             logger.info("User not found", exception);
             throw exception;
         }
@@ -69,17 +69,17 @@ public class PlaceRequestService {
             logger.info("Place not found", exception);
             throw exception;
         }
-        placeRequest.setUserId(user.getId());
+        placeRequest.setUsername(user.getUsername());
         placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
         placeRequest.setManagerId(user.getManagerId());
-        if (placeRequest.getUserId().equals(place.getUserId())) {
-            throw new DuplicateResourceException("The user with id = " + userId + "is already on the place with id = " + placeId);
+        if (placeRequest.getUsername().equals(place.getUsername())) {
+            throw new DuplicateResourceException("The user with id = " + Username + " is already on the place with id = " + placeId);
         }
-        if (place.getUserId() != null) {
+        if (place.getUsername() != null) {
             throw new DuplicateResourceException("The place with id = " + placeId + " is occupied by another user");
         }
-        PlaceRequest identicalPlaceRequest = placeRequestRepository.getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(placeId, placeRequest.getUserId(), placeRequest.getReviewedAt());
+        PlaceRequest identicalPlaceRequest = placeRequestRepository.getPlaceRequestByPlaceIdAndUsernameAndReviewedAt(placeId, placeRequest.getUsername(), placeRequest.getReviewedAt());
         if (identicalPlaceRequest != null) {
             if (identicalPlaceRequest.getApproved() == null) {
                 throw new DuplicateResourceException("such place request is pending");
@@ -110,14 +110,14 @@ public class PlaceRequestService {
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         PlaceRequestErrorHandler(updatedPlaceRequest);
         Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlace().getId());
-        Place oldPlace = placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId());
+        Place oldPlace = placeRepository.getPlaceByUsername(updatedPlaceRequest.getUsername());
         if (oldPlace != null)
-            oldPlace.setUserId(null);
+            oldPlace.setUsername(null);
         updatedPlaceRequest.setApproved(true);
         updatedPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
-        placeById.setUserId(updatedPlaceRequest.getUserId());
+        placeById.setUsername(updatedPlaceRequest.getUsername());
         declineAllPlaceRequestsIfPlaceAccepted(updatedPlaceRequest.getPlace().getId());
-        declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUserId());
+        declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUsername());
         placeRepository.save(placeById);
         return updatedPlaceRequest;
     }
@@ -142,10 +142,10 @@ public class PlaceRequestService {
         }
     }
 
-    private void declineAllPlaceRequestsIfUserWasAcceptedOnPlace(Long userId) {
+    private void declineAllPlaceRequestsIfUserWasAcceptedOnPlace(String Username) {
         List<PlaceRequest> placeRequests = placeRequestRepository.findAll();
         for (PlaceRequest placeRequest : placeRequests) {
-            if (placeRequest.getUserId().equals(userId) && placeRequest.getApproved() == null) {
+            if (placeRequest.getUsername().equals(Username) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
                 placeRequestRepository.save(placeRequest);

@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.stefanini.internship</groupId>
-	<artifactId>userId-management</artifactId>
+	<artifactId>username-management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>userId-management</name>
+	<name>username-management</name>
 
 	<properties>
 		<java.version>1.8</java.version>

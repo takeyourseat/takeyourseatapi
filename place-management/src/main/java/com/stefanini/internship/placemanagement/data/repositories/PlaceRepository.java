@@ -12,7 +12,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     Place getPlaceById(Long placeId);
 
-    Place getPlaceByUserId(Long userId);
+    Place getPlaceByUsername(String username);
 
-    Place getPlacesByUserId(Long userId);
+    Place getPlacesByUsername(String username);
 }
