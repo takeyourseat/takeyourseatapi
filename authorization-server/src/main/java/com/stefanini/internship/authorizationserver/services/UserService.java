@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    public User getUserManager(Long userId){
+        public User getUserManager(String userId){
         return new User(3L,"manager",null, true);
     }
 }
