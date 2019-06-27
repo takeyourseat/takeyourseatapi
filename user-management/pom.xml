@@ -123,6 +123,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<finalName>user-management</finalName>
 				</configuration>
@@ -143,6 +150,10 @@
 						<image>
 							<name>${docker.image.prefix}/${docker.image.name}</name>
 							<build>
+								<entryPoint>
+									java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -cp '/maven/*' com.stefanini.internship.usermanagement.UserManagementApplication
+								</entryPoint>
+
 								<dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
 
 								<!--copies artficact to docker build dir in target-->
