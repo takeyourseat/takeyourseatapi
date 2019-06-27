@@ -1,23 +1,24 @@
 package com.stefanini.internship.authorizationserver.dto;
-import com.sun.istack.NotNull;
 
-public class PlaceRequest  {
-
+public class PlaceRequest{
     private Long id;
-    private java.sql.Timestamp dateOf;
-    private Long placeId;
-    private Long userId;
+
+    private Boolean approved;
+
+    private String username;
+
+    private String reviewedBy;
 
     //region 2 Constructors
 
     public PlaceRequest() {
     }
 
-    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Long placeId, Long userId) {
+    public PlaceRequest(Long id, Boolean approved, String username, String reviewedBy) {
         this.id = id;
-        this.dateOf = dateOf;
-        this.userId = userId;
-        this.placeId = placeId;
+        this.approved = approved;
+        this.username = username;
+        this.reviewedBy = reviewedBy;
     }
 
     //endregion
@@ -33,31 +34,33 @@ public class PlaceRequest  {
         return this;
     }
 
-    public java.sql.Timestamp getDateOf() {
-        return dateOf;
+    public Boolean getApproved() {
+        return approved;
     }
 
-    public PlaceRequest setDateOf(java.sql.Timestamp dateOf) {
-        this.dateOf = dateOf;
+    public PlaceRequest setApproved(Boolean approved) {
+        this.approved = approved;
         return this;
     }
 
-    public Long getPlaceId() {
-        return placeId;
+    public String getUsername() {
+        return username;
     }
 
-    public PlaceRequest setPlaceId(Long placeId) {
-        this.placeId = placeId;
+    public PlaceRequest setUsername(String username) {
+        this.username = username;
         return this;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getReviewedBy() {
+        return reviewedBy;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public PlaceRequest setReviewedBy(String reviewedBy) {
+        this.reviewedBy = reviewedBy;
+        return this;
     }
+
 
     //endregion
 }
