@@ -25,9 +25,9 @@ public class PlaceRequestController {
         return ResponseEntity.ok().body(placeRequests);
     }
 
-    @RequestMapping(value = "/requests", method = RequestMethod.GET)
-    public ResponseEntity getPendingPlaceRequests() {
-        List<PlaceRequest> placeRequests = placeRequestService.getPlaceRequestsByManager();
+    @RequestMapping(value = "/requests", params = "reviewer", method = RequestMethod.GET)
+    public ResponseEntity getPendingPlaceRequests(@RequestParam String reviewer) {
+        List<PlaceRequest> placeRequests = placeRequestService.getPlaceRequestsByManager(reviewer);
         return ResponseEntity.ok().body(placeRequests);
     }
 

@@ -43,8 +43,8 @@ public class PlaceRequestService {
     }
 
     @PostFilter("@AuthorizationService.hasPermissionForPlaceRequest(filterObject, 'approve')")
-    public List<PlaceRequest> getPlaceRequestsByManager() {
-        List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByApprovedIsNull();
+    public List<PlaceRequest> getPlaceRequestsByManager(String reviewer) {
+        List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByReviewerAndApprovedIsNull(reviewer);
         if (placeRequests.isEmpty()) {
             RuntimeException exception = new ResourceNotFoundException("There are no pending place requests");
             logger.info("There are no pending place requests", exception);

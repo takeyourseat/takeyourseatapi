@@ -16,6 +16,6 @@ public interface PlaceRequestRepository extends JpaRepository<PlaceRequest, Long
 
     List<PlaceRequest> getPlaceRequestsByUsername(String username);
 
-    List<PlaceRequest> getPlaceRequestsByApprovedIsNull();
+    List<PlaceRequest> getPlaceRequestsByReviewerAndApprovedIsNull(String reviewer);
 
 }
