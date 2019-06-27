@@ -2,7 +2,6 @@ package com.stefanini.internship.placemanagement.controller;
 
 import com.stefanini.internship.placemanagement.data.entities.PlaceRequest;
 import com.stefanini.internship.placemanagement.services.PlaceRequestService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +12,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class PlaceRequestController {
-    @Autowired
+    private final
     PlaceRequestService placeRequestService;
+
+    public PlaceRequestController(PlaceRequestService placeRequestService) {
+        this.placeRequestService = placeRequestService;
+    }
 
     @RequestMapping(value = "/requests", params = "user", method = RequestMethod.GET)
     public ResponseEntity getPlaceRequestsByUser(@RequestParam Long user) {
@@ -23,7 +26,7 @@ public class PlaceRequestController {
     }
 
     @RequestMapping(value = "/requests", method = RequestMethod.GET)
-    public ResponseEntity getPlaceRequestsByManager() {
+    public ResponseEntity getPendingPlaceRequests() {
         List<PlaceRequest> placeRequests = placeRequestService.getPlaceRequestsByManager();
         return ResponseEntity.ok().body(placeRequests);
     }
