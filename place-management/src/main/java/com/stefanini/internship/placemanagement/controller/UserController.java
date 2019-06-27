@@ -20,9 +20,9 @@ public class UserController {
     }
 
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity getUserById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUserById(id));
+    @GetMapping("/users/{username}")
+    public ResponseEntity getUserById(@PathVariable String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUserByUsername(username));
     }
 
     @RequestMapping(value = "/users", params = "managerId", method = RequestMethod.GET)
