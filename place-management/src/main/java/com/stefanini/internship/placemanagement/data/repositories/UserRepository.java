@@ -10,5 +10,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User getUserById(Long id);
 
+    User getUserByUsername(String username);
     List<User> getUsersByManagerUsername(String managerUsername);
 }

@@ -11,6 +11,7 @@ import com.stefanini.internship.placemanagement.exception.ResourceNotFoundExcept
 import org.apache.log4j.Logger;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +37,7 @@ public class PlaceRequestService {
     public List<PlaceRequest> getPlaceRequestsByUser(String user) {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByUsername(user);
         if (placeRequests.isEmpty()) {
-            throw new ResourceNotFoundException("The user with id = " + user + " has no place requests");
+            throw new ResourceNotFoundException("The user with username = " + user + " has no place requests");
         }
         return placeRequests;
     }
@@ -54,12 +55,12 @@ public class PlaceRequestService {
 
     //Todo Authorize for creating a place request
     public PlaceRequest createPlaceRequest(Long placeId) {
-        Long Username = 3L;
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         PlaceRequest placeRequest = new PlaceRequest();
-        User user = userRepository.getUserById(Username);
+        User user = userRepository.getUserByUsername(username);
         logger.info("User created request");
         if (user == null) {
-            RuntimeException exception = new ResourceNotFoundException("User with id = " + Username + " doesn't exists");
+            RuntimeException exception = new ResourceNotFoundException("User with username = " + username + " doesn't exists");
             logger.info("User not found", exception);
             throw exception;
         }
@@ -69,12 +70,11 @@ public class PlaceRequestService {
             logger.info("Place not found", exception);
             throw exception;
         }
-        placeRequest.setUsername(user.getUsername());
+        placeRequest.setUsername(username);
         placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
-        placeRequest.setManagerUsername(user.getManagerUsername());
         if (placeRequest.getUsername().equals(place.getUsername())) {
-            throw new DuplicateResourceException("The user with id = " + Username + " is already on the place with id = " + placeId);
+            throw new DuplicateResourceException("The user with username = " + username + " is already on the place with id = " + placeId);
         }
         if (place.getUsername() != null) {
             throw new DuplicateResourceException("The place with id = " + placeId + " is occupied by another user");
@@ -95,17 +95,20 @@ public class PlaceRequestService {
     @Transactional
     @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest declinePlaceRequest(Long id) {
-        logger.info(String.format("Manager tries to decline place request with id %d", id));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.info(String.format("Manager with username %s tries to decline place request with id %d", username, id));
         PlaceRequest newPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         PlaceRequestErrorHandler(newPlaceRequest);
         newPlaceRequest.setApproved(false);
         newPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
+        newPlaceRequest.setReviewedBy(username);
         return newPlaceRequest;
     }
 
     @Transactional
     @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest acceptPlaceRequest(Long id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.info(String.format("Manager accepted place request with id %d", id));
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         PlaceRequestErrorHandler(updatedPlaceRequest);
@@ -115,9 +118,10 @@ public class PlaceRequestService {
             oldPlace.setUsername(null);
         updatedPlaceRequest.setApproved(true);
         updatedPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
+        updatedPlaceRequest.setReviewedBy(username);
         placeById.setUsername(updatedPlaceRequest.getUsername());
-        declineAllPlaceRequestsIfPlaceAccepted(updatedPlaceRequest.getPlace().getId());
-        declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUsername());
+        declineAllPlaceRequestsIfPlaceAccepted(updatedPlaceRequest.getPlace().getId(), username);
+        declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUsername(), username);
         placeRepository.save(placeById);
         return updatedPlaceRequest;
     }
@@ -131,23 +135,25 @@ public class PlaceRequestService {
         }
     }
 
-    private void declineAllPlaceRequestsIfPlaceAccepted(Long placeId) {
+    private void declineAllPlaceRequestsIfPlaceAccepted(Long placeId, String username) {
         List<PlaceRequest> placeRequests = placeRequestRepository.findAll();
         for (PlaceRequest placeRequest : placeRequests) {
             if (placeRequest.getPlace().getId().equals(placeId) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
+                placeRequest.setReviewedBy(username);
                 placeRequestRepository.save(placeRequest);
             }
         }
     }
 
-    private void declineAllPlaceRequestsIfUserWasAcceptedOnPlace(String Username) {
+    private void declineAllPlaceRequestsIfUserWasAcceptedOnPlace(String username, String managerUsername) {
         List<PlaceRequest> placeRequests = placeRequestRepository.findAll();
         for (PlaceRequest placeRequest : placeRequests) {
-            if (placeRequest.getUsername().equals(Username) && placeRequest.getApproved() == null) {
+            if (placeRequest.getUsername().equals(username) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
+                placeRequest.setReviewedBy(managerUsername);
                 placeRequestRepository.save(placeRequest);
             }
         }
