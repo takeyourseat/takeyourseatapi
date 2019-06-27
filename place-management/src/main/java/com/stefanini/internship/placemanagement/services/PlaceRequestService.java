@@ -110,8 +110,9 @@ public class PlaceRequestService {
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         PlaceRequestErrorHandler(updatedPlaceRequest);
         Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlace().getId());
-        if (placeById.getUserId() != null)
-            placeById.setUserId(null);
+        Place oldPlace = placeRepository.getPlaceByUserId(updatedPlaceRequest.getUserId());
+        if (oldPlace != null)
+            oldPlace.setUserId(null);
         updatedPlaceRequest.setApproved(true);
         updatedPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
         placeById.setUserId(updatedPlaceRequest.getUserId());
