@@ -73,6 +73,7 @@ public class PlaceRequestService {
         placeRequest.setUsername(username);
         placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
+        placeRequest.setReviewer(user.getManagerUsername());
         if (placeRequest.getUsername().equals(place.getUsername())) {
             throw new DuplicateResourceException("The user with username = " + username + " is already on the place with id = " + placeId);
         }
@@ -95,20 +96,17 @@ public class PlaceRequestService {
     @Transactional
     @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest declinePlaceRequest(Long id) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.info(String.format("Manager with username %s tries to decline place request with id %d", username, id));
+        logger.info(String.format("Manager tries to decline place request with id %d", id));
         PlaceRequest newPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         PlaceRequestErrorHandler(newPlaceRequest);
         newPlaceRequest.setApproved(false);
         newPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
-        newPlaceRequest.setReviewedBy(username);
         return newPlaceRequest;
     }
 
     @Transactional
     @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest acceptPlaceRequest(Long id) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.info(String.format("Manager accepted place request with id %d", id));
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         PlaceRequestErrorHandler(updatedPlaceRequest);
@@ -118,10 +116,9 @@ public class PlaceRequestService {
             oldPlace.setUsername(null);
         updatedPlaceRequest.setApproved(true);
         updatedPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
-        updatedPlaceRequest.setReviewedBy(username);
         placeById.setUsername(updatedPlaceRequest.getUsername());
-        declineAllPlaceRequestsIfPlaceAccepted(updatedPlaceRequest.getPlace().getId(), username);
-        declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUsername(), username);
+        declineAllPlaceRequestsIfPlaceAccepted(updatedPlaceRequest.getPlace().getId());
+        declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUsername());
         placeRepository.save(placeById);
         return updatedPlaceRequest;
     }
@@ -135,25 +132,23 @@ public class PlaceRequestService {
         }
     }
 
-    private void declineAllPlaceRequestsIfPlaceAccepted(Long placeId, String username) {
+    private void declineAllPlaceRequestsIfPlaceAccepted(Long placeId) {
         List<PlaceRequest> placeRequests = placeRequestRepository.findAll();
         for (PlaceRequest placeRequest : placeRequests) {
             if (placeRequest.getPlace().getId().equals(placeId) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
-                placeRequest.setReviewedBy(username);
                 placeRequestRepository.save(placeRequest);
             }
         }
     }
 
-    private void declineAllPlaceRequestsIfUserWasAcceptedOnPlace(String username, String managerUsername) {
+    private void declineAllPlaceRequestsIfUserWasAcceptedOnPlace(String Username) {
         List<PlaceRequest> placeRequests = placeRequestRepository.findAll();
         for (PlaceRequest placeRequest : placeRequests) {
-            if (placeRequest.getUsername().equals(username) && placeRequest.getApproved() == null) {
+            if (placeRequest.getUsername().equals(Username) && placeRequest.getApproved() == null) {
                 placeRequest.setApproved(false);
                 placeRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
-                placeRequest.setReviewedBy(managerUsername);
                 placeRequestRepository.save(placeRequest);
             }
         }
