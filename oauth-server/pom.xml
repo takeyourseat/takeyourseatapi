@@ -28,7 +28,7 @@
 		<docker.image.prefix>capostol93</docker.image.prefix>
 
 		<!--Set to name of project-->
-		<docker.image.name>eureka-server</docker.image.name>
+		<docker.image.name>oauth-server</docker.image.name>
 	</properties>
 
 	<dependencies>
@@ -141,15 +141,26 @@
 	</dependencyManagement>
 
 	<build>
+		<!-- 1. used for building Docker images in the classic way: "docker build -t example-0.0.1-SNAPSHOT . -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<finalName>oauth-server</finalName>
-				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<finalName>oauth-server</finalName>
+							<mainClass>com.stefanini.internship.oauthserver.OauthServerApplication</mainClass>
+<!--                            <outputDirectory>${project.basedir}/docker</outputDirectory>-->
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
+			<!-- 2. used for building Docker images with plugin Fabric8 way: "mvn clean install docker:build. -->
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>

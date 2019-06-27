@@ -1,5 +1,7 @@
 version: '3'
-
+# ------------------------------
+# authorization-server instances
+# ------------------------------
 services:
   mysql-authorization-server:
     image: mysql
@@ -28,4 +30,33 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
+# ------------------------------
+# oauth-server instances
+# ------------------------------
+  mysql-oauth-server:
+    image: mysql
+    restart: always
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
 
+  oauth-server:
+    #    image: oauth-server
+    build: ./oauth-server
+    ports:
+      - '8083:8083'
+    restart: always
+    depends_on:
+      -  mysql-oauth-server
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-oauth-server:3306/test'
+      SPRING_PROFILES_ACTIVE: 'mysql'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://192.168.56.112/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
