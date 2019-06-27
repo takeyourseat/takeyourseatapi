@@ -21,4 +21,4 @@
                                                              __/ |
   ______ ______ ______ ______ ______ ______ ______ ______ __|___/______ ______ ______ ______ ______ ______
  |______|______|______|______|______|______|______|______|______|______|______|______|______|______|______|
-
+:: ${AnsiColor.GREEN}The Stefanini Interns Team - ${AnsiColor.YELLOW}Takeyourseat App ::  ${AnsiStyle.BOLD}Spring Boot :: ${spring-boot.formatted-version}
