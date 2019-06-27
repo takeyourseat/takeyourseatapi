@@ -1,7 +1,6 @@
 package com.stefanini.internship.placemanagement.controller;
 
-import com.stefanini.internship.placemanagement.data.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.stefanini.internship.placemanagement.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,22 +10,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class UserController {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/users")
     public ResponseEntity getAllUsers() {
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
     }
 
-
     @GetMapping("/users/{username}")
-    public ResponseEntity getUserById(@PathVariable String username) {
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUserByUsername(username));
+    public ResponseEntity getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUsername(username));
     }
 
     @RequestMapping(value = "/users", params = "managerId", method = RequestMethod.GET)
-    public ResponseEntity getUserByManagerUsername(@RequestParam String managerUsername) {
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.getUsersByManagerUsername(managerUsername));
+    public ResponseEntity getUsersByManagerUsername(@RequestParam String managerUsername) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsersByManagerUsername(managerUsername));
     }
 }
