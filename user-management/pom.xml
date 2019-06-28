@@ -9,15 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.stefanini.internship</groupId>
-<<<<<<< HEAD
-	<artifactId>username-management</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>username-management</name>
-=======
 	<artifactId>user-management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>user-management</name>
->>>>>>> bd1baf1c6002b51f68e8ad08cf6e2c2e5539f410
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -67,7 +61,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<<<<<<< HEAD
+
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
@@ -119,8 +113,6 @@
 			<version>2.9.9</version>
 		</dependency>
 
-=======
->>>>>>> bd1baf1c6002b51f68e8ad08cf6e2c2e5539f410
 	</dependencies>
 
 	<build>
