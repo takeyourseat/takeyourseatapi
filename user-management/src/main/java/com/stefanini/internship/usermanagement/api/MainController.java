@@ -7,6 +7,7 @@ import com.stefanini.internship.usermanagement.dao.repository.RoleRepository;
 import com.stefanini.internship.usermanagement.dao.repository.UserRepository;
 import com.stefanini.internship.usermanagement.api.searchmodel.UserSearchModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,7 @@ public class MainController {
     @ResponseBody
     @CrossOrigin
     @RequestMapping("/createUser")
+    @PreAuthorize("@AuthorizationService.hasPermission('User','write')")
     public void createUser(@RequestBody User user) {
         userRepository.save(user);
     }
