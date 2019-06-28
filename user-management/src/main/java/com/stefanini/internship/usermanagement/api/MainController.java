@@ -58,4 +58,30 @@ public class MainController {
         userRepository.save(user);
     }
 
+    @ResponseBody
+    @CrossOrigin
+    @RequestMapping(value = "/getUserByUsername", params = "username")
+    public User getUserByUsername(@RequestParam String username) {
+        User user = userRepository.findUserByUsername(username);
+        return user;
+    }
+
+
+    @ResponseBody
+    @CrossOrigin
+    @RequestMapping(value = "/getUserManager", params = "username")
+    public User getUserManager(@RequestParam String username) {
+        User user = userRepository.findUserByUsername(username);
+        return user.getManager();
+    }
+
+    @ResponseBody
+    @CrossOrigin
+    @RequestMapping(value = "/getUsersByManagerUsername", params = "username")
+    public List<User> getUserByManagerUsername(@RequestParam String username) {
+        List<User> users = userRepository.findUsersByManagerUsername(username);
+        return users;
+    }
+
+
 }

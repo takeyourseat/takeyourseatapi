@@ -9,7 +9,9 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByFNameContainingOrLNameContaining(String firstArg, String secondArg);
-//    List<User> findByFNameContainingOrLNameContaining(UserSearchModel userSearchModel, UserSearchModel userSearchModel1);
+    List<User> findUsersByManagerUsername(String firstArg);
+    User findUserByUsername(String firstArg);
+
 
 
 }
