@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
 public class AuthenticationUtils {
+    public static final String AUTHENTICATION_URI = "http://localhost:8083/api/v01/";
 
     public static HttpHeaders getAuthorizationHeader(){
         HttpHeaders headers = new HttpHeaders();

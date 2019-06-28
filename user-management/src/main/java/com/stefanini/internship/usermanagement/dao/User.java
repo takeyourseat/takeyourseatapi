@@ -1,5 +1,6 @@
 package com.stefanini.internship.usermanagement.dao;
 
+import com.stefanini.internship.usermanagement.authentication.UserAuthenticationListener;
 import com.stefanini.internship.usermanagement.authorization.UserAuthorizationListener;
 import org.hibernate.annotations.NaturalId;
 
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
-@EntityListeners(UserAuthorizationListener.class)
+@EntityListeners({UserAuthorizationListener.class, UserAuthenticationListener.class})
 
 public class User {
     @Id
@@ -42,6 +43,8 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
 
+    @Transient
+    private String password;
 
     public User() {
     }
@@ -122,5 +125,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
     }
 }
