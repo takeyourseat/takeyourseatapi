@@ -26,7 +26,7 @@ services:
     volumes:
       - /var/takeyourseatapi_dev/authorization-server:/var/takeyourseatapi_dev/authorization-server
     restart: always
-    depends_on:authorization-server
+    depends_on:
       -  mysql-authorization-server
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-authorization-server:3306/test'
