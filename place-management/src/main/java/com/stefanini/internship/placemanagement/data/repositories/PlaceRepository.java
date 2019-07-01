@@ -9,5 +9,10 @@ import java.util.List;
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long> {
     List<Place> getPlacesByOfficeId(Long officeId);
+
     Place getPlaceById(Long placeId);
+
+    Place getPlaceByUserId(Long userId);
+
+    Place getPlacesByUserId(Long userId);
 }

@@ -1,32 +1,32 @@
 package com.stefanini.internship.placemanagement.data.entities;
 
+import javax.persistence.*;
 import com.stefanini.internship.placemanagement.data.Identifiable;
 
-public class User implements Identifiable {
-
+@Entity
+@Table(name = "users")
+public class User implements Identifiable{
+    @Id
+    @GeneratedValue
     private Long id;
 
-    private String password;
-
-    private String email;
-
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "firstname")
     private String firstName;
 
+    @Column(name = "lastname")
     private String lastName;
 
+    @Column(name = "jobtitle")
     private String jobTitle;
 
+    @Column(name = "profileimage")
     private String profileImage;
 
-    private boolean enabled;
-
-    private boolean accountNonExpired;
-
-    private boolean credentialsNonExpired;
-
-    private boolean accountNonLocked;
+    @Column(name = "managerid")
+    private Long managerId;
 
     //region Getters and Setters
 
@@ -45,24 +45,6 @@ public class User implements Identifiable {
 
     public User setUsername(String username) {
         this.username = username;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public User setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public User setEmail(String email) {
-        this.email = email;
         return this;
     }
 
@@ -102,42 +84,14 @@ public class User implements Identifiable {
         return this;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public Long getManagerId() {
+        return managerId;
     }
 
-    public User setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public User setManagerId(Long managerId) {
+        this.managerId = managerId;
         return this;
     }
-
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public User setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-        return this;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public User setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-        return this;
-    }
-
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public User setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-        return this;
-    }
-
     //endregion
 
     //region 2 Constructors
@@ -145,21 +99,15 @@ public class User implements Identifiable {
     public User() {
     }
 
-    public User(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked) {
+    public User(Long id, String username, String firstName, String lastName, String jobTitle, String profileImage, Long managerId) {
         this.id = id;
-        this.password = password;
-        this.email = email;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.jobTitle = jobTitle;
         this.profileImage = profileImage;
-        this.enabled = enabled;
-        this.accountNonExpired = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
+        this.managerId = managerId;
     }
-
     //endregion
 
 }
