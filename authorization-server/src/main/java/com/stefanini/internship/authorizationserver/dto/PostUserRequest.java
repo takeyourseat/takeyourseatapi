@@ -10,8 +10,8 @@ public class PostUserRequest {
     private String password;
     private String email;
     private String username;
-    private String firstName;
-    private String lastName;
+    private String fName;
+    private String lName;
     private String jobTitle;
     private String profileImage;
     private PostUserRequest manager;
@@ -59,21 +59,21 @@ public class PostUserRequest {
         return this;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getfName() {
+        return fName;
     }
 
-    public PostUserRequest setFirstName(String firstName) {
-        this.firstName = firstName;
+    public PostUserRequest setfName(String fName) {
+        this.fName = fName;
         return this;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getlName() {
+        return lName;
     }
 
-    public PostUserRequest setLastName(String lastName) {
-        this.lastName = lastName;
+    public PostUserRequest setlName(String lName) {
+        this.lName = lName;
         return this;
     }
 
@@ -160,8 +160,8 @@ public class PostUserRequest {
         this.password = password;
         this.email = email;
         this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fName = firstName;
+        this.lName = lastName;
         this.jobTitle = jobTitle;
         this.profileImage = profileImage;
         this.manager = manager;
