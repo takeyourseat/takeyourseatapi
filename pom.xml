@@ -16,4 +16,5 @@
 		<module>authorization-server</module>
 	</modules>
 
+<!--	Test autohook-->
 </project>
