@@ -39,7 +39,7 @@ public class AuthorizationUsersService {
 
         String role = "null";
         if (user.getRole() != null) {
-            Role userRole = roleRepository.findByName(user.getRole().getName());
+            Role userRole = roleRepository.findByNameIgnoreCase(user.getRole().getName());
             if(userRole == null)
                 throw new ResourceNotFoundException("User's role could not be found");
 
