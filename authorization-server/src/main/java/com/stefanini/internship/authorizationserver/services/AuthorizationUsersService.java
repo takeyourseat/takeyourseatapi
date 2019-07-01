@@ -5,6 +5,7 @@ import com.stefanini.internship.authorizationserver.dao.repositories.RoleReposit
 import com.stefanini.internship.authorizationserver.dao.repositories.UserRepository;
 import com.stefanini.internship.authorizationserver.dto.PostUserRequest;
 import com.stefanini.internship.authorizationserver.exceptions.DuplicateUserException;
+import com.stefanini.internship.authorizationserver.exceptions.ResourceNotFoundException;
 import org.apache.log4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,15 +37,21 @@ public class AuthorizationUsersService {
             throw exception;
         }
 
+        String role = "null";
         if (user.getRole() != null) {
             Role userRole = roleRepository.findByName(user.getRole().getName());
+            if(userRole == null)
+                throw new ResourceNotFoundException("User's role could not be found");
+
             user.setRole(userRole);
+            role = userRole.getName();
+
         }
 
         User userSid = new User(user.getId(), user.getUsername(), user.getRole(), true);
-        logger.debug(String.format("User %s attempts to save user %s with role = '%s')",authenticatedUserName, user.getUsername(), user.getRole().getName()));
+        logger.debug(String.format("User %s attempts to save user %s with role = '%s')",authenticatedUserName, user.getUsername(), role));
         userRepository.save(userSid);
-        logger.info(String.format("User %s creates save %s with role = '%s')",authenticatedUserName, user.getUsername(), user.getRole().getName()));
+        logger.info(String.format("User %s creates save %s with role = '%s')",authenticatedUserName, user.getUsername(), role));
     }
 
 
