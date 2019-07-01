@@ -17,7 +17,7 @@ public class User implements Identifiable {
 
     private String profileImage;
 
-    private String managerUsername;
+    private User manager;
 
     //region Getters and Setters
 
@@ -75,14 +75,16 @@ public class User implements Identifiable {
         return this;
     }
 
-    public String getManagerUsername() {
-        return managerUsername;
+    public User getManager() {
+        return manager;
     }
 
-    public User setManagerUsername(String managerUsername) {
-        this.managerUsername = managerUsername;
+    public User setManager(User manager) {
+        this.manager = manager;
         return this;
     }
+
+
     //endregion
 
     //region 2 Constructors
@@ -90,14 +92,15 @@ public class User implements Identifiable {
     public User() {
     }
 
-    public User(Long id, String username, String firstName, String lastName, String jobTitle, String profileImage, String managerUsername) {
+    public User(Long id, String username, String firstName, String lastName, String jobTitle, String profileImage, User manager) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.jobTitle = jobTitle;
         this.profileImage = profileImage;
-        this.managerUsername = managerUsername;
+        this.manager = manager;
     }
+
     //endregion
 }
