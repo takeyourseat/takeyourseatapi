@@ -1,28 +1,53 @@
 package com.stefanini.internship.placemanagement.services;
 
-import com.stefanini.internship.placemanagement.data.entities.User;
-import com.stefanini.internship.placemanagement.data.repositories.UserRepository;
+import com.stefanini.internship.placemanagement.authorization.AuthorizationUtils;
+import com.stefanini.internship.placemanagement.data.dto.User;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public static final String USER_SERVICE_URL = "http://localhost:8085/";
+
+    private final RestTemplate restTemplate;
+
+    public UserService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        HttpHeaders oAuthToken = AuthorizationUtils.getAuthorizationHeader();
+
+        HttpEntity<Void> request = new HttpEntity<>(oAuthToken);
+
+        ResponseEntity response = restTemplate.exchange(USER_SERVICE_URL + "getUsers", HttpMethod.GET, request, List.class);
+        return (List<User>) response.getBody();
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username);
+        HttpHeaders oAuthToken = AuthorizationUtils.getAuthorizationHeader();
+
+        HttpEntity<Void> request = new HttpEntity<>(oAuthToken);
+
+        ResponseEntity<User> response = restTemplate.exchange(USER_SERVICE_URL + "getUserByUsername?username=" + username, HttpMethod.GET, request, User.class);
+
+        return response.getBody();
     }
 
     public List<User> getUsersByManagerUsername(String managerUsername) {
-        return userRepository.getUsersByManagerUsername(managerUsername);
+        HttpHeaders oAuthToken = AuthorizationUtils.getAuthorizationHeader();
+
+        HttpEntity<Void> request = new HttpEntity<>(oAuthToken);
+
+        ResponseEntity response = restTemplate.exchange(USER_SERVICE_URL + "getUsersByManagerUsername?username=" + managerUsername, HttpMethod.GET, request, List.class);
+
+        return (List<User>) response.getBody();
     }
 }

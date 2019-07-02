@@ -2,10 +2,9 @@ package com.stefanini.internship.placemanagement.services;
 
 import com.stefanini.internship.placemanagement.data.entities.Place;
 import com.stefanini.internship.placemanagement.data.entities.PlaceRequest;
-import com.stefanini.internship.placemanagement.data.entities.User;
+import com.stefanini.internship.placemanagement.data.dto.User;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRequestRepository;
-import com.stefanini.internship.placemanagement.data.repositories.UserRepository;
 import com.stefanini.internship.placemanagement.exception.DuplicateResourceException;
 import com.stefanini.internship.placemanagement.exception.ResourceNotFoundException;
 import org.apache.log4j.Logger;
@@ -25,12 +24,12 @@ public class PlaceRequestService {
 
     private PlaceRequestRepository placeRequestRepository;
     private PlaceRepository placeRepository;
-    private UserRepository userRepository;
+    private UserService userService;
 
-    public PlaceRequestService(PlaceRequestRepository placeRequestRepository, PlaceRepository placeRepository, UserRepository userRepository) {
+    public PlaceRequestService(PlaceRequestRepository placeRequestRepository, PlaceRepository placeRepository, UserService userService) {
         this.placeRequestRepository = placeRequestRepository;
         this.placeRepository = placeRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @PostFilter("@AuthorizationService.hasPermissionForPlaceRequest(filterObject, 'read')")
@@ -57,7 +56,7 @@ public class PlaceRequestService {
     public PlaceRequest createPlaceRequest(Long placeId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         PlaceRequest placeRequest = new PlaceRequest();
-        User user = userRepository.getUserByUsername(username);
+        User user = userService.getUserByUsername(username);
         logger.info("User created request");
         if (user == null) {
             RuntimeException exception = new ResourceNotFoundException("User with username = " + username + " doesn't exists");
@@ -73,7 +72,7 @@ public class PlaceRequestService {
         placeRequest.setUsername(username);
         placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
-        placeRequest.setReviewer(user.getManagerUsername());
+        placeRequest.setReviewer(user.getManager().getUsername());
         if (placeRequest.getUsername().equals(place.getUsername())) {
             throw new DuplicateResourceException("The user with username = " + username + " is already on the place with id = " + placeId);
         }

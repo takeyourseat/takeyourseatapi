@@ -9,15 +9,4 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 public class AuthorizationUtils {
     public static final String AUTHORIZATION_API = "http://localhost:8086/api/v01/";
 
-    public static HttpHeaders getAuthorizationHeader(){
-        HttpHeaders headers = new HttpHeaders();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth instanceof OAuth2Authentication){
-            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) auth.getDetails();
-            String accessToken = details.getTokenValue();
-            headers.setBearerAuth(accessToken);
-        }
-        return headers;
-    }
-
 }

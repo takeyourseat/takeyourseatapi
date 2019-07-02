@@ -1,32 +1,23 @@
-package com.stefanini.internship.placemanagement.data.entities;
+package com.stefanini.internship.placemanagement.data.dto;
 
-import javax.persistence.*;
 import com.stefanini.internship.placemanagement.data.Identifiable;
 
-@Entity
-@Table(name = "users")
-public class User implements Identifiable{
-    @Id
-    @GeneratedValue
+
+public class User implements Identifiable {
+
     private Long id;
 
-    @Column(name = "username")
     private String username;
 
-    @Column(name = "firstname")
     private String firstName;
 
-    @Column(name = "lastname")
     private String lastName;
 
-    @Column(name = "jobtitle")
     private String jobTitle;
 
-    @Column(name = "profileimage")
     private String profileImage;
 
-    @Column(name = "manager_username")
-    private String managerUsername;
+    private User manager;
 
     //region Getters and Setters
 
@@ -84,14 +75,16 @@ public class User implements Identifiable{
         return this;
     }
 
-    public String getManagerUsername() {
-        return managerUsername;
+    public User getManager() {
+        return manager;
     }
 
-    public User setManagerUsername(String managerUsername) {
-        this.managerUsername = managerUsername;
+    public User setManager(User manager) {
+        this.manager = manager;
         return this;
     }
+
+
     //endregion
 
     //region 2 Constructors
@@ -99,15 +92,15 @@ public class User implements Identifiable{
     public User() {
     }
 
-    public User(Long id, String username, String firstName, String lastName, String jobTitle, String profileImage, String managerUsername) {
+    public User(Long id, String username, String firstName, String lastName, String jobTitle, String profileImage, User manager) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.jobTitle = jobTitle;
         this.profileImage = profileImage;
-        this.managerUsername = managerUsername;
+        this.manager = manager;
     }
-    //endregion
 
+    //endregion
 }
