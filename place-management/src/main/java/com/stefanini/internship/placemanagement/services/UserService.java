@@ -27,7 +27,7 @@ public class UserService {
 
         HttpEntity<Void> request = new HttpEntity<>(oAuthToken);
 
-        ResponseEntity response = restTemplate.exchange(USER_SERVICE_URL + "getUsers", HttpMethod.GET, request, List.class);
+        ResponseEntity response = restTemplate.exchange(USER_SERVICE_URL + "users", HttpMethod.GET, request, List.class);
         return (List<User>) response.getBody();
     }
 
@@ -36,17 +36,17 @@ public class UserService {
 
         HttpEntity<Void> request = new HttpEntity<>(oAuthToken);
 
-        ResponseEntity<User> response = restTemplate.exchange(USER_SERVICE_URL + "getUserByUsername?username=" + username, HttpMethod.GET, request, User.class);
+        ResponseEntity<User> response = restTemplate.exchange(USER_SERVICE_URL + "users/{username}", HttpMethod.GET, request, User.class, username);
 
         return response.getBody();
     }
 
-    public List<User> getUsersByManagerUsername(String managerUsername) {
+    public List<User> getUsersByManagerUsername(String manager) {
         HttpHeaders oAuthToken = AuthorizationUtils.getAuthorizationHeader();
 
         HttpEntity<Void> request = new HttpEntity<>(oAuthToken);
 
-        ResponseEntity response = restTemplate.exchange(USER_SERVICE_URL + "getUsersByManagerUsername?username=" + managerUsername, HttpMethod.GET, request, List.class);
+        ResponseEntity response = restTemplate.exchange(USER_SERVICE_URL + "users?manager=" + manager, HttpMethod.GET, request, List.class);
 
         return (List<User>) response.getBody();
     }
