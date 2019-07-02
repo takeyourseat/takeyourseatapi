@@ -25,18 +25,18 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping(value = "/users/{searchArgument}/info", method = RequestMethod.POST)
-    public List<User> getOneUser(@RequestBody UserSearchModel userSearchModel, @PathVariable String searchArgument) {
+    @RequestMapping(value = "/users", params = "searchArgument", method = RequestMethod.GET)
+    public List<User> getOneUser(@RequestParam("searchArgument")String searchArgument) {
         List<User> user = userRepository.findByFNameContainingOrLNameContaining(
-                userSearchModel.getSearchArgument(),
-                userSearchModel.getSearchArgument()
+                searchArgument,
+                searchArgument
         );
         return user;
     }
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping(value = "/users/getUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public List<User> getUsers() {
         List<User> users = userRepository.findAll();
         return users;
@@ -44,7 +44,7 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping("/users/getRoles")
+    @RequestMapping(value = "/roles", method = RequestMethod.GET)
     public List<Role> getRoles() {
         List<Role> roles = roleRepository.findAll();
         return roles;
@@ -52,7 +52,7 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping(value = "/users/createUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
     @PreAuthorize("@AuthorizationService.hasPermission('User','write')")
     public void createUser(@RequestBody User user) {
         userRepository.save(user);
@@ -77,8 +77,8 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping(value = "/users/{managerUsername}/list", method = RequestMethod.GET)
-    public List<User> getUserByManagerUsername(@PathVariable("managerUsername")String managerUsername) {
+    @RequestMapping(value = "/users", params = "manager", method = RequestMethod.GET)
+    public List<User> getUsersByManagerUsername(@RequestParam("manager")String managerUsername) {
         List<User> users = userRepository.findUsersByManagerUsername(managerUsername);
         return users;
     }
