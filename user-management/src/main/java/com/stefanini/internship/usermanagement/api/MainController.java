@@ -25,8 +25,8 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping("/getOneUser")
-    public List<User> getOneUser(@RequestBody UserSearchModel userSearchModel) {
+    @RequestMapping(value = "/users/{searchArgument}/info", method = RequestMethod.POST)
+    public List<User> getOneUser(@RequestBody UserSearchModel userSearchModel, @PathVariable String searchArgument) {
         List<User> user = userRepository.findByFNameContainingOrLNameContaining(
                 userSearchModel.getSearchArgument(),
                 userSearchModel.getSearchArgument()
@@ -36,7 +36,7 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping("/getUsers")
+    @RequestMapping(value = "/users/getUsers", method = RequestMethod.GET)
     public List<User> getUsers() {
         List<User> users = userRepository.findAll();
         return users;
@@ -44,7 +44,7 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping("/getRoles")
+    @RequestMapping("/users/getRoles")
     public List<Role> getRoles() {
         List<Role> roles = roleRepository.findAll();
         return roles;
@@ -52,7 +52,7 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping("/createUser")
+    @RequestMapping(value = "/users/createUser", method = RequestMethod.POST)
     @PreAuthorize("@AuthorizationService.hasPermission('User','write')")
     public void createUser(@RequestBody User user) {
         userRepository.save(user);
@@ -60,8 +60,8 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping(value = "/getUserByUsername", params = "username")
-    public User getUserByUsername(@RequestParam String username) {
+    @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
+    public User getUserByUsername(@PathVariable("username") String username) {
         User user = userRepository.findUserByUsername(username);
         return user;
     }
@@ -69,19 +69,18 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping(value = "/getUserManager", params = "username")
-    public User getUserManager(@RequestParam String username) {
+    @RequestMapping(value = "/users/{username}/manager", method = RequestMethod.GET)
+    public User getUserManager(@PathVariable("username") String username) {
         User user = userRepository.findUserByUsername(username);
         return user.getManager();
     }
 
     @ResponseBody
     @CrossOrigin
-    @RequestMapping(value = "/getUsersByManagerUsername", params = "username")
-    public List<User> getUserByManagerUsername(@RequestParam String username) {
-        List<User> users = userRepository.findUsersByManagerUsername(username);
+    @RequestMapping(value = "/users/{managerUsername}/list", method = RequestMethod.GET)
+    public List<User> getUserByManagerUsername(@PathVariable("managerUsername")String managerUsername) {
+        List<User> users = userRepository.findUsersByManagerUsername(managerUsername);
         return users;
     }
-
 
 }
