@@ -12,7 +12,7 @@ import java.util.List;
 public interface PlaceRequestRepository extends JpaRepository<PlaceRequest, Long> {
     PlaceRequest getPlaceRequestById(Long id);
 
-    PlaceRequest getPlaceRequestByPlaceIdAndUsernameAndReviewedAt(Long placeId, String username, Timestamp timestamp);
+    PlaceRequest getPlaceRequestByUsernameAndReviewedAt(String username, Timestamp timestamp);
 
     List<PlaceRequest> getPlaceRequestsByUsername(String username);
 
