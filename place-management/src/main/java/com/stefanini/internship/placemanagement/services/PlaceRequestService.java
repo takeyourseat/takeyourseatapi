@@ -82,7 +82,7 @@ public class PlaceRequestService {
         if (place.getUsername() != null) {
             throw new DuplicateResourceException("The place with id = " + placeId + " is occupied by another user");
         }
-        PlaceRequest identicalPlaceRequest = placeRequestRepository.getPlaceRequestByUsernameAndReviewedAt(placeRequest.getUsername(), placeRequest.getReviewedAt());
+        PlaceRequest identicalPlaceRequest = placeRequestRepository.getPlaceRequestByPlaceIdAndUsernameAndReviewedAt(placeId, placeRequest.getUsername(), placeRequest.getReviewedAt());
         if (identicalPlaceRequest != null) {
             if (identicalPlaceRequest.getApproved() == null) {
                 throw new DuplicateResourceException("such place request is pending");
