@@ -39,7 +39,7 @@ public class PlaceController {
         return ResponseEntity.ok().body(addPlace);
     }
 
-    @RequestMapping(value = "/places/{placesId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/places/{placeId}", method = RequestMethod.PUT)
     public HttpEntity<?> moveUserPlace(@PathVariable("placeId") Long id, @RequestBody Place place) {
         Place movedPlace = placeService.moveUserPlace(id, place);
         return ResponseEntity.ok().body(movedPlace);

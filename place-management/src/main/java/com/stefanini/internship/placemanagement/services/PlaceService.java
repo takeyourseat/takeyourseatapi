@@ -50,7 +50,7 @@ public class PlaceService {
         if (newPlace == null) {
             throw new ResourceNotFoundException("New place can't be found");
         } else if (newPlace.getUsername() != null) {
-
+            throw new ResourceNotFoundException("New place is busy");
         } else {
             oldPlace.setUsername(null);
             newPlace.setUsername(place.getUsername());
@@ -58,6 +58,5 @@ public class PlaceService {
             placeRepository.saveAndFlush(newPlace);
             return newPlace;
         }
-        return newPlace;
     }
 }
