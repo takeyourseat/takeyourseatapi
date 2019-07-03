@@ -7,7 +7,7 @@ import com.stefanini.internship.placemanagement.data.repositories.PlaceRepositor
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRequestRepository;
 import com.stefanini.internship.placemanagement.exception.DuplicateResourceException;
 import com.stefanini.internship.placemanagement.exception.ResourceNotFoundException;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,10 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
+@Slf4j
 @Service
 public class PlaceRequestService {
-
-    private final static Logger logger = Logger.getLogger(PlaceRequestService.class);
 
     private PlaceRequestRepository placeRequestRepository;
     private PlaceRepository placeRepository;
@@ -46,7 +45,7 @@ public class PlaceRequestService {
         List<PlaceRequest> placeRequests = placeRequestRepository.getPlaceRequestsByReviewerAndApprovedIsNull(reviewer);
         if (placeRequests.isEmpty()) {
             RuntimeException exception = new ResourceNotFoundException("There are no pending place requests");
-            logger.info("There are no pending place requests", exception);
+            log.info("There are no pending place requests");
             throw exception;
         }
         return placeRequests;
@@ -57,22 +56,22 @@ public class PlaceRequestService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         PlaceRequest placeRequest = new PlaceRequest();
         User user = userService.getUserByUsername(username);
-        logger.info("User created request");
+        log.info("User created request");
         if (user == null) {
             RuntimeException exception = new ResourceNotFoundException("User with username = " + username + " doesn't exists");
-            logger.info("User not found", exception);
+            log.info("User not found");
             throw exception;
         }
         Place place = placeRepository.getPlaceById(placeId);
         if (place == null) {
             RuntimeException exception = new ResourceNotFoundException("Place with id = " + placeId + " doesn't exists");
-            logger.info("Place not found", exception);
+            log.info("Place not found");
             throw exception;
         }
         placeRequest.setUsername(username);
         placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
-        if (user.getManager() == null){
+        if (user.getManager() == null) {
             throw new ResourceNotFoundException("This user has no manager");
         }
         placeRequest.setReviewer(user.getManager().getUsername());
@@ -98,7 +97,7 @@ public class PlaceRequestService {
     @Transactional
     @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest declinePlaceRequest(Long id) {
-        logger.info(String.format("Manager tries to decline place request with id %d", id));
+        log.info(String.format("Manager tries to decline place request with id %d", id));
         PlaceRequest newPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         PlaceRequestErrorHandler(newPlaceRequest);
         newPlaceRequest.setApproved(false);
@@ -109,7 +108,7 @@ public class PlaceRequestService {
     @Transactional
     @PreAuthorize("@AuthorizationService.hasPermissionForPlaceRequest(@placeRequestRepository.getPlaceRequestById(#id),'approve')")
     public PlaceRequest acceptPlaceRequest(Long id) {
-        logger.info(String.format("Manager accepted place request with id %d", id));
+        log.info(String.format("Manager accepted place request with id %d", id));
         PlaceRequest updatedPlaceRequest = placeRequestRepository.getPlaceRequestById(id);
         PlaceRequestErrorHandler(updatedPlaceRequest);
         Place placeById = placeRepository.getPlaceById(updatedPlaceRequest.getPlace().getId());
