@@ -5,20 +5,20 @@ import com.stefanini.internship.authorizationserver.dao.User;
 import com.stefanini.internship.authorizationserver.dao.repositories.UserRepository;
 import com.stefanini.internship.authorizationserver.dto.AuthorizationResponse;
 import com.stefanini.internship.authorizationserver.dto.PlaceRequest;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 @Service
+@Slf4j
 public class PlaceRequestAuthorizationService {
 
     private AuthorizationService authorizationService;
     private UserRepository userRepository;
     private UserService userService;
 
-    private final static Logger logger = Logger.getLogger(PlaceRequestAuthorizationController.class);
 
     public PlaceRequestAuthorizationService(AuthorizationService authorizationService, UserRepository userRepository, UserService userService) {
         this.authorizationService = authorizationService;
@@ -28,11 +28,11 @@ public class PlaceRequestAuthorizationService {
 
     public AuthorizationResponse authorizePlaceRequest(PlaceRequest placeRequest, String permissionString){
 
-        logger.info(String.format("Authorization requested for PlaceRequest with id='%d' for Permission='%s'",placeRequest.getId(), permissionString));
-        logger.debug(String.format("Check if class-wide permission='%s' for 'PlaceRequest' is granted",permissionString));
+        log.info(String.format("Authorization requested for PlaceRequest with id='%d' for Permission='%s'",placeRequest.getId(), permissionString));
+        log.debug(String.format("Check if class-wide permission='%s' for 'PlaceRequest' is granted",permissionString));
         AuthorizationResponse roleRequest = authorizationService.checkAuthorization("PlaceRequest", "write");
         if(roleRequest.isAuthorized()) {
-            logger.info(String.format("Authorization granted for PlaceRequest with id='%d' for Permission='%s' due to class-wide permission",placeRequest.getId(), permissionString));
+            log.info(String.format("Authorization granted for PlaceRequest with id='%d' for Permission='%s' due to class-wide permission",placeRequest.getId(), permissionString));
             return roleRequest;
         }
         switch (permissionString.toLowerCase()){
@@ -47,13 +47,13 @@ public class PlaceRequestAuthorizationService {
     }
     private AuthorizationResponse canUserReadPlaceRequest(PlaceRequest placeRequest){
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.debug(String.format("Checking read permission for User='%s' for PlaceRequest with id = '%d'",authenticatedUserName,placeRequest.getId()));
+        log.debug(String.format("Checking read permission for User='%s' for PlaceRequest with id = '%d'",authenticatedUserName,placeRequest.getId()));
 
         User requestedManager = userService.getUserManager(placeRequest.getUsername());
         boolean isViewedByCreator = authenticatedUserName.equals(placeRequest.getUsername());
         boolean isViewedByManager = authenticatedUserName.equals(requestedManager.getUsername());
 
-        logger.debug(String.format("Responding with authorization based on isViedByCreator='%s' or isViewedByManager='%s'", isViewedByCreator, isViewedByManager));
+        log.debug(String.format("Responding with authorization based on isViedByCreator='%s' or isViewedByManager='%s'", isViewedByCreator, isViewedByManager));
         return new AuthorizationResponse(isViewedByCreator || isViewedByManager,null);
     }
 
@@ -63,7 +63,7 @@ public class PlaceRequestAuthorizationService {
         User requestManager = userService.getUserManager(placeRequest.getUsername());
 
         boolean isAuthorized = requestManager.getUsername().equals(authenticatedUserName);
-        logger.debug(String.format("Responding with authorization based on isViewedByManager='%s'", isAuthorized));
+        log.debug(String.format("Responding with authorization based on isViewedByManager='%s'", isAuthorized));
 
         return new AuthorizationResponse(isAuthorized,null);
     }
