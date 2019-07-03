@@ -20,14 +20,14 @@ public class UserService {
         this.restTemplate = restTemplate;
     }
 
-    public User getUserManager(String username){
+    public User getUserManager(String username) {
 
         HttpHeaders authorizationHeader = AuthenticationUtils.getAuthorizationHeader();
         HttpEntity<Void> request = new HttpEntity<>(authorizationHeader);
 
-        ResponseEntity<User> response = restTemplate.exchange(USER_MANAGEMENT_URL+"getUserManager?username="+username, HttpMethod.GET, request, User.class);
+        ResponseEntity<User> response = restTemplate.exchange(USER_MANAGEMENT_URL + "/users/{username}/manager", HttpMethod.GET, request, User.class, username);
 
-        return  response.getBody();
+        return response.getBody();
 
     }
 }
