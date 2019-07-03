@@ -1,6 +1,5 @@
 package com.stefanini.internship.oauthserver.service;
 
-import com.stefanini.internship.oauthserver.dao.User;
 import com.stefanini.internship.oauthserver.dao.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
@@ -8,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -19,21 +16,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Optional<User> optionalUser = repository.findByUsername(name);
+        UserDetails user = repository.getByUsername(name);
 
-        optionalUser.orElseThrow( () -> new UsernameNotFoundException("Username or password is wrong"));
-        User userDetails = optionalUser.get();
+        if(user == null)
+            throw new UsernameNotFoundException("Username or password is wrong");
 
-        new AccountStatusUserDetailsChecker().check(userDetails);
+        new AccountStatusUserDetailsChecker().check(user);
 
         return new org.springframework.security.core.userdetails.User (
-                userDetails.getUsername(),
-                userDetails.getPassword(),
-                userDetails.isEnabled(),
-                userDetails.isAccountNonExpired(),
-                userDetails.isCredentialsNonExpired(),
-                userDetails.isAccountNonLocked(),
-                userDetails.getAuthorities()
+                user.getUsername(),
+                user.getPassword(),
+                user.isEnabled(),
+                user.isAccountNonExpired(),
+                user.isCredentialsNonExpired(),
+                user.isAccountNonLocked(),
+                user.getAuthorities()
         );
     }
 }

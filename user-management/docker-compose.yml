@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  mysql-user-management:
+    image: mysql
+    restart: always
+    ports:
+      - '3309:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+
+  user-management:
+#    image: capostol93/user-management
+    build: .
+    ports:
+      - '8085:8085'
+    restart: always
+    depends_on:
+      -  mysql-user-management
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-user-management:3306/test'
+      SPRING_PROFILES_ACTIVE: 'mysql'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://192.168.56.112/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3

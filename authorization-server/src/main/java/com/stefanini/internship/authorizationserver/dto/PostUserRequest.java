@@ -1,6 +1,5 @@
 package com.stefanini.internship.authorizationserver.dto;
 
-
 import com.stefanini.internship.authorizationserver.dao.Role;
 
 public class PostUserRequest {
@@ -15,11 +14,8 @@ public class PostUserRequest {
     private String jobTitle;
     private String profileImage;
     private PostUserRequest manager;
-    private boolean enabled;
-    private boolean accountNonExpired;
-    private boolean credentialsNonExpired;
-    private boolean accountNonLocked;
     private Role role;
+
 
     //region Getters and Setters
 
@@ -43,11 +39,6 @@ public class PostUserRequest {
 
     public String getPassword() {
         return password;
-    }
-
-    public PostUserRequest setPassword(String password) {
-        this.password = password;
-        return this;
     }
 
     public String getEmail() {
@@ -104,41 +95,7 @@ public class PostUserRequest {
         return this;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
 
-    public PostUserRequest setEnabled(boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public PostUserRequest setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-        return this;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public PostUserRequest setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-        return this;
-    }
-
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public PostUserRequest setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-        return this;
-    }
 
     public Role getRole() {
         return role;
@@ -149,13 +106,14 @@ public class PostUserRequest {
         return this;
     }
 
+
     //endregion
 
     //region 2 Constructors
 
     public PostUserRequest(){}
 
-    public PostUserRequest(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, PostUserRequest manager, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Role role) {
+    public PostUserRequest(Long id, String password, String email, String username, String firstName, String lastName, String jobTitle, String profileImage, PostUserRequest manager, Role role) {
         this.id = id;
         this.password = password;
         this.email = email;
@@ -164,12 +122,9 @@ public class PostUserRequest {
         this.lName = lastName;
         this.jobTitle = jobTitle;
         this.profileImage = profileImage;
-        this.manager = manager;
-        this.enabled = enabled;
-        this.accountNonExpired = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
         this.role = role;
+        this.manager = manager;
+
     }
 
     //endregion
