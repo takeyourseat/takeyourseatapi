@@ -1,7 +1,5 @@
 package com.stefanini.internship.authorizationserver.dto;
 
-import com.sun.istack.NotNull;
-
 public class PlaceRequest {
 
     private Long id;

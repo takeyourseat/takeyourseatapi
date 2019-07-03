@@ -28,6 +28,7 @@ public class AuthorizationService {
         String requestURI = AUTHORIZATION_API+"authorizations/datatypes/"+classname+"/permissions/"+permission;
 
         HttpEntity<Void> request = new HttpEntity<>(AuthenticationUtils.getAuthorizationHeader());
+
         ResponseEntity<AuthorizationResponse> authorization = restTemplate.exchange(requestURI, HttpMethod.GET, request, AuthorizationResponse.class);
 
         return authorization.getBody().authorized;

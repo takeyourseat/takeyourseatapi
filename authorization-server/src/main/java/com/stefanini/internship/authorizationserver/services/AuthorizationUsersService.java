@@ -6,6 +6,7 @@ import com.stefanini.internship.authorizationserver.dao.repositories.UserReposit
 import com.stefanini.internship.authorizationserver.dto.PostUserRequest;
 import com.stefanini.internship.authorizationserver.exceptions.DuplicateUserException;
 import com.stefanini.internship.authorizationserver.exceptions.ResourceNotFoundException;
+
 import org.apache.log4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,6 +53,7 @@ public class AuthorizationUsersService {
         logger.debug(String.format("User %s attempts to save user %s with role = '%s')",authenticatedUserName, user.getUsername(), role));
         userRepository.save(userSid);
         logger.info(String.format("User %s creates save %s with role = '%s')",authenticatedUserName, user.getUsername(), role));
+
     }
 
 

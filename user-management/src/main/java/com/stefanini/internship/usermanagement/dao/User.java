@@ -67,64 +67,72 @@ public class User {
         return id;
     }
 
-    public void setId(Long id) {
+    public User setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getfName() {
         return fName;
     }
 
-    public void setfName(String fName) {
+    public User setfName(String fName) {
         this.fName = fName;
+        return this;
     }
 
     public String getlName() {
         return lName;
     }
 
-    public void setlName(String lName) {
+    public User setlName(String lName) {
         this.lName = lName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public User setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getJobTitle() {
         return jobTitle;
     }
 
-    public void setJobTitle(String jobTitle) {
+    public User setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
+        return this;
     }
 
     public User getManager() {
         return manager;
     }
 
-    public void setManager(User manager) {
+    public User setManager(User manager) {
         this.manager = manager;
+        return this;
     }
 
     public Role getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public User setRole(Role role) {
         this.role = role;
+        return this;
     }
 
     public String getPassword() {
