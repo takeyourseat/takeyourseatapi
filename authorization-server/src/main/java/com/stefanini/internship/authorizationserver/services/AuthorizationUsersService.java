@@ -4,7 +4,7 @@ import com.stefanini.internship.authorizationserver.dao.*;
 import com.stefanini.internship.authorizationserver.dao.repositories.RoleRepository;
 import com.stefanini.internship.authorizationserver.dao.repositories.UserRepository;
 import com.stefanini.internship.authorizationserver.dto.PostUserRequest;
-import com.stefanini.internship.authorizationserver.exceptions.DuplicateUserException;
+import com.stefanini.internship.authorizationserver.exceptions.DuplicateResourceException;
 import com.stefanini.internship.authorizationserver.exceptions.ResourceNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class AuthorizationUsersService {
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
 
         if (userRepository.existsByUsername(user.getUsername())) {
-            RuntimeException exception = new DuplicateUserException("User " + user.getUsername() + " already exists");
+            RuntimeException exception = new DuplicateResourceException("User " + user.getUsername() + " already exists");
             log.error(String.format("Could not create user '%s' because username already exists",user.getUsername()),exception);
             throw exception;
         }
