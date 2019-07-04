@@ -8,6 +8,7 @@ import com.stefanini.internship.authorizationserver.dao.repositories.GrantReposi
 import com.stefanini.internship.authorizationserver.dao.repositories.RoleRepository;
 import com.stefanini.internship.authorizationserver.dto.responses.RoleGrantsResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -33,6 +34,14 @@ public class RolesService {
         List<Role> roles = roleRepository.findAll();
         log.info("Returning list of "+roles.size()+" roles");
         return roles;
+    }
+
+    public void createRole(Role role){
+        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.debug("User {} tries to create role {}",authenticatedUserName, role.getName());
+        validationService.assertRoleNotPresentInDb(role.getName());
+        roleRepository.save(role);
+        log.info("User {} creates role {}",authenticatedUserName, role.getName());
     }
 
     public RoleGrantsResponse getRoleGrants(String role){

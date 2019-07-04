@@ -31,6 +31,13 @@ public class RolesController {
         return ResponseEntity.ok(roles);
     }
 
+    @PostMapping
+    public ResponseEntity createRole(@RequestBody Role role, HttpServletRequest request){
+        log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");
+        rolesService.createRole(role);
+        return ResponseEntity.status(201).build();
+    }
+
     @GetMapping("{role}/grants")
     public ResponseEntity<RoleGrantsResponse> getRole(@PathVariable String role, HttpServletRequest  request){
         log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");
