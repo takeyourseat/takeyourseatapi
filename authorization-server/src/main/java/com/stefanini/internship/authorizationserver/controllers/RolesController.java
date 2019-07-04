@@ -39,4 +39,11 @@ public class RolesController {
         return ResponseEntity.ok(grants);
     }
 
+    @PostMapping("{role}/grants/datatypes/{dataType}/{permission}")
+    public ResponseEntity grantPermission(@PathVariable String role, @PathVariable String dataType, @PathVariable int permission, HttpServletRequest request){
+        log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");
+        rolesService.grantPermissionToRole(role, dataType, permission);
+        return ResponseEntity.status(201).build();
+    }
+
 }
