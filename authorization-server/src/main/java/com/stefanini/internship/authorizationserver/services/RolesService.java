@@ -41,7 +41,15 @@ public class RolesService {
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.debug("User {} tries to create role {}",authenticatedUserName, role.getName());
         validationService.assertRoleNotPresentInDb(role.getName());
-        roleRepository.save(role);
+        final Role savedRole = roleRepository.save(role);
+
+        log.debug("Setting all the permissions for role {} to 0",savedRole.getName());
+        List<DataType> dataTypes = dataTypeRepository.findAll();
+        dataTypes.forEach(dataType -> {
+            Grant grant = new Grant(dataType, 0, savedRole);
+            grantRepository.save(grant);
+        });
+
         log.info("User {} creates role {}",authenticatedUserName, role.getName());
     }
 
