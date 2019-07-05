@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class RolesService {
         this.validationService = validationService;
     }
 
-    public List<Role> getAllUsers(){
+    public List<Role> getAllRoles(){
         List<Role> roles = roleRepository.findAll();
         log.info("Returning list of "+roles.size()+" roles");
         return roles;
@@ -42,6 +43,14 @@ public class RolesService {
         validationService.assertRoleNotPresentInDb(role.getName());
         roleRepository.save(role);
         log.info("User {} creates role {}",authenticatedUserName, role.getName());
+    }
+
+    public List<RoleGrantsResponse> getAllRolesGrants() {
+        List<RoleGrantsResponse>response = new ArrayList<>();
+        List<Role> roles = getAllRoles();
+        for(Role role : roles)
+            response.add(getRoleGrants(role.getName()));
+        return response;
     }
 
     public RoleGrantsResponse getRoleGrants(String role){
@@ -76,7 +85,7 @@ public class RolesService {
             String grantRole = grant.getRole().getName();
             if(!role.equalsIgnoreCase(grantRole))
                 throw new IllegalArgumentException(String.format("Cannot build RoleGrantResponse for role '%s' with grants of role '%s'",role,grantRole));
-            response.getGrants().put(grant.getDataType().getName().toLowerCase(),grant.getPermission());
+            response.getGrants().put(grant.getDataType().getName().toLowerCase(),new RoleGrantsResponse.PermissionWrapper(grant.getPermission()));
         }
         return response;
     }
