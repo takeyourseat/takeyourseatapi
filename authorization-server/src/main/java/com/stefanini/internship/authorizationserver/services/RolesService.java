@@ -10,6 +10,7 @@ import com.stefanini.internship.authorizationserver.dao.repositories.UserReposit
 import com.stefanini.internship.authorizationserver.dto.responses.RoleGrantsResponse;
 import com.stefanini.internship.authorizationserver.exceptions.ConflictingRequestException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +37,14 @@ public class RolesService {
         this.validationService = validationService;
     }
 
+    @PreAuthorize("@authorizationService.checkAuthorization('Role','read').isAuthorized()")
     public List<Role> getAllRoles(){
         List<Role> roles = roleRepository.findAllByEnabledIsTrue();
         log.info("Returning list of "+roles.size()+" roles");
         return roles;
     }
 
+    @PreAuthorize("@authorizationService.checkAuthorization('Role','write').isAuthorized()")
     public void createRole(Role role){
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.debug("User {} tries to create role {}",authenticatedUserName, role.getName());
@@ -59,6 +62,7 @@ public class RolesService {
         log.info("User {} creates role {}",authenticatedUserName, role.getName());
     }
 
+    @PreAuthorize("@authorizationService.checkAuthorization('Role','read').isAuthorized()")
     public List<RoleGrantsResponse> getAllRolesGrants() {
         List<RoleGrantsResponse>response = new ArrayList<>();
         List<Role> roles = getAllRoles();
@@ -67,6 +71,7 @@ public class RolesService {
         return response;
     }
 
+    @PreAuthorize("@authorizationService.checkAuthorization('Role','read').isAuthorized()")
     public RoleGrantsResponse getRoleGrants(String role){
         List<Grant> grants = grantRepository.getByRoleNameIgnoreCase(role);
         log.debug("Processing a list of "+grants.size()+" grants");
@@ -74,6 +79,7 @@ public class RolesService {
         return response;
     }
 
+    @PreAuthorize("@authorizationService.checkAuthorization('Role','write').isAuthorized()")
     public void grantPermissionToRole (String role, String dataType, int permission){
         Role roleEntity = roleRepository.findByNameIgnoreCaseAndEnabledIsTrue(role);
         validationService.AssertValidResult(roleEntity,role);
@@ -91,6 +97,7 @@ public class RolesService {
         grantRepository.save(grant);
     }
 
+    @PreAuthorize("@authorizationService.checkAuthorization('Role','write').isAuthorized()")
     public void deactivateRole(String role) {
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("User {} tries to deactivate role {}",authenticatedUserName, role);
