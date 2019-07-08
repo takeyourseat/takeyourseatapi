@@ -5,15 +5,16 @@ kind: Pod
 
 #data related to the object inside the "Pod"
 metadata:
-  name: authorization-server-pod #pod name
+  name: mysql-user-server-pod #pod name
   labels:
-    name: authorization-server-pod
+    name: mysql-user-server-pod
     app: takeyourseat #app name
+
 
 #Here we will provide aditional information for kubernates
 spec:
   containers:
-    - name:  authorization-server #name of the docker file
-      image: capostol93/authorization-server  #name of the docker file to download
+    - name:  mysql-user-server #name of the docker file
+      image: mysql  #name of the docker file to download
       ports:
-       - containerPort: 8086
+       - containerPort: 3306

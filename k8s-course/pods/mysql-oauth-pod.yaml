@@ -1,0 +1,30 @@
+apiVersion: v1
+
+# kind of function which we will provoide to kubernetes cluster
+kind: Pod
+
+#data related to the object inside the "Pod"
+metadata:
+  name: mysql-oauth-pod #pod name
+  labels:
+    name: mysql-oauth-pod
+    app: takeyourseat #app name
+
+
+#Here we will provide aditional information for kubernates
+spec:
+  containers:
+    - name:  mysql-oauth #name of the docker file
+      image: mysql  #name of the docker file to download
+      ports:
+       - containerPort: 3306
+         name: mysql-oauth
+      env:
+      - name: MYSQL_ROOT_PASSWORD
+        value: "password"
+      - name: MYSQL_DATABASE
+        value: "test"
+      - name: MYSQL_USER
+        value: "sa"
+      - name: MYSQL_PASSWORD
+        value: "password"

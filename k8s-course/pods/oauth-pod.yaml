@@ -5,15 +5,17 @@ kind: Pod
 
 #data related to the object inside the "Pod"
 metadata:
-  name: authorization-server-pod #pod name
+  name: oauth-server-pod #pod name
   labels:
-    name: authorization-server-pod
+    name: oauth-server-pod
     app: takeyourseat #app name
+    type: back-end
+
 
 #Here we will provide aditional information for kubernates
 spec:
   containers:
-    - name:  authorization-server #name of the docker file
-      image: capostol93/authorization-server  #name of the docker file to download
+    - name:  oauth-server #name of the docker file
+      image: capostol93/oauth-server  #name of the docker file to download
       ports:
-       - containerPort: 8086
+       - containerPort: 8083

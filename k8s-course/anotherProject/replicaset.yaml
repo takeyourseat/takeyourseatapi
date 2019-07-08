@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: portal-app-rs
+
+spec:
+  selector: #manage any pod where label is equal to what we add
+    matchLabels:
+      app: front-end
+
+  replicas: 2
+  template: # template for the pods
+    metadata:
+      labels:
+        name: portal-app-pod
+        app: front-end
+        release: "0"
+    spec:
+      containers:
+        - name: portal-app
+          image: capostol93/portal-app
+          ports:
+            - containerPort: 80
+
+---
+
+#-------------------------------------
+#Repository - mysql-standalone - Pod
+#-------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-pod
+  labels:
+    name: mysql-pod
+    app: mysql
+spec:
+  containers:
+    - name: mysql-standalone
+      image: mysql
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "password"
+        - name: MYSQL_DATABASE
+          value: "testdb"
+        - name: MYSQL_USER
+          value: "sa"
+        - name: MYSQL_PASSWORD
+          value: "password"
+---

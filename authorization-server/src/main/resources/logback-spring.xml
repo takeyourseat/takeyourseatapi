@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property resource="application.properties" />
+    <property resource="application-kubernetes.properties" />
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <springProperty scope="context" name="authorization-server" source="com.stefanini.internship.authorizationserver" />
@@ -9,8 +9,8 @@
               value="%d{yyyy-MM-dd HH:mm:ss} %-5level [${springAppName},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] ${PID:-} --- [%thread] %logger{36} : %message%n"/>
 
     <!-- Properties resources -->
-    <property resource="bootstrap.yml" />
-    <property resource="application.properties" />
+<!--    <property resource="bootstrap.yml" />-->
+<!--    <property resource="application.properties" />-->
 
 
 

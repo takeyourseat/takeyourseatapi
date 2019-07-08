@@ -5,6 +5,9 @@ metadata:
 
 #Spec is for different components that can be included in this service as pods, deployments, replicas
 #Is where we will define the actual services
+#This defines which pods are going to be represented by this Service
+#The service becomes a network endpoint for either other services
+# or maybe external uses to connect to (eg browser)
 spec:
   type: NodePort
   ports:

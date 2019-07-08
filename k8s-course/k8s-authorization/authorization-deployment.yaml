@@ -1,0 +1,66 @@
+#-------------------------------------------
+#BackEnd - authorization-server - Deployment
+#-------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: authorization
+
+spec:
+  selector: #manage any pod where label is equal to what we add
+    matchLabels:
+      app: authorization
+
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: authorization
+    spec:
+      containers:
+      - name: authorization
+        image: capostol93/authorization-server
+        ports:
+          - containerPort: 8086
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: kubernetes
+
+---
+
+#-------------------------------------------
+#DataBase - mysql-authorization - Deployment
+#-------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: mysql-authorization
+
+spec:
+  selector:
+    matchLabels:
+      app: mysql-authorization
+
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: mysql-authorization
+    spec:
+      containers:
+        - name: mysql
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "password"
+            - name: MYSQL_DATABASE
+              value: "test"
+            - name: MYSQL_USER
+              value: "sa"
+            - name: MYSQL_PASSWORD
+              value: "password"
+---
