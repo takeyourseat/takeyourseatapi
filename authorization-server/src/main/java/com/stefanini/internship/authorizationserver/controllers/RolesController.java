@@ -38,6 +38,13 @@ public class RolesController {
         return ResponseEntity.status(201).build();
     }
 
+    @DeleteMapping("{role}")
+    public ResponseEntity deactivateRole(@PathVariable String role, HttpServletRequest request){
+        log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");
+        rolesService.deactivateRole(role);
+        return ResponseEntity.status(201).build();
+    }
+
     @GetMapping("/grants")
     public ResponseEntity<List<RoleGrantsResponse>> getGrantsForAllRoles(HttpServletRequest  request){
         log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");

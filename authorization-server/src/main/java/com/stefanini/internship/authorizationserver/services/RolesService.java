@@ -6,7 +6,9 @@ import com.stefanini.internship.authorizationserver.dao.Role;
 import com.stefanini.internship.authorizationserver.dao.repositories.DataTypeRepository;
 import com.stefanini.internship.authorizationserver.dao.repositories.GrantRepository;
 import com.stefanini.internship.authorizationserver.dao.repositories.RoleRepository;
+import com.stefanini.internship.authorizationserver.dao.repositories.UserRepository;
 import com.stefanini.internship.authorizationserver.dto.responses.RoleGrantsResponse;
+import com.stefanini.internship.authorizationserver.exceptions.ConflictingRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -22,17 +24,20 @@ public class RolesService {
     private final RoleRepository roleRepository;
     private final GrantRepository grantRepository;
     private final DataTypeRepository dataTypeRepository;
+    private final UserRepository userRepository;
     private final EntityValidationService validationService;
 
-    public RolesService(RoleRepository roleRepository, GrantRepository grantRepository, DataTypeRepository dataTypeRepository, EntityValidationService validationService) {
+
+    public RolesService(RoleRepository roleRepository, GrantRepository grantRepository, DataTypeRepository dataTypeRepository, UserRepository userRepository, EntityValidationService validationService) {
         this.roleRepository = roleRepository;
         this.grantRepository = grantRepository;
         this.dataTypeRepository = dataTypeRepository;
+        this.userRepository = userRepository;
         this.validationService = validationService;
     }
 
     public List<Role> getAllRoles(){
-        List<Role> roles = roleRepository.findAll();
+        List<Role> roles = roleRepository.findAllByEnabledIsTrue();
         log.info("Returning list of "+roles.size()+" roles");
         return roles;
     }
@@ -41,6 +46,7 @@ public class RolesService {
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.debug("User {} tries to create role {}",authenticatedUserName, role.getName());
         validationService.assertRoleNotPresentInDb(role.getName());
+        role.setEnabled(true);
         final Role savedRole = roleRepository.save(role);
 
         log.debug("Setting all the permissions for role {} to 0",savedRole.getName());
@@ -69,7 +75,7 @@ public class RolesService {
     }
 
     public void grantPermissionToRole (String role, String dataType, int permission){
-        Role roleEntity = roleRepository.findByNameIgnoreCase(role);
+        Role roleEntity = roleRepository.findByNameIgnoreCaseAndEnabledIsTrue(role);
         validationService.AssertValidResult(roleEntity,role);
 
         DataType dataTypeEntity = dataTypeRepository.findByName(dataType);
@@ -85,6 +91,23 @@ public class RolesService {
         grantRepository.save(grant);
     }
 
+    public void deactivateRole(String role) {
+        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("User {} tries to deactivate role {}",authenticatedUserName, role);
+
+        Role roleEntity = roleRepository.findByNameIgnoreCaseAndEnabledIsTrue(role);
+        validationService.AssertValidResult(roleEntity, role);
+
+        if(userRepository.existsByRoleName(role)) {
+            log.info("Disabling role '{}' is aborted because it is assigned to users",role);
+            throw new ConflictingRequestException("Cannot delete role "+role+" that is assigned to users");
+        }
+
+        roleEntity.setEnabled(false);
+        roleRepository.save(roleEntity);
+        log.info("User {} succeeds to deactivate role {}",authenticatedUserName, role);
+    }
+
     RoleGrantsResponse buildRoleGrantsResponse(String role, List<Grant> grants){
         RoleGrantsResponse response = new RoleGrantsResponse();
         response.setRole(role);
@@ -97,7 +120,6 @@ public class RolesService {
         }
         return response;
     }
-
 
 
 }
