@@ -31,7 +31,7 @@ spec:
     app: mysql-authorization  #pod identification
 
   ports:
-    - name: mysql-endpoint
+    - name: mysql-authorization-endpoint
       port: 3306
   type: ClusterIP
 
