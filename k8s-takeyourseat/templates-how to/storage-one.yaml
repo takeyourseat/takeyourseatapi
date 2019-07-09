@@ -1,0 +1,29 @@
+#wHAT DO WE WANT?
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  storageClassName: mylocalstorage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+#HOW DO WE WANT IT IMPLEMENTED - MANUAL in STORAGE
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage
+spec:
+  storageClassName: mylocalstorage
+  capacity:
+    storage: 20Gi
+
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/takeyourseat/kubernetes/volumes/mysql-volumes/"
+    type: DirectoryOrCreate

@@ -1,0 +1,80 @@
+#-------------------------------------------
+#BackEnd - authorization-server - Deployment
+#-------------------------------------------
+apiVersion: apps/v1
+kind: Deployment      # Type/Kind of Work/Function which cluster will interpret to do
+
+metadata:             #Data/Information related to this specific "kind" of Object
+  name: authorization
+
+spec:
+  selector:             #manage any "Pod" we need to add and by "label" we can filter specific kinds of "Pods" we need for specific task
+    matchLabels:        #reference to understand what pods to get
+      app: authorization
+
+  replicas: 1           #Manage how many replicas(pods) we want to have.
+
+  template:             #Section where we add the "Pod" information/template
+    metadata:
+      labels:
+        app: authorization
+    spec:               #Aditional "Pods" info as( container image, name, port, ans other settings)
+      containers:
+      - name: authorization
+        image: capostol93/authorization-server
+        ports:
+          - containerPort: 8086
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: kubernetes
+
+---
+
+#-------------------------------------------
+#DataBase - mysql-authorization - Deployment
+#-------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: mysql-authorization
+
+spec:
+  selector:
+    matchLabels:
+      app: mysql-authorization
+
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: mysql-authorization
+    spec:
+      containers:
+        - name: mysql
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "password"
+            - name: MYSQL_DATABASE
+              value: "test"
+            - name: MYSQL_USER
+              value: "sa"
+            - name: MYSQL_PASSWORD
+              value: "password"
+#          volumeMounts: # From where to get data from the inside of container
+#            - name: mysql-authorization-storage
+#              mountPath: /var/lib/mysql
+#      volumes:
+#        - name: mysql-authorization-storage
+#      #Thi is the way we can store data on other servers or hosts by pointing it to a file (storage-one.yaml) which we can configure for all pods if it is necessary
+#          persistentVolumeClaim:
+#            claimName: mysql-pvc
+
+#    # This is the way we store data on our host system
+#          hostPath:
+#            path: /mnt/takeyourseat/kubernetes/volumes/mysql-volumes/
+#            type: DirectoryOrCreate
+
+---

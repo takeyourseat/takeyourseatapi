@@ -1,0 +1,18 @@
+#------------------------------------------------------
+#FrontEnd - takeyourseat-frontend - Service: NodePort
+#------------------------------------------------------
+apiVersion: v1
+kind: Service         # Type/Kind of Work/Function which cluster will interpret to do
+metadata:
+  name: takeyourseat-frontend
+
+spec:                 #This defines which pods are going to be represented by this Service
+  selector:           #The service becomes a network endpoint for other services or maybe external uses to connect to (ex: browser)
+    app: takeyourseat-frontend
+
+  ports:
+    - name: http
+      port: 80      #this is Service port
+  type: LoadBalancer    #Expose it to the  whole world
+
+---

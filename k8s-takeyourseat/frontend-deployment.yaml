@@ -1,0 +1,31 @@
+#-------------------------------------------
+#FrontEnd - takeyourseat-frontend - Deployment
+#-------------------------------------------
+apiVersion: apps/v1
+kind: Deployment      # Type/Kind of Work/Function which cluster will interpret to do
+
+metadata:             #Data/Information related to this specific "kind" of Object
+  name: takeyourseat-frontend
+
+spec:
+  selector:             #manage any "Pod" we need to add and by "label" we can filter specific kinds of "Pods" we need for specific task
+    matchLabels:        #reference to understand what pods to get
+      app: takeyourseat-frontend
+
+  replicas: 1           #Manage how many replicas(pods) we want to have.
+
+  template:             #Section where we add the "Pod" information/template
+    metadata:
+      labels:
+        app: takeyourseat-frontend
+    spec:               #Aditional "Pods" info as( container image, name, port, ans other settings)
+      containers:
+      - name: takeyourseat-frontend
+        image: capostol93/takeyourseat-frontend
+        ports:
+          - containerPort: 80
+#        env:
+#          - name: SPRING_PROFILES_ACTIVE
+#            value: kubernetes
+
+---

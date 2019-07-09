@@ -63,4 +63,19 @@ spec:
               value: "sa"
             - name: MYSQL_PASSWORD
               value: "password"
+          volumeMounts: # From where to get data from the inside of container
+            - name: mysql-authorization-storage
+              mountPath: /var/lib/mysql
+
+      volumes:
+        - name: mysql-authorization-storage
+      #Thi is the way we can store data on other servers or hosts by pointing it to a file (storage-one.yaml) which we can configure for all pods if it is necessary
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+
+#    # This is the way we store data on our host system
+#          hostPath:
+#            path: /mnt/takeyourseat/kubernetes/volumes/mysql-volumes/
+#            type: DirectoryOrCreate
+
 ---

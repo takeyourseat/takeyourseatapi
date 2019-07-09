@@ -14,7 +14,7 @@ spec:                 #This defines which pods are going to be represented by th
     - name: http
       port: 8086      #this is Service port
       nodePort: 30086 #this is Node port
-  type: NodePort
+  type: NodePort    #Expose it to the  whole world
 
 ---
 
@@ -33,6 +33,6 @@ spec:
   ports:
     - name: mysql-authorization-endpoint
       port: 3306
-  type: ClusterIP
+  type: ClusterIP   # expose it only to node pods
 
 ---
