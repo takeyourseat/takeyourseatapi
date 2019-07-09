@@ -1,0 +1,38 @@
+#------------------------------------------------------
+#Repository - oauth-server - Service: NodePort
+#------------------------------------------------------
+apiVersion: v1
+kind: Service     # Type/Kind of Work/Function which cluster will interpret to do
+metadata:
+  name: oauth
+
+spec:             #This defines which pods are going to be represented by this Service
+  selector:       #The service becomes a network endpoint for other services or maybe external uses to connect to (ex: browser)
+    app: oauth
+
+  ports:
+    - name: http
+      port: 8083        #this is Service port
+      nodePort: 30083   #this is Node port
+  type: NodePort
+
+---
+
+#---------------------------------------------------
+#Database - mysql-oauth - Service: Cluster
+#---------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-oauth   #network name
+
+spec:
+  selector:
+    app: mysql-oauth  #pod identification
+
+  ports:
+    - name: mysql-endpoint
+      port: 3306
+  type: ClusterIP
+
+---

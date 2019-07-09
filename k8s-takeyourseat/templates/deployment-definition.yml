@@ -22,5 +22,5 @@ spec:
 
   replicas: 3
   selector: # provide another pods to this replicaset to be managed
-    matchLabels: #kind of reference to understand what pods to get
+    matchLabels: #reference to understand what pods to get
       type: front-end
