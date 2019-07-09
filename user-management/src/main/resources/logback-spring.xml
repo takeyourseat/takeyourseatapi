@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property resource="application.properties" />
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <springProperty scope="context" name="user-management" source="com.stefanini.internship.usermanagement" />
@@ -10,7 +9,7 @@
 
     <!-- Properties resources -->
     <property resource="bootstrap.yml" />
-    <property resource="application.properties" />
+    <property resource="application-kubernetes.properties" />
 
 
 
