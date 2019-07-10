@@ -45,19 +45,18 @@ public class PlaceService {
     public Place moveUserPlace(Integer office, Integer coordinateX, Integer coordinateY, Place place) {
         Place oldPlace = placeRepository.getPlaceByUsername(place.getUsername());
         Place newPlace = placeRepository.getPlaceByOfficeNumberAndCoordinateXAndCoordinateY(office, coordinateX, coordinateY);
-        if (oldPlace == null) {
-            throw new ResourceNotFoundException("Old place can't be found");
-        }
         if (newPlace == null) {
             throw new ResourceNotFoundException("New place can't be found");
-        } else if (newPlace.getUsername() != null) {
-            throw new NotAvailableException("New place is busy");
-        } else {
-            oldPlace.setUsername(null);
-            newPlace.setUsername(place.getUsername());
-            placeRepository.save(oldPlace);
-            placeRepository.save(newPlace);
-            return newPlace;
         }
+        if (newPlace.getUsername() != null) {
+            throw new NotAvailableException("New place is busy");
+        }
+        if (oldPlace != null) {
+            oldPlace.setUsername(null);
+            placeRepository.save(oldPlace);
+        }
+        newPlace.setUsername(place.getUsername());
+        placeRepository.save(newPlace);
+        return newPlace;
     }
 }
