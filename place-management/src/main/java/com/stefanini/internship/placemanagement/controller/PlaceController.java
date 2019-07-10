@@ -20,9 +20,9 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
-    @RequestMapping(value = "/offices/{officeId}/places", method = RequestMethod.GET)
-    public ResponseEntity getPlacesByOfficeId(@PathVariable Long officeId) {
-        List<Place> places = placeService.getPlacesByOfficeId(officeId);
+    @RequestMapping(value = "/offices/{officeNumber}/places", method = RequestMethod.GET)
+    public ResponseEntity getPlacesByOfficeNumber(@PathVariable int officeNumber) {
+        List<Place> places = placeService.getPlacesByOfficeNumber(officeNumber);
         return ResponseEntity.ok().body(places);
     }
 

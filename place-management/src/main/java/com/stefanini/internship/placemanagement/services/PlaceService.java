@@ -22,8 +22,8 @@ public class PlaceService {
         this.officeRepository = officeRepository;
     }
 
-    public List<Place> getPlacesByOfficeId(Long officeId) {
-        List<Place> places = placeRepository.getPlacesByOfficeId(officeId);
+    public List<Place> getPlacesByOfficeNumber(Integer officeNumber) {
+        List<Place> places = placeRepository.getPlacesByOfficeNumber(officeNumber);
         return places;
     }
 

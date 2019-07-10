@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long> {
-    List<Place> getPlacesByOfficeId(Long officeId);
+    List<Place> getPlacesByOfficeNumber(int officeNumber);
 
     Place getPlaceById(Long placeId);
 
