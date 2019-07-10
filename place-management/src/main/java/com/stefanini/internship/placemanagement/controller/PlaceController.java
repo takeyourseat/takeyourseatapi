@@ -2,7 +2,6 @@ package com.stefanini.internship.placemanagement.controller;
 
 import com.stefanini.internship.placemanagement.data.entities.Place;
 import com.stefanini.internship.placemanagement.services.PlaceService;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +38,10 @@ public class PlaceController {
         return ResponseEntity.ok().body(addPlace);
     }
 
-    @RequestMapping(value = "/places/{placeId}", method = RequestMethod.PUT)
-    public HttpEntity<?> moveUserPlace(@PathVariable("placeId") Long id, @RequestBody Place place) {
-        Place movedPlace = placeService.moveUserPlace(id, place);
-        return ResponseEntity.ok().body(movedPlace);
+    @RequestMapping(value = "/places", method = RequestMethod.PUT)
+    public ResponseEntity moveUserPlace(@RequestParam("office") Integer office, @RequestParam("coordinateX") Integer coordinateX, @RequestParam("coordinateY") Integer coordinateY, @RequestBody Place place) {
+        Place movePlace = placeService.moveUserPlace(office, coordinateX, coordinateY, place);
+        return ResponseEntity.ok().body(movePlace);
     }
 }
 
