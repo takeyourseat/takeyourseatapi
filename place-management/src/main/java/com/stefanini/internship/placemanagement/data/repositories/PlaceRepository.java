@@ -14,5 +14,5 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     Place getPlaceByUsername(String username);
 
-    Place getPlacesByUsername(String username);
+    Place getPlaceByOfficeNumberAndCoordinateXAndCoordinateY(Integer officeNumber, Integer coordinateX, Integer coordinateY);
 }
