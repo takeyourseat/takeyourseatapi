@@ -17,4 +17,6 @@ public class AuthorizationServerApplication {
 		return new RestTemplate();
 	}
 
+	//TODO delete me
+
 }
