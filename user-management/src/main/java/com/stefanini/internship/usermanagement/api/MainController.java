@@ -71,6 +71,32 @@ public class MainController {
 
     @ResponseBody
     @CrossOrigin
+    @RequestMapping(value = "/users/edit", method = RequestMethod.POST)
+    @PreAuthorize("@AuthorizationService.hasPermission('User','write')")
+    public void editUser(@RequestBody User user) {
+        logger.info("Accessed POST method to edit an user" + user.getUsername());
+        User editableUser = userRepository.findUserByUsername(user.getUsername());
+
+        if (!user.getfName().isEmpty())
+            editableUser.setfName(user.getfName());
+        if (!user.getlName().isEmpty())
+            editableUser.setlName(user.getlName());
+        if (!user.getEmail().isEmpty())
+            editableUser.setEmail(user.getEmail());
+        if (!user.getPassword().isEmpty())
+            editableUser.setPassword(user.getPassword());
+        if (!user.getJobTitle().isEmpty())
+            editableUser.setJobTitle(user.getJobTitle());
+        if (!user.getRole().getName().isEmpty())
+            editableUser.setRole(user.getRole());
+        if (!user.getManager().getUsername().isEmpty())
+            editableUser.setManager(user.getManager());
+        userRepository.save(editableUser);
+        logger.debug("POST method saved the user:" + user.getUsername());
+    }
+
+    @ResponseBody
+    @CrossOrigin
     @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
     public User getUserByUsername(@PathVariable("username") String username) {
         logger.info("Accessed GET method for searching user by username = " + username);
