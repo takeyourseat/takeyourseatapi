@@ -27,20 +27,20 @@ public class Place implements Identifiable {
     @ManyToOne
     private Office office;
 
-    @Column(name = "userId")
-    private Long userId;
+    @Column(name = "username")
+    private String username;
 
     //region 2 Constructors
 
     public Place() {
     }
 
-    public Place(Long id, int coordinateX, int coordinateY, @NotNull Office office, Long userId) {
+    public Place(Long id, int coordinateX, int coordinateY, @NotNull Office office, String username) {
         this.id = id;
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
         this.office = office;
-        this.userId = userId;
+        this.username = username;
     }
 
     //endregion
@@ -83,12 +83,12 @@ public class Place implements Identifiable {
         return this;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public Place setUserId(Long userId) {
-        this.userId = userId;
+    public Place setUsername(String username) {
+        this.username = username;
         return this;
     }
 

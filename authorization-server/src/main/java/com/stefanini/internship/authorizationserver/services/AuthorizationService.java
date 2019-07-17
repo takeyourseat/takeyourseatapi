@@ -6,11 +6,12 @@ import com.stefanini.internship.authorizationserver.dao.User;
 import com.stefanini.internship.authorizationserver.dao.repositories.*;
 import com.stefanini.internship.authorizationserver.dto.AuthorizationResponse;
 import com.stefanini.internship.authorizationserver.utils.AppConstants;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthorizationService {
 
     private DataTypeRepository dataTypeRepository;
@@ -18,8 +19,6 @@ public class AuthorizationService {
     private GrantRepository grantRepository;
 
     private EntityValidationService validationService;
-
-    final static Logger logger = Logger.getLogger(AuthorizationService.class);
 
     public AuthorizationService(DataTypeRepository dataTypeRepository, UserRepository userRepository, GrantRepository grantRepository, EntityValidationService validationService) {
         this.dataTypeRepository = dataTypeRepository;
@@ -29,12 +28,12 @@ public class AuthorizationService {
     }
 
     public AuthorizationResponse checkAuthorization(String classname, String principal, String permissionString) {
-        logger.info("Requested permission = '"+permissionString+"' for class = '"+classname+"' for user = '"+principal+"'");
+        log.info("Requested permission = '"+permissionString+"' for class = '"+classname+"' for user = '"+principal+"'");
         User user = userRepository.findByUsername(principal);
         validationService.AssertValidResult(user, principal);
 
         if (user.getRole() == null) {
-            logger.info("Permission denied. User has no role. Permission = '"+permissionString+"' for Class = '"+classname+"' for User = '"+principal+"'");
+            log.info("Permission denied. User has no role. Permission = '"+permissionString+"' for Class = '"+classname+"' for User = '"+principal+"'");
             return new AuthorizationResponse(false, "User has no role in the OWA database");
         }
 
@@ -47,11 +46,11 @@ public class AuthorizationService {
         boolean isAuthorized;
         if(result == null) {
             isAuthorized = false;
-            logger.info("Permission denied. No grant found. Permission = '"+permissionString+"' for Class = '"+classname+"' for User = '"+principal+"'");
+            log.info("Permission denied. No grant found. Permission = '"+permissionString+"' for Class = '"+classname+"' for User = '"+principal+"'");
         }
         else {
             isAuthorized = result.getPermission() >= permission;
-            logger.info("Obtained Grant for Permission = '"+permissionString+"' for Class = '"+classname+"' for User = '"+principal+"'. Access level = '"+result.getPermission()+"' Requested level = '"+permission+"' Authorization = '"+isAuthorized+"'");
+            log.info("Obtained Grant for Permission = '"+permissionString+"' for Class = '"+classname+"' for User = '"+principal+"'. Access level = '"+result.getPermission()+"' Requested level = '"+permission+"' Authorization = '"+isAuthorized+"'");
         }
 
 
@@ -60,7 +59,7 @@ public class AuthorizationService {
 
     public AuthorizationResponse checkAuthorization(String classname, String permission) {
 
-        logger.debug("Permission = "+permission+" for class = '"+classname+"' requested for currently authenticated user");
+        log.debug("Permission = "+permission+" for class = '"+classname+"' requested for currently authenticated user");
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         return checkAuthorization(classname, authenticatedUserName, permission);
     }

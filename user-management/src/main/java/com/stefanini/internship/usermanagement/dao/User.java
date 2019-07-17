@@ -1,78 +1,67 @@
 package com.stefanini.internship.usermanagement.dao;
 
+import com.stefanini.internship.usermanagement.authentication.UserAuthenticationListener;
+import com.stefanini.internship.usermanagement.authorization.UserAuthorizationListener;
 import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
+
+
 
 @Entity
 @Table(name = "users")
-public class User implements Identifiable {
+@EntityListeners({UserAuthorizationListener.class, UserAuthenticationListener.class})
 
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "first_name")
+    private String fName;
 
-    @Column(unique = true, nullable = false, name = "email")
+    @Column(name = "last_name")
+    private String lName;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @NaturalId
-    @Column(unique = true, name = "username", nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
-
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
 
     @Column(name = "job_title")
     private String jobTitle;
 
-    @Column(name = "profile_image")
-    private String profileImage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User manager;
 
-    @Column(name = "enabled")
-    private boolean enabled;
-
-    @Column(name = "account_non_expired")
-    private boolean accountNonExpired;
-
-    @Column(name = "credentials_non_expired")
-    private boolean credentialsNonExpired;
-
-    @Column(name = "account_non_locked")
-    private boolean accountNonLocked;
-
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
 
-    //region Equals and Hash
+    @Transient
+    private String password;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getEmail().equals(user.getEmail()) &&
-                getUsername().equals(user.getUsername());
+    public User() {
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getEmail(), getUsername());
+    public User(Long id) {
+        this.id = id;
     }
 
-    //endregion
-
-    //region Getters and Setters
+    public User(String fName, String lName, String email, String username, String jobTitle, User manager, @NotNull Role role) {
+        this.fName = fName;
+        this.lName = lName;
+        this.email = email;
+        this.username = username;
+        this.jobTitle = jobTitle;
+        this.manager = manager;
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -83,21 +72,21 @@ public class User implements Identifiable {
         return this;
     }
 
-    public String getUsername() {
-        return username;
+    public String getfName() {
+        return fName;
     }
 
-    public User setUsername(String username) {
-        this.username = username;
+    public User setfName(String fName) {
+        this.fName = fName;
         return this;
     }
 
-    public String getPassword() {
-        return password;
+    public String getlName() {
+        return lName;
     }
 
-    public User setPassword(String password) {
-        this.password = password;
+    public User setlName(String lName) {
+        this.lName = lName;
         return this;
     }
 
@@ -110,21 +99,12 @@ public class User implements Identifiable {
         return this;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public User setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public User setLastName(String lastName) {
-        this.lastName = lastName;
+    public User setUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -137,57 +117,12 @@ public class User implements Identifiable {
         return this;
     }
 
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public User setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-        return this;
-    }
-
     public User getManager() {
         return manager;
     }
 
     public User setManager(User manager) {
         this.manager = manager;
-        return this;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public User setEnabled(boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public User setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-        return this;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public User setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-        return this;
-    }
-
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public User setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
         return this;
     }
 
@@ -200,32 +135,12 @@ public class User implements Identifiable {
         return this;
     }
 
-
-
-    //endregion
-
-
-    //region 2 Constructors
-
-    public User(){}
-
-    public User(Long id, String password, String email, String username, @NotNull String firstName, @NotNull String lastName, String job_title, String profileImage, User managerId, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Role role) {
-        this.id = id;
-        this.password = password;
-        this.email = email;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.jobTitle = job_title;
-        this.profileImage = profileImage;
-        this.manager = managerId;
-        this.enabled = enabled;
-        this.accountNonExpired = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.role = role;
+    public String getPassword() {
+        return password;
     }
 
-    //endregion
-
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
+    }
 }
