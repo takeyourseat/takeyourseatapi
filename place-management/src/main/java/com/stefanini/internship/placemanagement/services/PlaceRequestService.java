@@ -53,7 +53,7 @@ public class PlaceRequestService {
     }
 
     //Todo Authorize for creating a place request
-    public PlaceRequest createPlaceRequest(Long placeId) {
+    public PlaceRequest createPlaceRequest(Long placeId, PlaceRequest placeRequestDescription) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         PlaceRequest placeRequest = new PlaceRequest();
         User user = userService.getUserByUsername(username);
@@ -72,7 +72,8 @@ public class PlaceRequestService {
         placeRequest.setUsername(username);
         placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
-        if (user.getManager() == null){
+        placeRequest.setDescription(placeRequestDescription.getDescription());
+        if (user.getManager() == null) {
             throw new ResourceNotFoundException("This user has no manager");
         }
         placeRequest.setReviewer(user.getManager().getUsername());

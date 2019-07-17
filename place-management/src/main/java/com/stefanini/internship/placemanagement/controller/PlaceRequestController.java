@@ -31,8 +31,8 @@ public class PlaceRequestController {
     }
 
     @PostMapping("/requests/{placeId}")
-    public ResponseEntity createPlaceRequest(@PathVariable Long placeId) {
-        PlaceRequest placeRequest = placeRequestService.createPlaceRequest(placeId);
+    public ResponseEntity createPlaceRequest(@PathVariable Long placeId, @RequestBody PlaceRequest placeRequestDescription) {
+        PlaceRequest placeRequest = placeRequestService.createPlaceRequest(placeId, placeRequestDescription);
         return ResponseEntity.ok().body(placeRequest);
     }
 

@@ -31,12 +31,15 @@ public class PlaceRequest implements Identifiable {
     @Column(name = "reviewer")
     private String reviewer;
 
-    //region 2 Constructors
+    @Column(name = "description")
+    private String description;
+
+//region 2 Constructors
 
     public PlaceRequest() {
     }
 
-    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Place place, Boolean approved, java.sql.Timestamp reviewedAt, String username, String reviewer) {
+    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Place place, Boolean approved, java.sql.Timestamp reviewedAt, String username, String reviewer, String description) {
         this.id = id;
         this.dateOf = dateOf;
         this.approved = approved;
@@ -44,6 +47,7 @@ public class PlaceRequest implements Identifiable {
         this.username = username;
         this.reviewer = reviewer;
         this.place = place;
+        this.description = description;
     }
 
     //endregion
@@ -105,6 +109,10 @@ public class PlaceRequest implements Identifiable {
     public void setReviewer(String reviewer) {
         this.reviewer = reviewer;
     }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
 
     //endregion
 }
