@@ -11,6 +11,13 @@ import java.util.Map;
 @NoArgsConstructor @AllArgsConstructor
 public class RoleGrantsResponse {
     private String role;
-    private Map<String, Integer> grants;
+    private Map<String, PermissionWrapper> grants;
+
+
+    @Getter @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    public static class PermissionWrapper{
+        Integer permission;
+    }
 
 }

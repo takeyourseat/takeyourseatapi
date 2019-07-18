@@ -26,7 +26,7 @@ public class RolesController {
     @GetMapping
     public ResponseEntity<List<Role>> getAllRoles(HttpServletRequest request){
         log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");
-        List<Role> roles = rolesService.getAllUsers();
+        List<Role> roles = rolesService.getAllRoles();
         log.debug("Building success response");
         return ResponseEntity.ok(roles);
     }
@@ -36,6 +36,21 @@ public class RolesController {
         log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");
         rolesService.createRole(role);
         return ResponseEntity.status(201).build();
+    }
+
+    @DeleteMapping("{role}")
+    public ResponseEntity deactivateRole(@PathVariable String role, HttpServletRequest request){
+        log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");
+        rolesService.deactivateRole(role);
+        return ResponseEntity.status(201).build();
+    }
+
+    @GetMapping("/grants")
+    public ResponseEntity<List<RoleGrantsResponse>> getGrantsForAllRoles(HttpServletRequest  request){
+        log.info(request.getMethod()+" "+request.getRequestURI()+" is matched");
+        List<RoleGrantsResponse> grants = rolesService.getAllRolesGrants();
+        log.debug("Building success response");
+        return ResponseEntity.ok(grants);
     }
 
     @GetMapping("{role}/grants")

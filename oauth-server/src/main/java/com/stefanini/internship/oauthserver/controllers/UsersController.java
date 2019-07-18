@@ -2,6 +2,7 @@ package com.stefanini.internship.oauthserver.controllers;
 
 import com.stefanini.internship.oauthserver.dao.User;
 import com.stefanini.internship.oauthserver.dao.repositories.UserRepository;
+import com.stefanini.internship.oauthserver.exceptions.UserNotFoundException;
 import com.stefanini.internship.oauthserver.service.UserValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -47,14 +48,15 @@ public class UsersController {
         return ResponseEntity.status(201).build();
     }
 
-    @DeleteMapping("{username}")
+    @DeleteMapping("/{username}")
     @PreAuthorize("@AuthorizationService.hasPermission('User','write')")
     public ResponseEntity deactivateUser(@PathVariable String username) {
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info(String.format("User '%s' tries to disable user with username '%s'",authenticatedUserName,username));
-        User user = userRepository.getByUsername(username);
 
-        userValidationService.assertWasFound(user,username);
+        User user = userRepository.findByUsername(username);
+        if(user == null)
+            throw new UserNotFoundException("User with username = "+username+" could not be found");
 
         user.setEnabled(false);
         userRepository.save(user);
