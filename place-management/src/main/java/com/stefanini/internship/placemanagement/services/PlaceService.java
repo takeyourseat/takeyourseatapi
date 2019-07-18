@@ -42,7 +42,7 @@ public class PlaceService {
         return place;
     }
 
-    public Place moveUserPlace(Integer office, Integer coordinateX, Integer coordinateY, Place place) {
+    public Place moveUserPlace(int office, int coordinateX, int coordinateY, Place place) {
         Place oldPlace = placeRepository.getPlaceByUsername(place.getUsername());
         Place newPlace = placeRepository.getPlaceByOfficeNumberAndCoordinateXAndCoordinateY(office, coordinateX, coordinateY);
         if (newPlace == null) {
@@ -58,5 +58,15 @@ public class PlaceService {
         newPlace.setUsername(place.getUsername());
         placeRepository.save(newPlace);
         return newPlace;
+    }
+
+    public List<Place> getAvailablePlaces() {
+        List<Place> places = placeRepository.getPlacesByUsernameIsNull();
+        return places;
+    }
+
+    public List<Place> getAvailablePlacesByOfficeNumber(int officeNumber) {
+        List<Place> places = placeRepository.getPlacesByOfficeNumberAndUsernameIsNull(officeNumber);
+        return places;
     }
 }

@@ -1,10 +1,10 @@
 package com.stefanini.internship.placemanagement.controller;
 
 import com.stefanini.internship.placemanagement.data.entities.Place;
+import com.stefanini.internship.placemanagement.exception.NotAvailableException;
 import com.stefanini.internship.placemanagement.services.PlaceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -39,9 +39,25 @@ public class PlaceController {
     }
 
     @RequestMapping(value = "/places", method = RequestMethod.PUT)
-    public ResponseEntity moveUserPlace(@RequestParam("office") Integer office, @RequestParam("coordinateX") Integer coordinateX, @RequestParam("coordinateY") Integer coordinateY, @RequestBody Place place) {
+    public ResponseEntity moveUserPlace(@RequestParam("office") int office, @RequestParam("coordinateX") int coordinateX, @RequestParam("coordinateY") int coordinateY, @RequestBody Place place) {
         Place movePlace = placeService.moveUserPlace(office, coordinateX, coordinateY, place);
         return ResponseEntity.ok().body(movePlace);
+    }
+
+    @RequestMapping(value = "/places/available", method = RequestMethod.GET)
+    public ResponseEntity getAvailablePlaces() {
+        List<Place> availableOffices = placeService.getAvailablePlaces();
+        return ResponseEntity.ok().body(availableOffices);
+    }
+
+    @RequestMapping(value = "/places/available", params = "office", method = RequestMethod.GET)
+    public ResponseEntity getAvailablePlacesByOfficeNumber(@RequestParam("office") int officeNumber) {
+        List<Place> availablePlaces = placeService.getAvailablePlacesByOfficeNumber(officeNumber);
+        if (availablePlaces.isEmpty()) {
+            RuntimeException exception = new NotAvailableException("There are no available places");
+            throw exception;
+        } else
+            return ResponseEntity.ok().body(availablePlaces);
     }
 }
 
