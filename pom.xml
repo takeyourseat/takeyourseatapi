@@ -10,6 +10,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>notification-server</module>
 		<module>oauth-server</module>
 		<module>place-management</module>
 		<module>user-management</module>

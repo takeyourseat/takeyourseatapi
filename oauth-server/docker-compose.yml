@@ -6,11 +6,16 @@ services:
     restart: always
     ports:
       - '3307:3306'
+    networks:
+      - host
+    volumes:
+      - /var/takeyourseatapi_dev/authorization-server:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: test
       MYSQL_USER: sa
       MYSQL_PASSWORD: password
+
 
   oauth-server:
 #    image: capostol93/oauth-server
@@ -20,6 +25,8 @@ services:
     restart: always
     depends_on:
       -  mysql-oauth-server
+    networks:
+      - host
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-oauth-server:3306/test'
       SPRING_PROFILES_ACTIVE: 'mysql'
@@ -28,3 +35,6 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
+
+networks:
+  host:

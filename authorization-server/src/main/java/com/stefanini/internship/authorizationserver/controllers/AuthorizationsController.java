@@ -25,9 +25,9 @@ public class AuthorizationsController {
             @PathVariable String classname,
             @PathVariable String permission
             ) {
-        log.info(String.format("GET controller checkClassAuthorization is matched with parameters: Classname = '%s' Permission='%s'",classname,permission));
+        log.info(String.format("GET controllers checkClassAuthorization is matched with parameters: Classname = '%s' Permission='%s'",classname,permission));
         AuthorizationResponse response = authorizationService.checkAuthorization(classname, permission);
-        log.debug(String.format("GET controller checkClassAuthorization returning HTTP.200 response for parameters: Classname = '%s' Permission='%s'",classname,permission));
+        log.debug(String.format("GET controllers checkClassAuthorization returning HTTP.200 response for parameters: Classname = '%s' Permission='%s'",classname,permission));
 
         return ResponseEntity.ok(response);
     }
