@@ -16,7 +16,6 @@
 		<module>authorization-server</module>
 	</modules>
 
-<!-- Test Push for CI/CD demonstration-->
-<!--    Test Push for Demonstration-->
+<!--Test CI/CI for demo presentation-->
 
 </project>
