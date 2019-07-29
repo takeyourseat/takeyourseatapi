@@ -89,9 +89,6 @@ public class PlaceRequestService {
             if (identicalPlaceRequest.getApproved() == null) {
                 log.info(String.format("User with id = %d cannot make place request on place with id = %d because such place request is already pending and it has id = %d", user.getId(), place.getId(), identicalPlaceRequest.getId()));
                 throw new DuplicateResourceException("such place request is pending");
-            } else if (!identicalPlaceRequest.getApproved()) {
-                placeRequestRepository.save(placeRequest);
-                return placeRequest;
             }
         }
         placeRequestRepository.save(placeRequest);
