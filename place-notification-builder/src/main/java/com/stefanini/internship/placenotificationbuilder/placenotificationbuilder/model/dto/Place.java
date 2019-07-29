@@ -4,13 +4,15 @@ public class Place {
 
     private int coordinateX;
     private int coordinateY;
+    private Office office;
 
     public Place() {
     }
 
-    public Place(int coordinateX, int coordinateY) {
+    public Place(int coordinateX, int coordinateY, Office office) {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
+        this.office = office;
     }
 
     public int getCoordinateX() {
@@ -27,5 +29,13 @@ public class Place {
 
     public void setCoordinateY(int coordinateY) {
         this.coordinateY = coordinateY;
+    }
+
+    public Office getOffice() {
+        return office;
+    }
+
+    public void setOffice(Office office) {
+        this.office = office;
     }
 }

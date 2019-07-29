@@ -1,7 +1,7 @@
 package com.stefanini.internship.notificationserver.services;
 
 
-import com.stefanini.internship.notificationserver.model.dto.PushNotifications;
+import com.stefanini.internship.notificationserver.model.dao.PushNotifications;
 import com.stefanini.internship.notificationserver.repository.PushNotificationsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

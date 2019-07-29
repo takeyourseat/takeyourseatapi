@@ -1,4 +1,4 @@
-package com.stefanini.internship.notificationserver.model.dto;
+package com.stefanini.internship.notificationserver.model.dao;
 
 
 import javax.persistence.*;

@@ -11,7 +11,7 @@
 
 	<modules>
 		<module>authorization-server</module>
-<!--		<module>notification-server</module>-->
+		<module>notification-server</module>
 		<module>oauth-server</module>
 		<module>place-management</module>
 		<module>place-notification-builder</module>

@@ -17,8 +17,6 @@ public class PlaceRequest {
 
     private String reviewer;
 
-    //region 2 Constructors
-
     public PlaceRequest() {
     }
 
@@ -31,10 +29,6 @@ public class PlaceRequest {
         this.reviewer = reviewer;
         this.place = place;
     }
-
-    //endregion
-
-    //region Getters and Setters
 
     public Long getId() {
         return id;
@@ -92,5 +86,16 @@ public class PlaceRequest {
         this.reviewer = reviewer;
     }
 
-    //endregion
+    @Override
+    public String toString() {
+        return "PlaceRequest{" +
+                "id=" + id +
+                ", dateOf=" + dateOf +
+                ", place=" + place +
+                ", approved=" + approved +
+                ", reviewedAt=" + reviewedAt +
+                ", username='" + username + '\'' +
+                ", reviewer='" + reviewer + '\'' +
+                '}';
+    }
 }

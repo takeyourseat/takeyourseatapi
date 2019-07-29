@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@EnableFeignClients("com.stefanini.internship.placenotificationbuilder.placenotificationbuilder")
+@EnableFeignClients
 public class PlaceNotificationBuilderApplication {
 
     public static void main(String[] args) {
