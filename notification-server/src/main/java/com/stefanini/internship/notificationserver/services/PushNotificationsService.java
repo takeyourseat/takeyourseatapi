@@ -1,7 +1,7 @@
 package com.stefanini.internship.notificationserver.services;
 
 
-import com.stefanini.internship.notificationserver.model.dto.PushNotifications;
+import com.stefanini.internship.notificationserver.model.dao.PushNotifications;
 
 import java.util.List;
 import java.util.Optional;

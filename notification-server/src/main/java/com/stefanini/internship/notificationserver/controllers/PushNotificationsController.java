@@ -1,7 +1,8 @@
 package com.stefanini.internship.notificationserver.controllers;
 
 import com.stefanini.internship.notificationserver.exceptions.PushNotificationsException;
-import com.stefanini.internship.notificationserver.model.dto.PushNotifications;
+import com.stefanini.internship.notificationserver.model.dao.Notification;
+import com.stefanini.internship.notificationserver.model.dao.PushNotifications;
 import com.stefanini.internship.notificationserver.services.PushNotificationsService;
 import com.stefanini.internship.notificationserver.services.PushNotificationsServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -68,6 +69,13 @@ public class PushNotificationsController {
 				.buildAndExpand(savedNotification.getId()).toUri();
 
 		return ResponseEntity.created(location).build();
+
+	}
+
+	@PostMapping("/notifications/managers")
+	public ResponseEntity receiveManagerNotificationJSON(Notification objectJSON) {
+
+		return ResponseEntity.ok().body(objectJSON);
 
 	}
 
