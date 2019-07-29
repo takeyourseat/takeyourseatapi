@@ -8,10 +8,10 @@
         <version>2.1.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.stefanini.internship.placenotificationbuilder</groupId>
-    <artifactId>place-notification-builder</artifactId>
+    <groupId>com.stefanini.internship.notificationserver</groupId>
+    <artifactId>notification-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>place-notification-builder</name>
+    <name>notification-server</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -44,7 +44,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--Feign - helps us to simplify the client code to talk to or ask for that service-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -54,7 +53,6 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
