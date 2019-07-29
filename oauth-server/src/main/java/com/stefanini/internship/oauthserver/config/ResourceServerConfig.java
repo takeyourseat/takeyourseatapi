@@ -33,7 +33,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable();
         http.authorizeRequests().antMatchers("/v2/api-docs",
-                "/configuration/**",
+                "/config/**",
                 "/swagger*/**",
                 "/webjars/**").permitAll().anyRequest().authenticated();
     }

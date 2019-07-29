@@ -22,7 +22,7 @@ public class UsersController {
 
     @PostMapping
     public ResponseEntity createUser(@RequestBody PostUserRequest user){
-        log.info(String.format("POST controller createUser matched for user = '%s'",user.getUsername()));
+        log.info(String.format("POST controllers createUser matched for user = '%s'",user.getUsername()));
         authorizationUsersService.createUser(user);
         log.debug("Controller createUser responds with HTTP.201");
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -30,9 +30,9 @@ public class UsersController {
 
     @DeleteMapping("/{username}")
     public ResponseEntity deleteUser(@PathVariable String username){
-        log.info(String.format("DELETE controller deleteUser matched for user = '%s'",username));
+        log.info(String.format("DELETE controllers deleteUser matched for user = '%s'",username));
         authorizationUsersService.deleteUser(username);
-        log.debug("DELETE controller deleteUser return HTTP.204");
+        log.debug("DELETE controllers deleteUser return HTTP.204");
         return ResponseEntity.noContent().build();
     }
 }

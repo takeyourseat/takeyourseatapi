@@ -129,6 +129,7 @@
     </dependencies>
 
     <dependencyManagement>
+
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -136,7 +137,10 @@
                 <version>Brixton.SR4</version>
             </dependency>
         </dependencies>
+
     </dependencyManagement>
+
+
 
     <build>
         <plugins>

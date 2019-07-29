@@ -17,7 +17,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable();
         http.authorizeRequests().antMatchers("/v2/api-docs",
-                "/configuration/**",
+                "/config/**",
                 "/swagger*/**",
                 "/webjars/**").permitAll().anyRequest().authenticated();
     }
@@ -26,7 +26,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     public RemoteTokenServices tokenService() {
         RemoteTokenServices tokenService = new RemoteTokenServices();
-        tokenService.setCheckTokenEndpointUrl("http://localhost:8083/oauth/check_token");
+        tokenService.setCheckTokenEndpointUrl("http://oauth-server:8083/oauth/check_token");
         tokenService.setClientId("resource-server");
         tokenService.setClientSecret("pass");
 

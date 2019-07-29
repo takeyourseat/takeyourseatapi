@@ -10,10 +10,12 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>authorization-server</module>
+		<module>notification-server</module>
 		<module>oauth-server</module>
 		<module>place-management</module>
+		<module>place-notification-builder</module>
 		<module>user-management</module>
-		<module>authorization-server</module>
 	</modules>
 
 <!-- Test CI/CD for presentation-->
