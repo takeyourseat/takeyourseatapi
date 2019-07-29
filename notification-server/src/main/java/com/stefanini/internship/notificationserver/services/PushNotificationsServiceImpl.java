@@ -41,7 +41,7 @@ public class PushNotificationsServiceImpl implements PushNotificationsService {
 	}
 
 	public PushNotifications save(PushNotifications pushNotification) {
-		 return pushNotificationsRepository.save(pushNotification);
+		return pushNotificationsRepository.save(pushNotification);
 	}
 
 }

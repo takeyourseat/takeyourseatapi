@@ -22,7 +22,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	 */
 
 	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request){
+	public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
 
 		ExceptionResponse exceptionResponse = new ExceptionResponse(
 				new Date(),
@@ -37,7 +37,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	 */
 
 	@ExceptionHandler(PushNotificationsException.class)
-	public final ResponseEntity<Object> handleWebPushNotificationsException(PushNotificationsException ex, WebRequest request){
+	public final ResponseEntity<Object> handleWebPushNotificationsException(PushNotificationsException ex, WebRequest request) {
 
 		ExceptionResponse exceptionResponse = new ExceptionResponse(
 				new Date(),

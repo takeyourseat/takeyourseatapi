@@ -15,5 +15,4 @@ public interface PushNotificationsRepository extends JpaRepository<PushNotificat
 	Optional<PushNotifications> deleteByUsername(String username);
 
 
-
 }
