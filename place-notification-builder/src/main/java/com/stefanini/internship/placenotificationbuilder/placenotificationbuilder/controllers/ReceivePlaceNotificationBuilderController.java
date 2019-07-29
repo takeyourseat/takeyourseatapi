@@ -1,6 +1,6 @@
 package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.controllers;
 
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.RequestPlaceManagementManager;
+import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.PlaceRequest;
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.services.PlaceNotificationBuilderService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ public class ReceivePlaceNotificationBuilderController {
 	}
 
 	@PostMapping("/notifications/manager")
-	public RequestPlaceManagementManager receiveManagerNotification(@RequestBody RequestPlaceManagementManager managerNotification) {
+	public PlaceRequest receiveManagerNotification(@RequestBody PlaceRequest managerNotification) {
 
 		return managerNotification;
 	}

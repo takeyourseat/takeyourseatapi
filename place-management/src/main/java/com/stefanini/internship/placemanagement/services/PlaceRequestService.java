@@ -7,7 +7,9 @@ import com.stefanini.internship.placemanagement.data.repositories.PlaceRepositor
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRequestRepository;
 import com.stefanini.internship.placemanagement.exception.DuplicateResourceException;
 import com.stefanini.internship.placemanagement.exception.ResourceNotFoundException;
+import com.stefanini.internship.placemanagement.notifications.services.NotificationService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +26,13 @@ public class PlaceRequestService {
     private PlaceRequestRepository placeRequestRepository;
     private PlaceRepository placeRepository;
     private UserService userService;
+    private NotificationService notificationService;
 
-    public PlaceRequestService(PlaceRequestRepository placeRequestRepository, PlaceRepository placeRepository, UserService userService) {
+    public PlaceRequestService(PlaceRequestRepository placeRequestRepository, PlaceRepository placeRepository, UserService userService, NotificationService notificationService) {
         this.placeRequestRepository = placeRequestRepository;
         this.placeRepository = placeRepository;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     @PostFilter("@AuthorizationService.hasPermissionForPlaceRequest(filterObject, 'read')")
@@ -92,6 +96,7 @@ public class PlaceRequestService {
         }
         placeRequestRepository.save(placeRequest);
         log.info("User with id = " + user.getId() + " has successfully created a place request with id = " + placeRequest.getId() + " on place with id = " + place.getId());
+        notificationService.sendRequestPlaceManagementManagerNotificationFeign(placeRequest);
         return placeRequest;
     }
 

@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class PlaceNotificationBuilderService {
+public class NotificationService {
 
 	private static final String NOTIFICATIONBUILDER_API = "http://localhost:8088/api/v01/notifications";
 
 	private RestTemplate restTemplate;
 	private PlaceNotificationBuilderProxyFeign feignProxy;
 
-	public PlaceNotificationBuilderService(PlaceNotificationBuilderProxyFeign feignProxy, RestTemplate restTemplate) {
+	public NotificationService(PlaceNotificationBuilderProxyFeign feignProxy, RestTemplate restTemplate) {
 		this.feignProxy = feignProxy;
 		this.restTemplate = restTemplate;
 	}
@@ -21,7 +21,6 @@ public class PlaceNotificationBuilderService {
 	public void sendRequestPlaceManagementManagerNotificationRest(PlaceRequest object) {
 
 		String requestURI = NOTIFICATIONBUILDER_API + "/manager";
-
 
 		HttpEntity<PlaceRequest> request = new HttpEntity<>(object);
 
@@ -33,5 +32,7 @@ public class PlaceNotificationBuilderService {
 	public void sendRequestPlaceManagementManagerNotificationFeign(PlaceRequest object) {
 
 		PlaceRequest response = feignProxy.receiveManagerNotification(object);
+		System.out.println(response);
+
 	}
 }

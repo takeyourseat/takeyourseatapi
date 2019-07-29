@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class PlaceNotificationBuilderService {
 
-	public static final String NOTIFICATIONBUILDER_API = "http://localhost:8086/api/v01/notifications";
+	public static final String NOTIFICATIONBUILDER_API = "http://localhost:8088/api/v01/notifications";
 
 
 	private RestTemplate restTemplate;
