@@ -22,8 +22,6 @@ public class Office {
         this.description = description;
     }
 
-
-
     public Long getId() {
         return id;
     }

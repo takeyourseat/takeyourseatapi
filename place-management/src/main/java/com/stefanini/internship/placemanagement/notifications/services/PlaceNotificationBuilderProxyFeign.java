@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "place-notification-builder", url ="localhost:8088" )
 public interface PlaceNotificationBuilderProxyFeign {
 
-	@PostMapping("/api/v01/notifications/manager")
+	@PostMapping("/api/v01/notifications/managers")
 	PlaceRequest receiveManagerNotification(@RequestBody PlaceRequest managerNotification);
 }

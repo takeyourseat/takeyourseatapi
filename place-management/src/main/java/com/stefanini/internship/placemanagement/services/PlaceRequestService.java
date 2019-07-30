@@ -1,15 +1,14 @@
 package com.stefanini.internship.placemanagement.services;
 
+import com.stefanini.internship.placemanagement.data.dto.User;
 import com.stefanini.internship.placemanagement.data.entities.Place;
 import com.stefanini.internship.placemanagement.data.entities.PlaceRequest;
-import com.stefanini.internship.placemanagement.data.dto.User;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
 import com.stefanini.internship.placemanagement.data.repositories.PlaceRequestRepository;
 import com.stefanini.internship.placemanagement.exception.DuplicateResourceException;
 import com.stefanini.internship.placemanagement.exception.ResourceNotFoundException;
 import com.stefanini.internship.placemanagement.notifications.services.NotificationService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -96,7 +95,7 @@ public class PlaceRequestService {
         }
         placeRequestRepository.save(placeRequest);
         log.info("User with id = " + user.getId() + " has successfully created a place request with id = " + placeRequest.getId() + " on place with id = " + place.getId());
-        notificationService.sendRequestPlaceManagementManagerNotificationFeign(placeRequest);
+        notificationService.sendPlaceManagementManagerNotification(placeRequest);
         return placeRequest;
     }
 

@@ -1,8 +1,8 @@
 package com.stefanini.internship.notificationserver.services;
 
 
-import com.stefanini.internship.notificationserver.model.dao.PushNotifications;
-import com.stefanini.internship.notificationserver.repository.PushNotificationsRepository;
+import com.stefanini.internship.notificationserver.model.dao.SubscriptionDao;
+import com.stefanini.internship.notificationserver.repository.SubscriptionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,27 +11,27 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class PushNotificationsServiceImpl implements PushNotificationsService {
+public class SubscriptionServiceImpl implements SubscriptionService {
 
-	private PushNotificationsRepository pushNotificationsRepository;
+	private SubscriptionRepository pushNotificationsRepository;
 
-	public PushNotificationsServiceImpl(PushNotificationsRepository pushNotificationsRepository) {
+	public SubscriptionServiceImpl(SubscriptionRepository pushNotificationsRepository) {
 		this.pushNotificationsRepository = pushNotificationsRepository;
 	}
 
 	@Override
-	public List<PushNotifications> findAllPushNotifications() {
+	public List<SubscriptionDao> findAllPushNotifications() {
 		return pushNotificationsRepository.findAll();
 	}
 
 	@Override
-	public Optional<PushNotifications> findByUsername(String username) {
+	public Optional<SubscriptionDao> findByUsername(String username) {
 		return pushNotificationsRepository.findByUsername(username);
 
 	}
 
 	@Override
-	public Optional<PushNotifications> deleteByUsername(String username) {
+	public Optional<SubscriptionDao> deleteByUsername(String username) {
 		return pushNotificationsRepository.deleteByUsername(username);
 	}
 
@@ -40,7 +40,7 @@ public class PushNotificationsServiceImpl implements PushNotificationsService {
 		pushNotificationsRepository.deleteById(id);
 	}
 
-	public PushNotifications save(PushNotifications pushNotification) {
+	public SubscriptionDao save(SubscriptionDao pushNotification) {
 		return pushNotificationsRepository.save(pushNotification);
 	}
 

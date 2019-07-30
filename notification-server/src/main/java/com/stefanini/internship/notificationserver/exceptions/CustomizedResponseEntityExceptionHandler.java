@@ -2,7 +2,6 @@ package com.stefanini.internship.notificationserver.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
@@ -36,8 +35,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	Configured WebPushNotificationsException created for showing the status 404 when consumer introduced data which not exist in our logic
 	 */
 
-	@ExceptionHandler(PushNotificationsException.class)
-	public final ResponseEntity<Object> handleWebPushNotificationsException(PushNotificationsException ex, WebRequest request) {
+	@ExceptionHandler(SubscriptionException.class)
+	public final ResponseEntity<Object> handleWebPushNotificationsException(SubscriptionException ex, WebRequest request) {
 
 		ExceptionResponse exceptionResponse = new ExceptionResponse(
 				new Date(),
