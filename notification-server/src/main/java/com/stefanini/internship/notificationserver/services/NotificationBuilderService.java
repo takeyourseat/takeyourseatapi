@@ -1,20 +1,35 @@
 package com.stefanini.internship.notificationserver.services;
 
-import com.stefanini.internship.notificationserver.model.dto.NotificationBuilder;
+import nl.martijndwars.webpush.Notification;
 import org.springframework.stereotype.Service;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
 
 @Service
 public class NotificationBuilderService {
 
-	private PushService pushService;
+	private PushNotificationService pushService;
 
-	public NotificationBuilderService(PushService pushService) {
+	public NotificationBuilderService(PushNotificationService pushService) {
 		this.pushService = pushService;
 	}
 
-	public NotificationBuilder sendPayLoad(NotificationBuilder objectJSON) {
+	public void sendPayLoad(String reviewer, String objectJSON) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 
-		return (NotificationBuilder) pushService.createNotification(objectJSON);
-
+		Notification notification = pushService.createNotification(reviewer, objectJSON);
+		pushService.sendNotification(notification);
 	}
+
+//	public String notificationBuilderToJSON(NotificationBuilder objectJSON) {
+//		String payload = "";
+//		try {
+//			ObjectMapper mapper = new ObjectMapper();
+//			payload = mapper.writeValueAsString(objectJSON);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+//		return payload;
+//	}
 }

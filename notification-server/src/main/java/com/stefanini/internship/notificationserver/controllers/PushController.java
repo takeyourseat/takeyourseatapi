@@ -42,7 +42,8 @@ public class PushController {
 				"}\n";
 
 		OurSubscription sub = new OurSubscription("https://fcm.googleapis.com/fcm/send/ddzw196twLk:APA91bHa8Rf7bsKMiThlGF0IuQbxoXE4N9EkrdkQXzsJFQpmMywAC0JPM-rxJZMU44u5-ixbypu3XT9r2AvzEDaYed1rHwKJcJOGl5kEeSSUv08cEziB9gTqzTFZXqa4NyOrttw2XeX0",
-				new OurSubscription.Keys("BOt9DS8mlCYjE-Rz2ZygFRs0krG_nv-jZC0OaoeiK3Ri4rlJqWSK_hMcq262xqFNzIAY_ZY84qP1487RdEKZYIw", "MuUlXuxS2f4ddjAFWp7nZg"));
+				new OurSubscription.Keys("BOt9DS8mlCYjE-Rz2ZygFRs0krG_nv-jZC0OaoeiK3Ri4rlJqWSK_hMcq262xqFNzIAY_ZY84qP1487RdEKZYIw",
+						"MuUlXuxS2f4ddjAFWp7nZg"));
 
 			Notification notification = new Notification(sub, payload);
 			PushService pushService = new PushService("BIo4B1bsWsS3fDQZJjFo3k_M9C5sMm929H5EJMbqcYicjCiseaYeCDsE6dIB5NNw4u6rlW8YUWhs-evYAwa2mOM","dw1-Fz9_bD1aX9OAZ8uRt8c5p-CNNczirkGBiMYTUVM", "");
