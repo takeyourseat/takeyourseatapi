@@ -1,11 +1,13 @@
 package com.stefanini.internship.notificationserver.model.dao;
 
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-@Table(name = "push_notifications")
-public class PushNotifications {
+public class SubscriptionDao {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +18,10 @@ public class PushNotifications {
 	private String key;
 	private String endpoint;
 
-	public PushNotifications() {
+	public SubscriptionDao() {
 	}
 
-	public PushNotifications(Long id, String username, String oauth, String publicKey, String endpoint) {
+	public SubscriptionDao(Long id, String username, String oauth, String publicKey, String endpoint) {
 		this.id = id;
 		this.username = username;
 		this.auth = oauth;

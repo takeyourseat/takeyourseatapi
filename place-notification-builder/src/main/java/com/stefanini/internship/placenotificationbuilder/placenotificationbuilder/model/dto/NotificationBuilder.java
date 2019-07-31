@@ -1,8 +1,8 @@
-package com.stefanini.internship.notificationserver.model.dao;
+package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto;
 
 import java.util.List;
 
-public class Notification {
+public class NotificationBuilder {
 
 	private String title;
 	private String image;
@@ -12,10 +12,10 @@ public class Notification {
 	private Object data;
 	private List<Object> actions;
 
-	public Notification() {
+	public NotificationBuilder() {
 	}
 
-	public Notification(String title, String image, String icon, String body, boolean silent, Object data, List<Object> actions) {
+	public NotificationBuilder(String title, String image, String icon, String body, boolean silent, Object data, List<Object> actions) {
 		this.title = title;
 		this.image = image;
 		this.icon = icon;
