@@ -23,7 +23,7 @@ public class SubscriptionController {
 		this.pushNotificationsService = webPushNotificationsService;
 	}
 
-	@GetMapping("/get/notifications")
+	@GetMapping("/get/subscriptions")
 	public ResponseEntity retrieveAllPushNotifications() {
 		List<SubscriptionDao> pushNotificationsList = pushNotificationsService.findAllPushNotifications();
 		if (pushNotificationsList.isEmpty()) {
@@ -33,10 +33,10 @@ public class SubscriptionController {
 		}
 	}
 
-	@PostMapping("/notifications")
-	public ResponseEntity<Object> createNotificationSubscription(@RequestBody SubscriptionDao webPushNotification) {
+	@PostMapping("/subscriptions")
+	public ResponseEntity createNotificationSubscription(@RequestBody SubscriptionDao subscriptionDao) {
 
-		SubscriptionDao savedNotification = pushNotificationsService.save(webPushNotification);
+		SubscriptionDao savedNotification = pushNotificationsService.save(subscriptionDao);
 
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest()

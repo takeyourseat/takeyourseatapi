@@ -23,7 +23,7 @@ public class NotificationBuilderController {
 
 	@PostMapping("/notifications/{reviewer}/managers")
 	public ResponseEntity receiveManagerNotificationJSON(@PathVariable("reviewer") String reviewer,
-														 @RequestBody String objectJSON) throws GeneralSecurityException, InterruptedException, JoseException, ExecutionException, IOException {
+														 @RequestBody String objectJSON) throws GeneralSecurityException, InterruptedException, JoseException, ExecutionException, IOException, NoSuchFieldException {
 		orchestrationService.sendReceivedNotificationJSON(reviewer, objectJSON);
 
 		return ResponseEntity.ok().body(objectJSON);

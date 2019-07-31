@@ -16,7 +16,7 @@ public class OrchestrationService {
 		this.pushNotificationService = pushNotificationService;
 	}
 
-	public void sendReceivedNotificationJSON(String reviewer, String objectJSON) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
+	public void sendReceivedNotificationJSON(String reviewer, String objectJSON) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException, NoSuchFieldException {
 		pushNotificationService.getPayLoad(reviewer, objectJSON);
 
 

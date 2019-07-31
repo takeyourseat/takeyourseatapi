@@ -33,16 +33,16 @@ public class PushNotificationService {
 		pushService.send(notification);
 	}
 
-	public void getPayLoad(String username, String payload) throws GeneralSecurityException, InterruptedException, JoseException, ExecutionException, IOException {
+	public void getPayLoad(String username, String payload) throws GeneralSecurityException, InterruptedException, JoseException, ExecutionException, IOException, NoSuchFieldException {
 		Notification notification = createNotification(username, payload);
 		sendNotification(notification);
 	}
 
-	public Notification createNotification(String username, String payLoad) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+	public Notification createNotification(String username, String payLoad) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, NoSuchFieldException {
 
 		//First we create subscription
 		Optional<SubscriptionDao> usernameFromDB = getSubscriptionFromDB(username);
-		PushAdapter subscription = new PushAdapter(usernameFromDB.get());
+		PushAdapter subscription = new PushAdapter(usernameFromDB.orElseThrow(NoSuchFieldException::new));
 
 		return new Notification(subscription, "{\"notification\":"+payLoad+"}");
 	}
