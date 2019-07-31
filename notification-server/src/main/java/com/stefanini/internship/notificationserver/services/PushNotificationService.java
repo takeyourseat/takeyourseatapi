@@ -14,6 +14,7 @@ import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 
@@ -28,32 +29,31 @@ public class PushNotificationService {
 		this.pushService = pushService;
 	}
 
-	public void  sendNotification(Notification notification) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
+	public void sendNotification(Notification notification) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
 		pushService.send(notification);
 	}
 
-	public SubscriptionDao getDataFromDB(String username) {
-		SubscriptionDao byUsername = subscriptionRepository.findByUsername(username);
-		if (byUsername == null) {
-			throw new UserIsNotPresentException("User is not present in DB");
-		}
-		return byUsername;
+	public void getPayLoad(String username, String payload) throws GeneralSecurityException, InterruptedException, JoseException, ExecutionException, IOException {
+		Notification notification = createNotification(username, payload);
+		sendNotification(notification);
 	}
 
 	public Notification createNotification(String username, String payLoad) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 
-		SubscriptionDao object = getDataFromDB(username);
-		PushAdapter adapter = new PushAdapter(object);
+		//First we create subscription
+		Optional<SubscriptionDao> usernameFromDB = getSubscriptionFromDB(username);
+		PushAdapter subscription = new PushAdapter(usernameFromDB.get());
 
-
-		Notification notification = new Notification(adapter, payLoad);
-
-		return notification;
+		return new Notification(subscription, "{\"notification\":"+payLoad+"}");
 	}
 
+	public Optional<SubscriptionDao> getSubscriptionFromDB(String username) {
+		Optional<SubscriptionDao> byUsername = subscriptionRepository.findByUsername(username);
 
+		if (!byUsername.isPresent()) {
+			throw new UserIsNotPresentException(String.format("User \"%s\" is not present in database", username));
+		}
 
-
-
-
+		return byUsername;
+	}
 }

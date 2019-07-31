@@ -1,5 +1,6 @@
 package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationBuilder {
@@ -10,7 +11,7 @@ public class NotificationBuilder {
 	private String body;
 	private boolean silent;
 	private Object data;
-	private List<Object> actions;
+	private List<Object> actions = new ArrayList<>();
 
 	public NotificationBuilder() {
 	}

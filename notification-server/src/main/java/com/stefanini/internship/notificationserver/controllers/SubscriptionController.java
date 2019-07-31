@@ -12,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v01")
 public class SubscriptionController {
@@ -38,7 +38,6 @@ public class SubscriptionController {
 
 		SubscriptionDao savedNotification = pushNotificationsService.save(webPushNotification);
 
-
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
@@ -47,7 +46,6 @@ public class SubscriptionController {
 		return ResponseEntity.created(location).build();
 
 	}
-
 
 }
 

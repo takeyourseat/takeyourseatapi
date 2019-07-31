@@ -6,6 +6,13 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.Security;
 
+/*
+			To understand how works this API Subscription check this out:
+
+https://github.com/web-push-libs/webpush-java/wiki/Usage-Example#serverside---parse-the-input
+
+ */
+
 public class PushAdapter extends Subscription {
 
 	private final SubscriptionDao subscriptionDao;

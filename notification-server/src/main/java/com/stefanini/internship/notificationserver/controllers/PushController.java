@@ -7,6 +7,10 @@ import org.apache.http.HttpResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/*
+This is hardcoded example:
+ */
+
 @RestController
 public class PushController {
 
@@ -28,16 +32,7 @@ public class PushController {
 				"            }\n" +
 				"        \n" +
 				"        },\n" +
-				"        \"actions\":[\n" +
-				"            {\n" +
-				"                \"action\": \"approve\",\n" +
-				"                \"title\": \"approve\"\n" +
-				"            },\n" +
-				"            {\n" +
-				"                \"action\":\"decline\",\n" +
-				"                \"title\":\"decline\"\n" +
-				"            }\n" +
-				"        ]\n" +
+				"        \"actions\":[]\n" +
 				"    }\n" +
 				"}\n";
 
@@ -48,10 +43,6 @@ public class PushController {
 			Notification notification = new Notification(sub, payload);
 			PushService pushService = new PushService("BIo4B1bsWsS3fDQZJjFo3k_M9C5sMm929H5EJMbqcYicjCiseaYeCDsE6dIB5NNw4u6rlW8YUWhs-evYAwa2mOM","dw1-Fz9_bD1aX9OAZ8uRt8c5p-CNNczirkGBiMYTUVM", "");
 			HttpResponse response = pushService.send(notification);
-
-
-
-
 
 		return response;
 	}
