@@ -15,9 +15,7 @@ public class PushAdapter extends Subscription {
 		this.subscriptionDao = subscriptionDao;
 		setProp();
 
-		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-			Security.addProvider(new BouncyCastleProvider());
-		}
+
 
 	}
 

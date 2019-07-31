@@ -1,12 +1,10 @@
 package com.stefanini.internship.notificationserver.model.dao;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "push_notifications")
 public class SubscriptionDao {
 
 	@Id

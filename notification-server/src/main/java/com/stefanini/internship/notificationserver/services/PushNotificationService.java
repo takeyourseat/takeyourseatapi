@@ -14,6 +14,7 @@ import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 
@@ -32,9 +33,9 @@ public class PushNotificationService {
 		pushService.send(notification);
 	}
 
-	public SubscriptionDao getDataFromDB(String username) {
-		SubscriptionDao byUsername = subscriptionRepository.findByUsername(username);
-		if (byUsername == null) {
+	public Optional<SubscriptionDao> getDataFromDB(String username) {
+		Optional<SubscriptionDao> byUsername = subscriptionRepository.findByUsername(username);
+		if (!byUsername.isPresent()) {
 			throw new UserIsNotPresentException("User is not present in DB");
 		}
 		return byUsername;
@@ -42,8 +43,8 @@ public class PushNotificationService {
 
 	public Notification createNotification(String username, String payLoad) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 
-		SubscriptionDao object = getDataFromDB(username);
-		PushAdapter adapter = new PushAdapter(object);
+		Optional<SubscriptionDao> object = getDataFromDB(username);
+		PushAdapter adapter = new PushAdapter(object.get());
 
 
 		Notification notification = new Notification(adapter, payLoad);

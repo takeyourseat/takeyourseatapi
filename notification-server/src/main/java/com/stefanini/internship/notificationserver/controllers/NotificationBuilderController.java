@@ -1,15 +1,16 @@
 package com.stefanini.internship.notificationserver.controllers;
 
 import com.stefanini.internship.notificationserver.services.NotificationBuilderService;
+import org.jose4j.lang.JoseException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.spec.InvalidKeySpecException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.concurrent.ExecutionException;
 
+@CrossOrigin
+@RestController
 public class NotificationBuilderController {
 
 	private NotificationBuilderService notificationBuilderService;
@@ -19,9 +20,9 @@ public class NotificationBuilderController {
 	}
 
 
-	@PostMapping("/notifications/{reviewer}/managers")
+	@PostMapping("/api/v01/notifications/{reviewer}/managers")
 	public ResponseEntity receiveManagerNotificationJSON(@PathVariable("reviewer") String reviewer,
-														 @RequestBody String objectJSON) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+														 @RequestBody String objectJSON) throws GeneralSecurityException, InterruptedException, JoseException, ExecutionException, IOException {
 		notificationBuilderService.sendPayLoad(reviewer,objectJSON);
 
 		return ResponseEntity.ok().body(objectJSON);

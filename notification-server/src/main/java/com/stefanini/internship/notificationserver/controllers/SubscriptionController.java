@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v01")
+@CrossOrigin
 public class SubscriptionController {
 
 	private SubscriptionService pushNotificationsService;
@@ -33,11 +34,11 @@ public class SubscriptionController {
 		}
 	}
 
-	@PostMapping("/notifications")
+	@PostMapping("/subscriptions")
 	public ResponseEntity<Object> createNotificationSubscription(@RequestBody SubscriptionDao webPushNotification) {
 
 		SubscriptionDao savedNotification = pushNotificationsService.save(webPushNotification);
-
+		System.out.println("IM HERE!!!!");
 
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest()

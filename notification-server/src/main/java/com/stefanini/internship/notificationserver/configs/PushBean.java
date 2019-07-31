@@ -1,10 +1,12 @@
 package com.stefanini.internship.notificationserver.configs;
 
 import nl.martijndwars.webpush.PushService;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.security.GeneralSecurityException;
+import java.security.Security;
 
 @Configuration
 public class PushBean {
@@ -15,6 +17,11 @@ public class PushBean {
 
 	@Bean
 	public PushService pushService() throws GeneralSecurityException {
+
+		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
+
 		return new PushService(VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT);
 	}
 
