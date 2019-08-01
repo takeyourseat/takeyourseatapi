@@ -13,8 +13,11 @@ public class SubscriptionDao {
 
 	private String username;
 	private String auth;
+
 	@Column(name = "the_key")
 	private String key;
+
+	@Column(unique = true)
 	private String endpoint;
 
 	public SubscriptionDao() {

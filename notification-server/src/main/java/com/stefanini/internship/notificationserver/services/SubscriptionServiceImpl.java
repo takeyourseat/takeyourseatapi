@@ -31,9 +31,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Override
 	public List<SubscriptionDao> getSubscriptionsFromDB(String username) {
-
-		
-
 		return  pushNotificationsRepository.findAllByUsername(username);
 	}
 
