@@ -10,7 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "role")
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +23,12 @@ public class Role {
     @Column(name="enabled", nullable = false)
     private boolean enabled;
 
+    public Role(String name) {
+        this.name = name;
+    }
+
+    public Role(String name, boolean enabled) {
+        this.name = name;
+        this.enabled = enabled;
+    }
 }

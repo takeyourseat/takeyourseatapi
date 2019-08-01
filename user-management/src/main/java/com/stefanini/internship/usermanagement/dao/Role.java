@@ -1,32 +1,35 @@
 package com.stefanini.internship.usermanagement.dao;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "roles")
-
-
-public class Role{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+@NoArgsConstructor
+@AllArgsConstructor
+public class Role {
     private Long id;
-
-    @Column(name = "name", nullable = false, unique = true)
     private String name;
+    private boolean enabled;
 
-
-    public Role() {
-    }
-
-    public Role(Long id) {
-        this.id = id;
-    }
-
+    //region Constructors
     public Role(String name) {
         this.name = name;
     }
 
+    public Role(String name, boolean enabled) {
+        this.name = name;
+        this.enabled = enabled;
+    }
+
+    //endregion
+
+    //region Getters and Setters
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getId() {
         return id;
@@ -43,6 +46,5 @@ public class Role{
     public void setName(String name) {
         this.name = name;
     }
+    //endregion
 }
-
-
