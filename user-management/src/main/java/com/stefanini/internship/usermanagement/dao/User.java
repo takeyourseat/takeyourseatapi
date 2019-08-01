@@ -2,14 +2,13 @@ package com.stefanini.internship.usermanagement.dao;
 
 import com.stefanini.internship.usermanagement.authentication.UserAuthenticationListener;
 import com.stefanini.internship.usermanagement.authorization.UserAuthorizationListener;
+import lombok.AllArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-
 
 @Entity
+@AllArgsConstructor
 @Table(name = "users")
 @EntityListeners({UserAuthorizationListener.class, UserAuthenticationListener.class})
 
@@ -32,37 +31,30 @@ public class User {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "job_title")
-    private String jobTitle;
-
-
     @ManyToOne(fetch = FetchType.EAGER)
     private User manager;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Transient
     private Role role;
 
     @Transient
     private String password;
 
+    //region Constructors
     public User() {
     }
 
-    public User(Long id) {
-        this.id = id;
-    }
-
-    public User(String fName, String lName, String email, String username, String jobTitle, User manager, @NotNull Role role) {
+    public User(String fName, String lName, String email, String username, User manager, Role role) {
         this.fName = fName;
         this.lName = lName;
         this.email = email;
         this.username = username;
-        this.jobTitle = jobTitle;
         this.manager = manager;
         this.role = role;
     }
+    //endregion
 
+    //region Getters and Setters
     public Long getId() {
         return id;
     }
@@ -108,15 +100,6 @@ public class User {
         return this;
     }
 
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public User setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-        return this;
-    }
-
     public User getManager() {
         return manager;
     }
@@ -143,4 +126,5 @@ public class User {
         this.password = password;
         return this;
     }
+    //endregion
 }
