@@ -5,6 +5,10 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.Security;
 
+/*
+This is used for hardcoded example
+ */
+
 public class OurSubscription extends Subscription {
 
 

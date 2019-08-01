@@ -12,10 +12,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v01")
-@CrossOrigin
 public class SubscriptionController {
 
 	private SubscriptionService pushNotificationsService;
@@ -24,7 +23,7 @@ public class SubscriptionController {
 		this.pushNotificationsService = webPushNotificationsService;
 	}
 
-	@GetMapping("/get/notifications")
+	@GetMapping("/get/subscriptions")
 	public ResponseEntity retrieveAllPushNotifications() {
 		List<SubscriptionDao> pushNotificationsList = pushNotificationsService.findAllPushNotifications();
 		if (pushNotificationsList.isEmpty()) {
@@ -35,10 +34,9 @@ public class SubscriptionController {
 	}
 
 	@PostMapping("/subscriptions")
-	public ResponseEntity<Object> createNotificationSubscription(@RequestBody SubscriptionDao webPushNotification) {
+	public ResponseEntity createNotificationSubscription(@RequestBody SubscriptionDao subscriptionDao) {
 
-		SubscriptionDao savedNotification = pushNotificationsService.save(webPushNotification);
-		System.out.println("IM HERE!!!!");
+		SubscriptionDao savedNotification = pushNotificationsService.save(subscriptionDao);
 
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest()

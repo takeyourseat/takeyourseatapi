@@ -1,9 +1,7 @@
 package com.stefanini.internship.notificationserver.services;
 
-import com.stefanini.internship.notificationserver.exceptions.UserIsNotPresentException;
 import com.stefanini.internship.notificationserver.model.dao.SubscriptionDao;
 import com.stefanini.internship.notificationserver.model.dto.PushAdapter;
-import com.stefanini.internship.notificationserver.repository.SubscriptionRepository;
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
 import org.jose4j.lang.JoseException;
@@ -14,47 +12,40 @@ import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
 @Service
 public class PushNotificationService {
 
-	private SubscriptionRepository subscriptionRepository;
+	private SubscriptionServiceImpl subscriptionService;
 	private PushService pushService;
 
-	public PushNotificationService(SubscriptionRepository subscriptionRepository, PushService pushService) {
-		this.subscriptionRepository = subscriptionRepository;
+	public PushNotificationService(SubscriptionServiceImpl subscriptionService, PushService pushService) {
+		this.subscriptionService = subscriptionService;
 		this.pushService = pushService;
 	}
 
-	public void  sendNotification(Notification notification) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
-		pushService.send(notification);
-	}
+	public void sendNotifications(List<Notification> notifications) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
 
-	public Optional<SubscriptionDao> getDataFromDB(String username) {
-		Optional<SubscriptionDao> byUsername = subscriptionRepository.findByUsername(username);
-		if (!byUsername.isPresent()) {
-			throw new UserIsNotPresentException("User is not present in DB");
+		for (Notification notification : notifications) {
+			pushService.send(notification);
 		}
-		return byUsername;
 	}
 
-	public Notification createNotification(String username, String payLoad) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+	public List<Notification> createNotification(String username, String payLoad) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, NoSuchFieldException {
 
-		Optional<SubscriptionDao> object = getDataFromDB(username);
-		PushAdapter adapter = new PushAdapter(object.get());
+		List<SubscriptionDao> subscriptionsFromDB = subscriptionService.getSubscriptionsFromDB(username);
+		List<PushAdapter> subscriptions = PushAdapter.from(subscriptionsFromDB);
+		List<Notification> notifications = new ArrayList<>();
 
-
-		Notification notification = new Notification(adapter, payLoad);
-
-		return notification;
+		for (PushAdapter subscription : subscriptions) {
+			Notification notification = new Notification(subscription, "{\"notification\":"+payLoad+"}");
+			 notifications.add(notification);
+		}
+		return notifications;
 	}
-
-
-
-
-
 
 }

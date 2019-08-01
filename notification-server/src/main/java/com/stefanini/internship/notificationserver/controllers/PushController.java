@@ -7,6 +7,10 @@ import org.apache.http.HttpResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/*
+This is hardcoded example:
+ */
+
 @RestController
 public class PushController {
 
@@ -41,16 +45,13 @@ public class PushController {
 				"    }\n" +
 				"}\n";
 
-		OurSubscription sub = new OurSubscription("https://fcm.googleapis.com/fcm/send/ck7v6F_eF9o:APA91bFz-cIN6UygwfZVfxjIf7JuLz9sekX14pKpeEK--NIPaGv0NU_mgGvsH8Iirldc11wE8LrAwTOXl2Vf0WPRmd0l5lO5ZWmBMwcYJKKpNRDx_GrJebZyH3h-OJSyHd3iWtZ-PnH6",
-				new OurSubscription.Keys("BJQzgYBPnwG-oKOF7745VJ3naqLHGXLH2DYenJbiKBrZ10Gq6Fy9pztWZt8NMOhIduGlAlqtEINzGbYCkJPLd7Y",
-                        "ZUwa0VYo8c_JKn2s7WgY0Q"));
+		OurSubscription sub = new OurSubscription("https://fcm.googleapis.com/fcm/send/ddzw196twLk:APA91bHa8Rf7bsKMiThlGF0IuQbxoXE4N9EkrdkQXzsJFQpmMywAC0JPM-rxJZMU44u5-ixbypu3XT9r2AvzEDaYed1rHwKJcJOGl5kEeSSUv08cEziB9gTqzTFZXqa4NyOrttw2XeX0",
+				new OurSubscription.Keys("BOt9DS8mlCYjE-Rz2ZygFRs0krG_nv-jZC0OaoeiK3Ri4rlJqWSK_hMcq262xqFNzIAY_ZY84qP1487RdEKZYIw",
+						"MuUlXuxS2f4ddjAFWp7nZg"));
 
 			Notification notification = new Notification(sub, payload);
 			PushService pushService = new PushService("BIo4B1bsWsS3fDQZJjFo3k_M9C5sMm929H5EJMbqcYicjCiseaYeCDsE6dIB5NNw4u6rlW8YUWhs-evYAwa2mOM","dw1-Fz9_bD1aX9OAZ8uRt8c5p-CNNczirkGBiMYTUVM", "");
 			HttpResponse response = pushService.send(notification);
-        System.out.println("g");
-
-
 
 
 	}
