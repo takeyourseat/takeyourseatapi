@@ -188,9 +188,15 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+        <dependency>
+            <groupId>com.stefanini.internship</groupId>
+            <artifactId>authorization-server</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 
     <build>
 

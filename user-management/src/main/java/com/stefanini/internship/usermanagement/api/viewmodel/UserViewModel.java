@@ -1,6 +1,6 @@
 package com.stefanini.internship.usermanagement.api.viewmodel;
 
-import com.stefanini.internship.usermanagement.dao.Role;
+import com.stefanini.internship.authorizationserver.dao.Role;
 import com.stefanini.internship.usermanagement.dao.User;
 
 public class UserViewModel {

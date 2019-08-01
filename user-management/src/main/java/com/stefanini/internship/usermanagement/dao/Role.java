@@ -1,30 +1,30 @@
 package com.stefanini.internship.usermanagement.dao;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "roles")
-
-
-public class Role{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+@NoArgsConstructor
+@AllArgsConstructor
+public class Role {
     private Long id;
-
-    @Column(name = "name", nullable = false, unique = true)
     private String name;
-
-
-    public Role() {
-    }
-
-    public Role(Long id) {
-        this.id = id;
-    }
+    private boolean enabled;
 
     public Role(String name) {
         this.name = name;
+    }
+
+    public Role(String name, boolean enabled) {
+        this.name = name;
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -43,5 +43,3 @@ public class Role{
         this.name = name;
     }
 }
-
-

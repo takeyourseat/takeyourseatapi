@@ -1,13 +1,14 @@
-package com.stefanini.internship.usermanagement.api;
+package com.stefanini.internship.usermanagement.controllers;
 
-
-import com.stefanini.internship.usermanagement.dao.Role;
+import com.stefanini.internship.authorizationserver.dao.Role;
 import com.stefanini.internship.usermanagement.dao.User;
-import com.stefanini.internship.usermanagement.dao.repository.RoleRepository;
 import com.stefanini.internship.usermanagement.dao.repository.UserRepository;
+import com.stefanini.internship.usermanagement.services.RoleService;
+import com.stefanini.internship.usermanagement.services.UserManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,36 @@ import java.util.List;
 
 @Controller
 public class MainController {
+    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    @Autowired
+    private UserManagementService userManagementService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
-    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+    @ResponseBody
+    @CrossOrigin
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public List<User> getAllUsers() {
+        logger.info("Accessed the GET method to find all users");
+        List<Role> allUsersRoles = roleService.getAllRoles();
+        List<User> allUsers = userManagementService.getAllUsers();
+        List<User> allUsers1 = userRepository.findAll();
+        logger.debug("GET method for taking all users performs itself");
+        return allUsers;
+    }
 
+    @ResponseBody
+    @CrossOrigin
+    @RequestMapping(value = "/allroles", method = RequestMethod.GET)
+    public ResponseEntity getAllRoles() {
+        logger.info("Accessed the GET method to find all roles");
+        List<Role> allroles = roleService.getAllRoles();
+        logger.debug("GET method for taking all users performs itself");
+        return ResponseEntity.ok().body(allroles);
+    }
 
     @ResponseBody
     @CrossOrigin
@@ -37,26 +60,6 @@ public class MainController {
         );
         logger.debug(String.format("Method performs searching the users according to the input argument = '%s' and returns result", searchArgument));
         return user;
-    }
-
-    @ResponseBody
-    @CrossOrigin
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public List<User> getUsers() {
-        logger.info("Accessed the GET method to find all users");
-        List<User> users = userRepository.findAll();
-        logger.debug("GET method for taking all users performs itself");
-        return users;
-    }
-
-    @ResponseBody
-    @CrossOrigin
-    @RequestMapping(value = "/roles", method = RequestMethod.GET)
-    public List<Role> getRoles(){
-        logger.info("Accessed the GET method to returns all roles");
-        List<Role> roles = roleRepository.findAll();
-        logger.debug("GET method for taking all roles performs itself");
-        return roles;
     }
 
     @ResponseBody
@@ -87,8 +90,8 @@ public class MainController {
             editableUser.setPassword(user.getPassword());
         if (!user.getJobTitle().isEmpty())
             editableUser.setJobTitle(user.getJobTitle());
-        if (!user.getRole().getName().isEmpty())
-            editableUser.setRole(user.getRole());
+//        if (!user.getRole().getName().isEmpty())
+           // editableUser.setRole(user.getNameOfRole());
         if (!user.getManager().getUsername().isEmpty())
             editableUser.setManager(user.getManager());
         userRepository.save(editableUser);
@@ -104,7 +107,6 @@ public class MainController {
         logger.debug("GET method performs searching users by username" + username);
         return user;
     }
-
 
     @ResponseBody
     @CrossOrigin
