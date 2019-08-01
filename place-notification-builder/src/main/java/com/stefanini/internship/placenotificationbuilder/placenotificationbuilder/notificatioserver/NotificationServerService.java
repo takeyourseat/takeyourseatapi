@@ -1,6 +1,7 @@
 package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.notificatioserver;
 
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.NotificationBuilder;
+import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.utils.AuthorizationUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,7 @@ public class NotificationServerService {
 
 	public void sendManagerNotificationJSON(String reviewer, NotificationBuilder objectJSON) {
 
-		feignProxy.receiveManagerNotificationJSON(reviewer, objectJSON);
+		feignProxy.receiveManagerNotificationJSON(reviewer, objectJSON, AuthorizationUtils.getAuthToken());
 	}
 }
 

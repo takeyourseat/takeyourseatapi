@@ -1,4 +1,4 @@
-package com.stefanini.internship.notificationserver.configs;
+package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.authorizeRequests().antMatchers("/v2/api-docs",
                 "/config/**",
                 "/swagger*/**",
-                "/webjars/**").permitAll().anyRequest().authenticated();
+                "/webjars/**",
+                "/api/v01/notifications/images/**").permitAll().anyRequest().authenticated();
     }
 
     @Primary
