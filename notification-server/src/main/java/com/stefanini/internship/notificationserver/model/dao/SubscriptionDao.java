@@ -4,7 +4,7 @@ package com.stefanini.internship.notificationserver.model.dao;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "push_notifications")
+@Table(name = "subscriptions")
 public class SubscriptionDao {
 
 	@Id

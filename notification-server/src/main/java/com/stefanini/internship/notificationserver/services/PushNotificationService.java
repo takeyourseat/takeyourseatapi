@@ -35,7 +35,12 @@ public class PushNotificationService {
 		}
 	}
 
-	public List<Notification> createNotification(String username, String payLoad) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, NoSuchFieldException {
+	public void sendReceivedNotificationJSON(String reviewer, String objectJSON) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException, NoSuchFieldException {
+		List<Notification> notifications = createNotifications(reviewer, objectJSON);
+		sendNotifications(notifications);
+	}
+
+	public List<Notification> createNotifications(String username, String payLoad) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, NoSuchFieldException {
 
 		List<SubscriptionDao> subscriptionsFromDB = subscriptionService.getSubscriptionsFromDB(username);
 		List<PushAdapter> subscriptions = PushAdapter.from(subscriptionsFromDB);

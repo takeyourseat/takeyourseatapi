@@ -1,6 +1,6 @@
 package com.stefanini.internship.notificationserver.controllers;
 
-import com.stefanini.internship.notificationserver.services.OrchestrationService;
+import com.stefanini.internship.notificationserver.services.PushNotificationService;
 import org.jose4j.lang.JoseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +14,17 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/api/v01")
 public class NotificationBuilderController {
 
-	private OrchestrationService orchestrationService;
+	private PushNotificationService pushNotificationService;
 
-	public NotificationBuilderController(OrchestrationService orchestrationService) {
-		this.orchestrationService = orchestrationService;
+	public NotificationBuilderController(PushNotificationService pushNotificationService) {
+		this.pushNotificationService = pushNotificationService;
 	}
 
 
 	@PostMapping("/notifications/{reviewer}/managers")
 	public ResponseEntity receiveManagerNotificationJSON(@PathVariable("reviewer") String reviewer,
 														 @RequestBody String objectJSON) throws GeneralSecurityException, InterruptedException, JoseException, ExecutionException, IOException, NoSuchFieldException {
-		orchestrationService.sendReceivedNotificationJSON(reviewer, objectJSON);
+		pushNotificationService.sendReceivedNotificationJSON(reviewer, objectJSON);
 
 		return ResponseEntity.ok().body(objectJSON);
 
