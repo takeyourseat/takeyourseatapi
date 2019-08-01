@@ -53,7 +53,7 @@ public class PlaceRequestService {
     }
 
     //Todo Authorize for creating a place request
-    public PlaceRequest createPlaceRequest(Long placeId) {
+    public PlaceRequest createPlaceRequest(Long placeId, PlaceRequest placeRequestDescription) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         PlaceRequest placeRequest = new PlaceRequest();
         User user = userService.getUserByUsername(username);
@@ -70,6 +70,7 @@ public class PlaceRequestService {
         placeRequest.setUsername(username);
         placeRequest.setPlace(place);
         placeRequest.setDateOf(new Timestamp(System.currentTimeMillis()));
+        placeRequest.setDescription(placeRequestDescription.getDescription());
         if (user.getManager() == null) {
             log.info("User with id = " + user.getId() + " has no manager");
             throw new ResourceNotFoundException("This user has no manager");
@@ -80,7 +81,7 @@ public class PlaceRequestService {
             throw new DuplicateResourceException("The user with username = " + username + " is already on the place with id = " + placeId);
         }
         if (place.getUsername() != null) {
-            log.info(String.format("Place with id = %d is already occupied by another user",place.getId()));
+            log.info(String.format("Place with id = %d is already occupied by another user", place.getId()));
             throw new DuplicateResourceException("The place with id = " + placeId + " is occupied by another user");
         }
         PlaceRequest identicalPlaceRequest = placeRequestRepository.getPlaceRequestByPlaceIdAndUsernameAndReviewedAt(placeId, placeRequest.getUsername(), placeRequest.getReviewedAt());

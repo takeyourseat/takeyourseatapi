@@ -1,9 +1,11 @@
 package com.stefanini.internship.oauthserver.config;
 
+import com.stefanini.internship.oauthserver.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurer;
@@ -27,6 +29,9 @@ public class AuthorizationServiceConfiguration implements AuthorizationServerCon
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
     @Bean
     TokenStore jdbcTokenStore(){
         return new JdbcTokenStore(dataSource);
@@ -45,7 +50,8 @@ public class AuthorizationServiceConfiguration implements AuthorizationServerCon
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(jdbcTokenStore())
-            .authenticationManager(authenticationManager);
+            .authenticationManager(authenticationManager)
+             .userDetailsService(userDetailsService);
     }
 
 }
