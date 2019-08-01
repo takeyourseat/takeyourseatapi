@@ -27,7 +27,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	@Override
 	public Optional<SubscriptionDao> findByUsername(String username) {
 		return pushNotificationsRepository.findByUsername(username);
+	}
 
+	@Override
+	public List<SubscriptionDao> getSubscriptionsFromDB(String username) {
+		return  pushNotificationsRepository.findAllByUsername(username);
 	}
 
 	@Override

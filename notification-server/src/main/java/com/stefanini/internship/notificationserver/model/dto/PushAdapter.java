@@ -5,6 +5,8 @@ import nl.martijndwars.webpush.Subscription;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.Security;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 			To understand how works this API Subscription check this out:
@@ -31,5 +33,16 @@ public class PushAdapter extends Subscription {
 	private void setProp() {
 		super.endpoint = this.subscriptionDao.getEndpoint();
 		super.keys = new Keys(this.subscriptionDao.getKey(), this.subscriptionDao.getAuth());
+	}
+
+	public static List<PushAdapter> from (List<SubscriptionDao> subscriptions) {
+
+		List<PushAdapter> pushAdapters = new ArrayList<>();
+
+		for(SubscriptionDao subscription: subscriptions ) {
+			PushAdapter adapter = new PushAdapter(subscription);
+			pushAdapters.add(adapter);
+		}
+		return pushAdapters;
 	}
 }

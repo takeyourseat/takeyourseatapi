@@ -12,10 +12,11 @@ public interface SubscriptionService {
 
 	Optional<SubscriptionDao> findByUsername(String username);
 
+	List<SubscriptionDao> getSubscriptionsFromDB(String username);
+
 	Optional<SubscriptionDao> deleteByUsername(String username);
 
 	SubscriptionDao save(SubscriptionDao pushNotification);
-
 
 	void deleteById(Long id);
 
