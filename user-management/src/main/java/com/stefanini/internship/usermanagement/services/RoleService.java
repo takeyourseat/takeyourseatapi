@@ -28,7 +28,7 @@ public class RoleService {
         HttpEntity<Void> request = new HttpEntity<>(oAuthToken);
 
 //        ResponseEntity response = restTemplate.exchange(ROLE_SERVICE_URL + "api/v01/roles", HttpMethod.GET, request, List.class);
-        ResponseEntity response = restTemplate.exchange(ROLE_SERVICE_URL + "api/v01/roles", HttpMethod.GET,request, new ParameterizedTypeReference<List<Role>>() {
+        ResponseEntity response = restTemplate.exchange(ROLE_SERVICE_URL + "api/v01/roles", HttpMethod.GET, request, new ParameterizedTypeReference<List<Role>>() {
         });
         return (List<Role>) response.getBody();
 

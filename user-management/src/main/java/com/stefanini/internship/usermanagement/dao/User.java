@@ -31,9 +31,6 @@ public class User {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "job_title")
-    private String jobTitle;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private User manager;
 
@@ -43,18 +40,19 @@ public class User {
     @Transient
     private String password;
 
+    //region Constructors
     public User() {
     }
 
-    public User(String fName, String lName, String email, String username, String jobTitle, User manager, Role role) {
+    public User(String fName, String lName, String email, String username, User manager, Role role) {
         this.fName = fName;
         this.lName = lName;
         this.email = email;
         this.username = username;
-        this.jobTitle = jobTitle;
         this.manager = manager;
         this.role = role;
     }
+    //endregion
 
     //region Getters and Setters
     public Long getId() {
@@ -99,15 +97,6 @@ public class User {
 
     public User setUsername(String username) {
         this.username = username;
-        return this;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public User setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
         return this;
     }
 

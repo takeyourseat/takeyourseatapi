@@ -10,6 +10,7 @@ public class Role {
     private String name;
     private boolean enabled;
 
+    //region Constructors
     public Role(String name) {
         this.name = name;
     }
@@ -19,6 +20,9 @@ public class Role {
         this.enabled = enabled;
     }
 
+    //endregion
+
+    //region Getters and Setters
     public boolean isEnabled() {
         return enabled;
     }
@@ -42,4 +46,5 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
+    //endregion
 }

@@ -52,7 +52,7 @@ public class MainController {
     @ResponseBody
     @CrossOrigin
     @RequestMapping(value = "/users", params = "searchArgument", method = RequestMethod.GET)
-    public List<User> getOneUser(@RequestParam("searchArgument")String searchArgument) {
+    public List<User> getOneUser(@RequestParam("searchArgument") String searchArgument) {
         logger.info("Accessed GET method for searching users with parameters : " + searchArgument);
         List<User> user = userRepository.findByFNameContainingOrLNameContaining(
                 searchArgument,
@@ -88,10 +88,6 @@ public class MainController {
             editableUser.setEmail(user.getEmail());
         if (!user.getPassword().isEmpty())
             editableUser.setPassword(user.getPassword());
-        if (!user.getJobTitle().isEmpty())
-            editableUser.setJobTitle(user.getJobTitle());
-//        if (!user.getRole().getName().isEmpty())
-           // editableUser.setRole(user.getNameOfRole());
         if (!user.getManager().getUsername().isEmpty())
             editableUser.setManager(user.getManager());
         userRepository.save(editableUser);
@@ -114,14 +110,14 @@ public class MainController {
     public User getUserManager(@PathVariable("username") String username) {
         logger.info(String.format("Accessed GET method to find user's ('%s') manager", username));
         User user = userRepository.findUserByUsername(username);
-        logger.debug(String.format("GET method performs searching user's ('%s') manager" , username));
+        logger.debug(String.format("GET method performs searching user's ('%s') manager", username));
         return user.getManager();
     }
 
     @ResponseBody
     @CrossOrigin
     @RequestMapping(value = "/users", params = "manager", method = RequestMethod.GET)
-    public List<User> getUsersByManagerUsername(@RequestParam("manager")String managerUsername) {
+    public List<User> getUsersByManagerUsername(@RequestParam("manager") String managerUsername) {
         logger.info("Accessed GET method to return all users of the manager :" + managerUsername);
         List<User> users = userRepository.findUsersByManagerUsername(managerUsername);
         logger.debug("GET method performs searching all users of the manager" + managerUsername);
