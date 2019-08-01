@@ -1,5 +1,6 @@
 package com.stefanini.internship.oauthserver.service;
 
+import com.stefanini.internship.oauthserver.dao.User;
 import com.stefanini.internship.oauthserver.dao.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
@@ -16,9 +17,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        UserDetails user = repository.getByUsername(name);
+        User user = repository.findByUsername(name);
 
-        if(user == null)
+        if (user == null)
             throw new UsernameNotFoundException("Username or password is wrong");
 
         new AccountStatusUserDetailsChecker().check(user);

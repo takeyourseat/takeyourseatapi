@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class AuthorizationUsersService {
@@ -60,12 +62,29 @@ public class AuthorizationUsersService {
     @PreAuthorize("@authorizationService.checkAuthorization('user','write').isAuthorized()")
     public void deleteUser(String username){
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info(String.format("User '%s' tries to disable user '%s'",authenticatedUserName,username));
+        log.info(String.format("User '%s' has sent a request to disable user '%s'",authenticatedUserName,username));
         User user = userRepository.findByUsername(username);
         entityValidationService.AssertValidResult(user, username);
         user.setEnabled(false);
         userRepository.save(user);
 
         log.info(String.format("User '%s' disabled user '%s'",authenticatedUserName,username));
+    }
+
+    @PreAuthorize("@authorizationService.checkAuthorization('user','read').isAuthorized()")
+    public User getUser(String username) {
+        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info(String.format("User '%s' requested the authorization information for user '%s'",authenticatedUserName,username));
+        User user = userRepository.findByUsername(username);
+        entityValidationService.AssertValidResult(user, username);
+        return user;
+    }
+
+    @PreAuthorize("@authorizationService.checkAuthorization('user','read').isAuthorized()")
+    public List<User> getAllUsers() {
+        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info(String.format("User '%s' requested the authorization information for all users",authenticatedUserName));
+        List<User> users = userRepository.findAll();
+        return users;
     }
 }
