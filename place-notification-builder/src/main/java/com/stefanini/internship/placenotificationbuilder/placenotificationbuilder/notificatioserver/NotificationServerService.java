@@ -13,9 +13,9 @@ public class NotificationServerService {
 		this.feignProxy = feignProxy;
 	}
 
-	public void sendManagerNotificationJSON(String reviewer, NotificationBuilder objectJSON) {
+	public void sendNotificationJSON(String receiver, NotificationBuilder objectJSON) {
 
-		feignProxy.receiveManagerNotificationJSON(reviewer, objectJSON, AuthorizationUtils.getAuthToken());
+		feignProxy.sendNotificationJSON(receiver, objectJSON, AuthorizationUtils.getAuthToken());
 	}
 }
 

@@ -2,14 +2,12 @@ package com.stefanini.internship.placenotificationbuilder.placenotificationbuild
 
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.NotificationBuilder;
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.PlaceRequest;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.notificatioserver.NotificationServerService;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.service.PlaceNotificationBuilderService;
+import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.service.NotificationSenderService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,25 +16,31 @@ import java.io.InputStream;
 @RequestMapping("/api/v01")
 public class PlaceNotificationBuilderController {
 
-	private PlaceNotificationBuilderService placeNotificationBuilderService;
-	private NotificationServerService notificationService;
-	private ServletContext servletContext;
+	private NotificationSenderService notificationSenderService;
 
-	public PlaceNotificationBuilderController(PlaceNotificationBuilderService placeNotificationBuilderService, NotificationServerService notificationService, ServletContext servletContext) {
-		this.placeNotificationBuilderService = placeNotificationBuilderService;
-		this.notificationService = notificationService;
-		this.servletContext = servletContext;
+	public PlaceNotificationBuilderController(NotificationSenderService notificationSenderService) {
+		this.notificationSenderService = notificationSenderService;
+	}
+
+	@PostMapping("/notifications/managers/review-new-place-request")
+	public ResponseEntity receiveNewPlaceRequestManagerNotification(@RequestBody PlaceRequest placeRequest) {
+
+		notificationSenderService.receiveNewPlaceRequestManagerNotification(placeRequest);
+
+		return ResponseEntity.ok().body(placeRequest);
 	}
 
 
-	@PostMapping("/notifications/managers")
-	public ResponseEntity receiveManagerNotification(@RequestBody PlaceRequest managerNotification) {
+	@PostMapping("/notifications/employees/reviewed-place-request")
+	public ResponseEntity receiveReviewedPlaceRequestEmployeeNotification(@RequestBody PlaceRequest placeRequest) {
 
-		NotificationBuilder managerNotificationJSON = placeNotificationBuilderService.convertManagerNotificationToJSON(managerNotification);
-		notificationService.sendManagerNotificationJSON(managerNotification.getReviewer(),managerNotificationJSON);
+		notificationSenderService.receiveReviewedPlaceRequestEmployeeNotification(placeRequest);
 
-		return ResponseEntity.ok().body(managerNotification);
+		return ResponseEntity.ok().body(placeRequest);
 	}
+
+
+
 
 	@GetMapping("/notifications/images/{imagename}")
 	public void getImageAsByteArray(HttpServletResponse response, @PathVariable String imagename) throws IOException {

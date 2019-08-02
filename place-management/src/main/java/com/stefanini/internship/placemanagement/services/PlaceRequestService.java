@@ -93,7 +93,7 @@ public class PlaceRequestService {
         }
         placeRequestRepository.save(placeRequest);
         log.info("User with id = " + user.getId() + " has successfully created a place request with id = " + placeRequest.getId() + " on place with id = " + place.getId());
-        notificationService.sendPlaceManagementManagerNotification(placeRequest);
+        notificationService.sendNewPlaceRequestManagerNotification(placeRequest);
         return placeRequest;
     }
 
@@ -106,6 +106,7 @@ public class PlaceRequestService {
         newPlaceRequest.setApproved(false);
         newPlaceRequest.setReviewedAt(new Timestamp(System.currentTimeMillis()));
         log.info(String.format("Manager has successfully declined place request with id %d", id));
+        notificationService.sendReviewedPlaceRequestEmployeeNotification(newPlaceRequest);
         return newPlaceRequest;
     }
 
@@ -129,6 +130,7 @@ public class PlaceRequestService {
         declineAllPlaceRequestsIfUserWasAcceptedOnPlace(updatedPlaceRequest.getUsername());
         log.info(String.format("Manager has successfully accepted place request with id %d on place with id = %d ", id, placeById.getId()));
         placeRepository.save(placeById);
+        notificationService.sendReviewedPlaceRequestEmployeeNotification(updatedPlaceRequest);
         return updatedPlaceRequest;
     }
 

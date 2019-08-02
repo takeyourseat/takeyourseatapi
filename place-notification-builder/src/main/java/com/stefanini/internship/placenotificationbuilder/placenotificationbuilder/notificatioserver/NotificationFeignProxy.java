@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "place-notification-builder", url ="localhost:8087" )
 public interface NotificationFeignProxy {
 
-	@PostMapping("/api/v01/notifications/{reviewer}/managers")
-	 ResponseEntity receiveManagerNotificationJSON(@PathVariable("reviewer") String reviewer,
-												   @RequestBody NotificationBuilder objectJSON,
-												   @RequestHeader("Authorization") String token);
+	@PostMapping("/api/v01/notifications/{receiver}")
+	 ResponseEntity sendNotificationJSON(@PathVariable("receiver") String receiver,
+										 @RequestBody NotificationBuilder objectJSON,
+										 @RequestHeader("Authorization") String token);
 
 }

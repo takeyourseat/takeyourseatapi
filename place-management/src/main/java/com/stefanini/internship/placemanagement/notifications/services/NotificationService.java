@@ -13,8 +13,15 @@ public class NotificationService {
 		this.feignProxy = feignProxy;
 	}
 
-	public void sendPlaceManagementManagerNotification(PlaceRequest placeRequest) {
+	public void sendNewPlaceRequestManagerNotification(PlaceRequest placeRequest) {
 
-		feignProxy.receiveManagerNotification(placeRequest, AuthorizationUtils.getAuthToken());
+		feignProxy.sendNewPlaceRequestManagerNotification(placeRequest, AuthorizationUtils.getAuthToken());
 	}
+
+	public void sendReviewedPlaceRequestEmployeeNotification(PlaceRequest placeRequest) {
+
+		feignProxy.sendReviewedPlaceRequestEmployeeNotification(placeRequest, AuthorizationUtils.getAuthToken());
+	}
+
+
 }
