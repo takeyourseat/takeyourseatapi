@@ -7,6 +7,7 @@ import com.stefanini.internship.placemanagement.data.repositories.PlaceRepositor
 import com.stefanini.internship.placemanagement.exception.NotAvailableException;
 import com.stefanini.internship.placemanagement.exception.OutOfBoundsException;
 import com.stefanini.internship.placemanagement.exception.ResourceNotFoundException;
+import com.stefanini.internship.placemanagement.notifications.services.NotificationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +17,12 @@ public class PlaceService {
 
     private PlaceRepository placeRepository;
     private OfficeRepository officeRepository;
+    private NotificationService notificationService;
 
-    public PlaceService(PlaceRepository placeRepository, OfficeRepository officeRepository) {
+    public PlaceService(PlaceRepository placeRepository, OfficeRepository officeRepository, NotificationService notificationService) {
         this.placeRepository = placeRepository;
         this.officeRepository = officeRepository;
+        this.notificationService = notificationService;
     }
 
     public List<Place> getPlacesByOfficeNumber(Integer officeNumber) {
@@ -57,6 +60,7 @@ public class PlaceService {
         }
         newPlace.setUsername(place.getUsername());
         placeRepository.save(newPlace);
+        notificationService.sendModifiedPlaceNotification(newPlace);
         return newPlace;
     }
 
