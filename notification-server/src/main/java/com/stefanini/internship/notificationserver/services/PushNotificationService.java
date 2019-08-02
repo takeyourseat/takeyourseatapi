@@ -29,6 +29,7 @@ public class PushNotificationService {
 	}
 
 	public void sendNotifications(List<Notification> notifications) throws InterruptedException, GeneralSecurityException, JoseException, ExecutionException, IOException {
+
 		for (Notification notification : notifications) {
 			pushService.send(notification);
 		}

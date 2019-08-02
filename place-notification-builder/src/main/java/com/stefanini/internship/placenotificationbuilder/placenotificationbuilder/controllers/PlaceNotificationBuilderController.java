@@ -1,6 +1,6 @@
 package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.controllers;
 
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.Place;
+import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.NotificationBuilder;
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.PlaceRequest;
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.service.NotificationSenderService;
 import org.apache.commons.io.IOUtils;
@@ -38,18 +38,6 @@ public class PlaceNotificationBuilderController {
 
 		return ResponseEntity.ok().body(placeRequest);
 	}
-
-
-	@PostMapping("/notifications/users/modified-place-request")
-	public ResponseEntity receiveModifiedPlaceNotification(@RequestBody Place newPlace) {
-
-		notificationSenderService.receiveModifiedPlaceNotification(newPlace);
-
-		return ResponseEntity.ok().body(newPlace);
-	}
-
-
-
 
 
 

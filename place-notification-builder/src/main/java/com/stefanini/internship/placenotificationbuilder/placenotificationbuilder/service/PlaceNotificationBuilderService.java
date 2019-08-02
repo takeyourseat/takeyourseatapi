@@ -1,18 +1,19 @@
 package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.service;
 
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.excpetions.ResourceInvalidStateException;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.*;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.NotificationAction;
+import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.NotificationBuilder;
+import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.PlaceRequest;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class PlaceNotificationBuilderService {
+
+
+
 
 
 	public NotificationBuilder convertNewPlaceRequestManagerNotificationToJSON(PlaceRequest placeRequest) {
@@ -29,7 +30,7 @@ public class PlaceNotificationBuilderService {
 		notification.getActions().add(new NotificationAction("approve", "Approve" ));
 		notification.getActions().add(new NotificationAction("decline", "Decline" ));
 
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map =  new HashMap<>();
 		map.put("default", "requestedplace#PlaceRequest" + placeRequest.getId());
 		map.put("approve", "requestedplace/" + placeRequest.getId() + "/approve");
 		map.put("decline", "requestedplace/" + placeRequest.getId() + "/decline");
@@ -78,28 +79,6 @@ public class PlaceNotificationBuilderService {
 				" in office " + placeRequest.getPlace().getOffice().getNumber() +
 				" has been declined by " + placeRequest.getReviewer() +
 				" on " + placeRequest.getDateOf();
-		notification.setBody(body);
-
-		Map<String, Object> map =  new HashMap<>();
-		map.put("default", "/");
-		notification.getData().put("actionLinks",map);
-
-		return notification;
-	}
-
-	public NotificationBuilder modifiedPlaceNotificationToJSON(Place newPlace) {
-
-		NotificationBuilder notification = new NotificationBuilder();
-		String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-
-
-		notification.setTitle("Your place has been modified");
-
-
-		String body = "Your have been moved to new place (" + newPlace.getCoordinateX() + ", " + newPlace.getCoordinateY() + ") " +
-				"in office " + newPlace.getOffice().getNumber() + ", " +
-				"by manager " + authenticatedUserName +
-				" on " + LocalDate.now();
 		notification.setBody(body);
 
 		Map<String, Object> map =  new HashMap<>();

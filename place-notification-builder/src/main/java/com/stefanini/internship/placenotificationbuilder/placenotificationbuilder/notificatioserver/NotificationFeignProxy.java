@@ -15,4 +15,5 @@ public interface NotificationFeignProxy {
 	 ResponseEntity sendNotificationJSON(@PathVariable("receiver") String receiver,
 										 @RequestBody NotificationBuilder objectJSON,
 										 @RequestHeader("Authorization") String token);
+
 }

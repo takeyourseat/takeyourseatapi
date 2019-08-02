@@ -1,11 +1,9 @@
 package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.service;
 
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.NotificationBuilder;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.Place;
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.PlaceRequest;
 import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.notificatioserver.NotificationServerService;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class NotificationSenderService {
@@ -28,12 +26,6 @@ public class NotificationSenderService {
 
 		NotificationBuilder employeeNotificationJSON = placeNotificationBuilderService.convertReviewedPlaceRequestEmployeeNotificationToJSON(placeRequest);
 		notificationServerService.sendNotificationJSON(placeRequest.getReviewer(),employeeNotificationJSON);
-	}
-
-	public void receiveModifiedPlaceNotification(Place newPlace) {
-
-		NotificationBuilder userNotificationJSON = placeNotificationBuilderService.modifiedPlaceNotificationToJSON(newPlace);
-		notificationServerService.sendNotificationJSON(newPlace.getUsername(), userNotificationJSON);
 	}
 
 
