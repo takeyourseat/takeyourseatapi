@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  mysql-notification-server:
+    image: mysql
+    restart: always
+    ports:
+      - '3306:3306'
+    volumes:
+      - /var/takeyourseat/docker-volumes/mysql-notification-server:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+
+  notification-server:
+#    image: notification-server
+    build: .
+    ports:
+      - '8087:8087'
+    restart: always
+    depends_on:
+      -  mysql-notification-server
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-notification-server:3306/test'
+      SPRING_PROFILES_ACTIVE: 'dockercompose'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://167.71.46.25/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+
