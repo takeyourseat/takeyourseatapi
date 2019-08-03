@@ -2,7 +2,7 @@ version: '3'
 
 services:
   place-notification-builder:
-#    image: place-notification-builder
+#    image: capostol93/place-notification-builder
     build: .
     ports:
       - '8088:8088'

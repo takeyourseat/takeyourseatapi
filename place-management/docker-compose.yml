@@ -5,11 +5,9 @@ services:
     image: mysql
     restart: always
     ports:
-      - '3308:3306'
-    networks:
-      - host
+      - '3310:3306'
     volumes:
-      - /var/takeyourseatapi_dev/authorization-server:/var/lib/mysql
+      - /var/takeyourseat/docker-volumes/mysql-place-management:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: test
@@ -24,16 +22,11 @@ services:
     restart: always
     depends_on:
       -  mysql-place-management
-    networks:
-      - host
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-place-management:3306/test'
-      SPRING_PROFILES_ACTIVE: 'mysql'
+      SPRING_PROFILES_ACTIVE: 'dockercompose'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://192.168.56.112/health"]
+      test: ["CMD", "curl", "-f", "http://167.71.46.25/health"]
       interval: 1m30s
       timeout: 10s
       retries: 3
-
-networks:
-  host:

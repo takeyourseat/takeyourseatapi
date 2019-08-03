@@ -1,15 +1,86 @@
 version: '3'
 
+# ------------------------------
+# authorization-server instances
+# ------------------------------
+
 services:
-  mysql-oauth-server:
+  mysql-authorization-server:
     image: mysql
     restart: always
     ports:
       - '3307:3306'
-#    networks:
-#      - host
     volumes:
-      - /var/takeyourseatapi_dev/mysql-oauth-server:/var/lib/mysql
+      - /var/takeyourseat/docker-volumes/mysql-authorization-server:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+
+  authorization-server:
+    #    image: authorization-server
+    build: ./authorization-server
+    ports:
+      - '8086:8086'
+    restart: always
+    depends_on:
+      -  mysql-authorization-server
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-authorization-server:3306/test'
+      SPRING_PROFILES_ACTIVE: 'dockercompose'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://167.71.46.25/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+
+
+# ------------------------------
+# notification-server
+# ------------------------------
+
+  mysql-notification-server:
+    image: mysql
+    restart: always
+    ports:
+      - '3308:3306'
+    volumes:
+      - /var/takeyourseat/docker-volumes/mysql-notification-server:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+
+  notification-server:
+    #    image: capostol93/notification-server
+    build: ./notification-server
+    ports:
+      - '8087:8087'
+    restart: always
+    depends_on:
+      -  mysql-notification-server
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-notification-server:3306/test'
+      SPRING_PROFILES_ACTIVE: 'dockercompose'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://167.71.46.25/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+
+# ------------------------------
+# oauth-server instances
+# ------------------------------
+
+  mysql-oauth-server:
+    image: mysql
+    restart: always
+    ports:
+      - '3309:3306'
+    volumes:
+      - /var/takeyourseat/docker-volumes/mysql-oauth-server:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: test
@@ -24,27 +95,27 @@ services:
       - '8083:8083'
     restart: always
     depends_on:
-      - mysql-oauth-server
-#    networks:
-#      - host
+      -  mysql-oauth-server
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-oauth-server:3306/test'
-      SPRING_PROFILES_ACTIVE: 'mysql'
+      SPRING_PROFILES_ACTIVE: 'dockercompose'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://192.168.56.112/health"]
+      test: ["CMD", "curl", "-f", "http://167.71.46.25/health"]
       interval: 1m30s
       timeout: 10s
       retries: 3
+
+# ------------------------------
+# place-management instances
+# ------------------------------
 
   mysql-place-management:
     image: mysql
     restart: always
     ports:
-      - '3308:3306'
-#    networks:
-#      - host
+      - '3310:3306'
     volumes:
-      - /var/takeyourseatapi_dev/mysql-place-management:/var/lib/mysql
+      - /var/takeyourseat/docker-volumes/mysql-place-management:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: test
@@ -52,23 +123,72 @@ services:
       MYSQL_PASSWORD: password
 
   place-management:
-#    image: capostol93/place-management
+    #    image: capostol93/place-management
     build: ./place-management
     ports:
       - '8084:8084'
     restart: always
     depends_on:
       -  mysql-place-management
-#    networks:
-#      - host
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-place-management:3306/test'
-      SPRING_PROFILES_ACTIVE: 'mysql'
+      SPRING_PROFILES_ACTIVE: 'dockercompose'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://192.168.56.112/health"]
+      test: ["CMD", "curl", "-f", "http://167.71.46.25/health"]
       interval: 1m30s
       timeout: 10s
       retries: 3
 
-#networks:
-#  host:
+# ------------------------------
+# place-notification-builder
+# ------------------------------
+
+  place-notification-builder:
+    #    image: capostol93/place-notification-builder
+    build: .
+    ports:
+      - '8088:8088'
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://167.71.46.25/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+
+# ------------------------------
+# user-management instances
+# ------------------------------
+
+  mysql-user-management:
+    image: mysql
+    restart: always
+    ports:
+      - '3311:3306'
+    volumes:
+      - /var/takeyourseat/docker-volumes/mysql-user-management:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+
+  user-management:
+    #    image: capostol93/user-management
+    build: ./user-management
+    ports:
+      - '8085:8085'
+    restart: always
+    depends_on:
+      -  mysql-user-management
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://mysql-user-management:3306/test'
+      SPRING_PROFILES_ACTIVE: 'dockercompose'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://167.71.46.25/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+
+# ------------------------------
+# next instances
+# ------------------------------

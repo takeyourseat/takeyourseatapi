@@ -5,4 +5,4 @@ FROM openjdk:8
 ADD maven/authorization-server-0.0.1-SNAPSHOT.jar authorization-server.jar
 RUN sh -c 'touch /authorization-server.jar'
 EXPOSE 8086
-ENTRYPOINT ["java", "-jar", "authorization-server.jar"]
+ENTRYPOINT ["java", "-Xmx50m", "-jar", "authorization-server.jar"]

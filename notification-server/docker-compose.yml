@@ -5,7 +5,7 @@ services:
     image: mysql
     restart: always
     ports:
-      - '3306:3306'
+      - '3308:3306'
     volumes:
       - /var/takeyourseat/docker-volumes/mysql-notification-server:/var/lib/mysql
     environment:
@@ -15,7 +15,7 @@ services:
       MYSQL_PASSWORD: password
 
   notification-server:
-#    image: notification-server
+#    image: capostol93/notification-server
     build: .
     ports:
       - '8087:8087'
