@@ -58,7 +58,7 @@
             <scope>test</scope>
         </dependency>
 
-<!-- communications between microservices. Act as RestTemplate      -->
+<!-- Provide communication between microservices. Act as RestTemplate      -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
