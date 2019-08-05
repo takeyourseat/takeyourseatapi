@@ -1,7 +1,7 @@
 package com.stefanini.internship.usermanagement.services;
 
-import com.stefanini.internship.authorizationserver.dao.Role;
 import com.stefanini.internship.usermanagement.authorization.AuthorizationUtils;
+import com.stefanini.internship.usermanagement.dao.Role;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
