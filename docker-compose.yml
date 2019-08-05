@@ -196,8 +196,6 @@ services:
   takeyourseat-frontend:
     image: capostol93/takeyourseat-frontend
     restart: always
-    networks:
-      - host
     ports:
       - '4200:4200'
       - '8080:8080'
