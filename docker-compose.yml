@@ -145,7 +145,7 @@ services:
 
   place-notification-builder:
     #    image: capostol93/place-notification-builder
-    build: .
+    build: ./place-notification-builder
     ports:
       - '8088:8088'
     restart: always
