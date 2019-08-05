@@ -173,7 +173,7 @@ services:
       MYSQL_PASSWORD: password
 
   user-management:
-    #    image: capostol93/user-management
+#    image: capostol93/user-management
     build: ./user-management
     ports:
       - '8085:8085'
@@ -192,3 +192,13 @@ services:
 # ------------------------------
 # next instances
 # ------------------------------
+
+  takeyourseat-frontend:
+    image: capostol93/takeyourseat-frontend
+    restart: always
+    networks:
+      - host
+    ports:
+      - '4200:4200'
+      - '8080:8080'
+      - '80:80'
