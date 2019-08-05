@@ -1,13 +1,14 @@
-package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.service;
+package com.stefanini.internship.placenotificationbuilder.service;
 
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.excpetions.ResourceInvalidStateException;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.*;
+import com.stefanini.internship.placenotificationbuilder.excpetions.ResourceInvalidStateException;
+import com.stefanini.internship.placenotificationbuilder.model.dto.NotificationAction;
+import com.stefanini.internship.placenotificationbuilder.model.dto.NotificationBuilder;
+import com.stefanini.internship.placenotificationbuilder.model.dto.Place;
+import com.stefanini.internship.placenotificationbuilder.model.dto.PlaceRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto;
+package com.stefanini.internship.placenotificationbuilder.model.dto;
 
 public class Office {
     private Long id;

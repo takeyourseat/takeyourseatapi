@@ -1,4 +1,4 @@
-package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder;
+package com.stefanini.internship.placenotificationbuilder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

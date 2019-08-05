@@ -1,6 +1,6 @@
-package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.notificatioserver;
+package com.stefanini.internship.placenotificationbuilder.notificatioserver;
 
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.NotificationBuilder;
+import com.stefanini.internship.placenotificationbuilder.model.dto.NotificationBuilder;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

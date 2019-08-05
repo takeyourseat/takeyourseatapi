@@ -1,4 +1,4 @@
-package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.configs;
+package com.stefanini.internship.placenotificationbuilder.configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

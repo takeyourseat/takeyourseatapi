@@ -1,4 +1,4 @@
-package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.configs;
+package com.stefanini.internship.placenotificationbuilder.configs;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

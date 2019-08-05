@@ -1,9 +1,9 @@
-package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.service;
+package com.stefanini.internship.placenotificationbuilder.service;
 
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.NotificationBuilder;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.Place;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.PlaceRequest;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.notificatioserver.NotificationServerService;
+import com.stefanini.internship.placenotificationbuilder.model.dto.NotificationBuilder;
+import com.stefanini.internship.placenotificationbuilder.model.dto.Place;
+import com.stefanini.internship.placenotificationbuilder.model.dto.PlaceRequest;
+import com.stefanini.internship.placenotificationbuilder.notificatioserver.NotificationServerService;
 import org.springframework.stereotype.Service;
 
 

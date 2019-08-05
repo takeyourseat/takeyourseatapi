@@ -1,8 +1,8 @@
-package com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.controllers;
+package com.stefanini.internship.placenotificationbuilder.controllers;
 
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.Place;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.model.dto.PlaceRequest;
-import com.stefanini.internship.placenotificationbuilder.placenotificationbuilder.service.NotificationSenderService;
+import com.stefanini.internship.placenotificationbuilder.model.dto.Place;
+import com.stefanini.internship.placenotificationbuilder.model.dto.PlaceRequest;
+import com.stefanini.internship.placenotificationbuilder.service.NotificationSenderService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
