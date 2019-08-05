@@ -2,14 +2,13 @@
 <configuration>
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <springProperty scope="context" name="user-management" source="com.stefanini.internship.usermanagement" />
+    <springProperty scope="context" name="notification-server" source="com.stefanini.internship.notificationserver" />
     <property name="DEV_HOME" value="${BUILD_FOLDER:-logs}/${springAppName}" />
     <property name="CONSOLE_LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss} %5p [${springAppName},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] ${PID:-} --- [%thread] %logger{36} : %message%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss} %-5level [${springAppName},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] ${PID:-} --- [%thread] %logger{36} : %message%n"/>
 
-    <!-- Properties resources -->
+
     <property resource="application.properties" />
-
 
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -61,8 +60,8 @@
 
     </appender>
 
-    <!-- Send logs to both console and file audit -->
-    <logger name="com.stefanini.internship.usermanagement" level="info" additivity="false">
+    <!-- Send logs to console and file audit -->
+    <logger name="com.stefanini.internship.notificationserver" level="info" additivity="false">
         <appender-ref ref="FILE-AUDIT" />
         <appender-ref ref="STDOUT" />
     </logger>

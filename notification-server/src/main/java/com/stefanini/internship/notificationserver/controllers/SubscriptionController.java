@@ -4,6 +4,7 @@ import com.stefanini.internship.notificationserver.exceptions.SubscriptionExcept
 import com.stefanini.internship.notificationserver.model.dao.SubscriptionDao;
 import com.stefanini.internship.notificationserver.services.SubscriptionService;
 import com.stefanini.internship.notificationserver.services.SubscriptionServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@Slf4j
 @RequestMapping("/api/v01")
 public class SubscriptionController {
 
@@ -36,6 +38,7 @@ public class SubscriptionController {
 	@PostMapping("/subscriptions")
 	public ResponseEntity createNotificationSubscription(@RequestBody SubscriptionDao subscriptionDao) {
 
+		log.info(String.format("Subscription of user %s is send to db {} ", subscriptionDao.getUsername()));
 		SubscriptionDao savedNotification = pushNotificationsService.save(subscriptionDao);
 
 		URI location = ServletUriComponentsBuilder
