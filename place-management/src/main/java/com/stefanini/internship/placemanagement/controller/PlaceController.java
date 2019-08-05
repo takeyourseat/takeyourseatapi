@@ -59,5 +59,11 @@ public class PlaceController {
         } else
             return ResponseEntity.ok().body(availablePlaces);
     }
+
+    @RequestMapping(value = "/places", method = RequestMethod.GET)
+    public ResponseEntity getAllPlaces() {
+        List<Place> places = placeService.getAllPlaces();
+        return ResponseEntity.ok().body(places);
+    }
 }
 

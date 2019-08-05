@@ -73,4 +73,8 @@ public class PlaceService {
         List<Place> places = placeRepository.getPlacesByOfficeNumberAndUsernameIsNull(officeNumber);
         return places;
     }
+
+    public List<Place> getAllPlaces() {
+        return placeRepository.findAll();
+    }
 }
