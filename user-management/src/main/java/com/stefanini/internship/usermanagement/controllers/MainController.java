@@ -1,6 +1,6 @@
 package com.stefanini.internship.usermanagement.controllers;
 
-import com.stefanini.internship.authorizationserver.dao.Role;
+import com.stefanini.internship.usermanagement.dao.Role;
 import com.stefanini.internship.usermanagement.dao.User;
 import com.stefanini.internship.usermanagement.dao.repository.UserRepository;
 import com.stefanini.internship.usermanagement.services.RoleService;
