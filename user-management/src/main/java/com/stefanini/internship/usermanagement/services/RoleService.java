@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class RoleService {
-    public static final String ROLE_SERVICE_URL = "http://localhost:8086/";
+    public static final String ROLE_SERVICE_URL = "http://authorization-server:8086/";
 
     private final RestTemplate restTemplate;
 

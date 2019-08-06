@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    public static final String USER_SERVICE_URL = "http://localhost:8085/";
+    public static final String USER_SERVICE_URL = "http://user-management:8085/";
 
     private final RestTemplate restTemplate;
 

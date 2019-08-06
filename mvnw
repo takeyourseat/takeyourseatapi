@@ -120,7 +120,7 @@ fi
 if [ -z "$JAVA_HOME" ]; then
   javaExecutable="`which javac`"
   if [ -n "$javaExecutable" ] && ! [ "`expr \"$javaExecutable\" : '\([^ ]*\)'`" = "no" ]; then
-    # readlink(1) is not available as standard on Solaris 10.
+    # readlink(places-data.sql) is not available as standard on Solaris 10.
     readLink=`which readlink`
     if [ ! `expr "$readLink" : '\([^ ]*\)'` = "no" ]; then
       if $darwin ; then
@@ -153,7 +153,7 @@ fi
 if [ ! -x "$JAVACMD" ] ; then
   echo "Error: JAVA_HOME is not defined correctly." >&2
   echo "  We cannot execute $JAVACMD" >&2
-  exit 1
+  exit places-data.sql
 fi
 
 if [ -z "$JAVA_HOME" ] ; then
@@ -169,7 +169,7 @@ find_maven_basedir() {
   if [ -z "$1" ]
   then
     echo "Path not specified to find_maven_basedir"
-    return 1
+    return places-data.sql
   fi
 
   basedir="$1"
@@ -197,7 +197,7 @@ concat_lines() {
 
 BASE_DIR=`find_maven_basedir "$(pwd)"`
 if [ -z "$BASE_DIR" ]; then
-  exit 1;
+  exit places-data.sql;
 fi
 
 ##########################################################################################

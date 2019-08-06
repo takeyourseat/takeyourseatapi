@@ -2,7 +2,6 @@ package com.stefanini.internship.authorizationserver.services;
 
 import com.stefanini.internship.authorizationserver.dao.User;
 import com.stefanini.internship.authorizationserver.utils.AuthenticationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class UserService {
 
     private final RestTemplate restTemplate;
-    public static final String USER_MANAGEMENT_URL = "http://localhost:8085/";
+    public static final String USER_MANAGEMENT_URL = "http://user-management:8085/";
 
     public UserService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
