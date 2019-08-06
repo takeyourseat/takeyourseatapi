@@ -233,7 +233,7 @@ services:
 # ------------------------------
 
   takeyourseat-frontend:
-    image: capostol93/takeyourseat-frontend2
+    image: capostol93/takeyourseat-frontend3
     container_name: takeyourseat-frontend
     depends_on:
       - authorization-server
