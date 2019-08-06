@@ -27,7 +27,7 @@ public class NotificationSenderService {
 	public void receiveReviewedPlaceRequestEmployeeNotification(PlaceRequest placeRequest) {
 
 		NotificationBuilder employeeNotificationJSON = placeNotificationBuilderService.convertReviewedPlaceRequestEmployeeNotificationToJSON(placeRequest);
-		notificationServerService.sendNotificationJSON(placeRequest.getReviewer(),employeeNotificationJSON);
+		notificationServerService.sendNotificationJSON(placeRequest.getUsername(),employeeNotificationJSON);
 	}
 
 	public void receiveModifiedPlaceNotification(Place newPlace) {
