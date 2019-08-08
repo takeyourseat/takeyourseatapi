@@ -243,10 +243,12 @@ services:
       - place-notification-builder
       - user-management
     restart: always
+    volumes:
+      - /var/takeyourseat/docker-volumes/data/nginx:/etc/nginx/conf.d
     networks:
       - frontendNetwork
     ports:
-      - '4200:80'
+      - '443:443'
       - '80:80'
 
 networks:
