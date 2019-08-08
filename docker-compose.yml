@@ -245,11 +245,24 @@ services:
     restart: always
     volumes:
       - /var/takeyourseat/docker-volumes/data/nginx:/etc/nginx/conf.d
+      - /var/takeyourseat/docker-volumes/data/certbot/conf:/etc/letsencrypt
+      - /var/takeyourseat/docker-volumes/data/certbot/www:/var/www/certbot
     networks:
       - frontendNetwork
     ports:
       - '443:443'
       - '80:80'
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    networks:
+      - frontendNetwork
+    volumes:
+      - /var/takeyourseat/docker-volumes/data/certbot/conf:/etc/letsencrypt
+      - /var/takeyourseat/docker-volumes/data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 networks:
   backendNetwork:
