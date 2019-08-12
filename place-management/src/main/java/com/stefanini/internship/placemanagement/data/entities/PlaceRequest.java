@@ -26,24 +26,28 @@ public class PlaceRequest implements Identifiable {
     private java.sql.Timestamp reviewedAt;
 
     @Column(name = "user")
-    private Long userId;
+    private String username;
 
-    @Column(name = "reviewed_by")
-    private Long managerId;
+    @Column(name = "reviewer")
+    private String reviewer;
 
-    //region 2 Constructors
+    @Column(name = "description")
+    private String description;
+
+//region 2 Constructors
 
     public PlaceRequest() {
     }
 
-    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Place place, Boolean approved, java.sql.Timestamp reviewedAt, Long userId, Long managerId) {
+    public PlaceRequest(Long id, @NotNull java.sql.Timestamp dateOf, Place place, Boolean approved, java.sql.Timestamp reviewedAt, String username, String reviewer, String description) {
         this.id = id;
         this.dateOf = dateOf;
         this.approved = approved;
         this.reviewedAt = reviewedAt;
-        this.userId = userId;
-        this.managerId = managerId;
+        this.username = username;
+        this.reviewer = reviewer;
         this.place = place;
+        this.description = description;
     }
 
     //endregion
@@ -90,21 +94,25 @@ public class PlaceRequest implements Identifiable {
         this.reviewedAt = reviewedAt;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Long getManagerId() {
-        return managerId;
+    public String getReviewer() {
+        return reviewer;
     }
 
-    public void setManagerId(Long managerId) {
-        this.managerId = managerId;
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
     }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
 
     //endregion
 }

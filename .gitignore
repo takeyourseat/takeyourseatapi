@@ -33,6 +33,7 @@ buildNumber.properties
 *.zip
 *.tar.gz
 *.rar
+pelagic-hope-246407-firebase-adminsdk-oqy81-fd9e571c27.json
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

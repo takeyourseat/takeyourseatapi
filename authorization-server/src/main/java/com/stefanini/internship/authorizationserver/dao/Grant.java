@@ -17,7 +17,7 @@ public class Grant {
     @Column(name = "permission")
     private int permission;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Role role;
 
     //region (), (*) constructors

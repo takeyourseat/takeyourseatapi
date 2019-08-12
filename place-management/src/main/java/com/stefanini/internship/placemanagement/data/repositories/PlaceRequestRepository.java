@@ -11,9 +11,10 @@ import java.util.List;
 public interface PlaceRequestRepository extends JpaRepository<PlaceRequest, Long> {
     PlaceRequest getPlaceRequestById(Long id);
 
-    PlaceRequest getPlaceRequestByPlaceIdAndUserIdAndReviewedAt(Long placeId, Long userId, Timestamp timestamp);
+    PlaceRequest getPlaceRequestByPlaceIdAndUsernameAndReviewedAt(Long placeId, String username, Timestamp timestamp);
 
-    List<PlaceRequest> getPlaceRequestsByUserId(Long userId);
+    List<PlaceRequest> getPlaceRequestsByUsername(String username);
 
-    List<PlaceRequest> getPlaceRequestsByManagerId(Long managerId);
+    List<PlaceRequest> getPlaceRequestsByReviewerAndApprovedIsNull(String reviewer);
+
 }

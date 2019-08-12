@@ -2,19 +2,19 @@ package com.stefanini.internship.oauthserver.controllers;
 
 import com.stefanini.internship.oauthserver.dao.User;
 import com.stefanini.internship.oauthserver.dao.repositories.UserRepository;
-import com.stefanini.internship.oauthserver.exceptions.DuplicateUserException;
 import com.stefanini.internship.oauthserver.exceptions.UserNotFoundException;
 import com.stefanini.internship.oauthserver.service.UserValidationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 import static com.stefanini.internship.oauthserver.utils.AppConstants.API_ROOT_URL;
 
 @RestController
+@Slf4j
 @RequestMapping(API_ROOT_URL+"users")
 public class UsersController {
 
@@ -30,6 +30,9 @@ public class UsersController {
     @PostMapping
     public ResponseEntity createUser(@RequestBody User user){
 
+        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info(String.format("User '%s' tries to create user with username '%s'",authenticatedUserName,user.getUsername()));
+
         userValidationService.assertUnique(user);
 
         user.setAccountNonExpired(true);
@@ -41,18 +44,24 @@ public class UsersController {
         user.setPassword(password);
 
         userRepository.save(user);
+        log.info(String.format("User '%s' has successfully created user with username '%s'. Building HTTP response",authenticatedUserName,user.getUsername()));
         return ResponseEntity.status(201).build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{username}")
     @PreAuthorize("@AuthorizationService.hasPermission('User','write')")
-    public ResponseEntity deactivateUser(@PathVariable Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        User user = optionalUser.orElseThrow(() -> new UserNotFoundException("User with id = "+id+" could not be found"));
+    public ResponseEntity deactivateUser(@PathVariable String username) {
+        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info(String.format("User '%s' tries to disable user with username '%s'",authenticatedUserName,username));
+
+        User user = userRepository.findByUsername(username);
+        if(user == null)
+            throw new UserNotFoundException("User with username = "+username+" could not be found");
 
         user.setEnabled(false);
         userRepository.save(user);
 
+        log.info(String.format("User '%s' successfully disables user with username '%s'",authenticatedUserName,username));
         return ResponseEntity.noContent().build();
     }
 

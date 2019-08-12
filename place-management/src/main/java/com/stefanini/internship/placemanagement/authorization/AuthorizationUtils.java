@@ -1,6 +1,5 @@
 package com.stefanini.internship.placemanagement.authorization;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +18,16 @@ public class AuthorizationUtils {
             headers.setBearerAuth(accessToken);
         }
         return headers;
+    }
+
+    public static String getAuthToken(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth instanceof OAuth2Authentication){
+            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) auth.getDetails();
+            String accessToken = details.getTokenValue();
+            return "Bearer " + accessToken;
+        }
+        return null;
     }
 
 }

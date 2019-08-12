@@ -1,9 +1,17 @@
 package com.stefanini.internship.authorizationserver.dao;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "role")
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,36 +20,15 @@ public class Role {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    //region Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public Role setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Role setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    //endregion
-
-    //region (), (*) constructors
+    @Column(name="enabled", nullable = false)
+    private boolean enabled;
 
     public Role(String name) {
         this.name = name;
     }
 
-    public Role() {
+    public Role(String name, boolean enabled) {
+        this.name = name;
+        this.enabled = enabled;
     }
-
-//endregion
 }

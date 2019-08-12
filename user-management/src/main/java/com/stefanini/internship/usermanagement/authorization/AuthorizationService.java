@@ -1,5 +1,6 @@
 package com.stefanini.internship.usermanagement.authorization;
 
+import com.stefanini.internship.usermanagement.authentication.AuthenticationUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,8 @@ public class AuthorizationService {
 
         String requestURI = AUTHORIZATION_API+"authorizations/datatypes/"+classname+"/permissions/"+permission;
 
-        HttpEntity<Void> request = new HttpEntity<>(AuthorizationUtils.getAuthorizationHeader());
+        HttpEntity<Void> request = new HttpEntity<>(AuthenticationUtils.getAuthorizationHeader());
+
         ResponseEntity<AuthorizationResponse> authorization = restTemplate.exchange(requestURI, HttpMethod.GET, request, AuthorizationResponse.class);
 
         return authorization.getBody().authorized;

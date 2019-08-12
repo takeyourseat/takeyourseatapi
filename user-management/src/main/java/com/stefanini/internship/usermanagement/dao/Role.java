@@ -1,66 +1,49 @@
 package com.stefanini.internship.usermanagement.dao;
 
-import javax.persistence.*;
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "roles")
-public class Role implements Identifiable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@NoArgsConstructor
+@AllArgsConstructor
+public class Role {
     private Long id;
-    
-    @Column(name = "name", nullable = false, unique = true)
     private String name;
+    private boolean enabled;
 
-
-    //region Equals and Hash Code
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Role)) return false;
-        Role role = (Role) o;
-        return getName().equals(role.getName());
+    //region Constructors
+    public Role(String name) {
+        this.name = name;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getName());
+    public Role(String name, boolean enabled) {
+        this.name = name;
+        this.enabled = enabled;
     }
 
     //endregion
 
     //region Getters and Setters
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public Role setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public Role setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-
-    //endregion
-
-    //region 2 Constructors
-
-    public Role() {}
-
-    public Role(Long id, String name) {
-        this.id = id;
+    public void setName(String name) {
         this.name = name;
     }
     //endregion

@@ -1,15 +1,12 @@
 package com.stefanini.internship.placemanagement.controller;
 
-import com.stefanini.internship.placemanagement.data.entities.Office;
 import com.stefanini.internship.placemanagement.data.entities.Place;
-import com.stefanini.internship.placemanagement.data.repositories.OfficeRepository;
-import com.stefanini.internship.placemanagement.data.repositories.PlaceRepository;
-import com.stefanini.internship.placemanagement.exception.ResourceNotFound;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
+import com.stefanini.internship.placemanagement.exception.NotAvailableException;
+import com.stefanini.internship.placemanagement.services.PlaceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("http://localhost:4200")
 
@@ -17,52 +14,56 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class PlaceController {
 
-    @Autowired
-    PlaceRepository placeRepository;
+    private final PlaceService placeService;
 
-    @Autowired
-    OfficeRepository officeRepository;
+    public PlaceController(PlaceService placeService) {
+        this.placeService = placeService;
+    }
 
-    @RequestMapping(value = "/offices/{officeId}/places", method = RequestMethod.GET)
-    public ResponseEntity getPlacesByOfficeId(@PathVariable Long officeId) {
-        return ResponseEntity.status(HttpStatus.OK).body(placeRepository.getPlacesByOfficeId(officeId));
+    @RequestMapping(value = "/offices/{officeNumber}/places", method = RequestMethod.GET)
+    public ResponseEntity getPlacesByOfficeNumber(@PathVariable int officeNumber) {
+        List<Place> places = placeService.getPlacesByOfficeNumber(officeNumber);
+        return ResponseEntity.ok().body(places);
     }
 
     @RequestMapping(value = "/places/{id}", method = RequestMethod.GET)
-    public ResponseEntity getPlaceById(@PathVariable Long id) throws ResourceNotFound {
-        Place place = placeRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Place with id " + id + " not found"));
+    public ResponseEntity getPlaceById(@PathVariable Long id) {
+        Place place = placeService.getPlaceById(id);
         return ResponseEntity.ok().body(place);
     }
 
     @RequestMapping(value = "/places", method = RequestMethod.POST)
     public ResponseEntity addPlace(@RequestBody Place place) {
-        Long officeId = place.getOffice().getId();
-        Office office = officeRepository.getOfficeById(officeId);
-        if (office.getSizeX() < place.getCoordinateX() || office.getSizeY() < place.getCoordinateY()) {
-            return new ResponseEntity<>("Can't add place with following coordinates", HttpStatus.CONFLICT);
-        }
-        placeRepository.save(place);
-        return ResponseEntity.status(HttpStatus.CREATED).body(place);
+        Place addPlace = placeService.addPlace(place);
+        return ResponseEntity.ok().body(addPlace);
     }
 
-    @RequestMapping(value = "/places/{placeId}", method = RequestMethod.PUT)
-    public HttpEntity<?> moveUserPlace(@PathVariable("placeId") Long id, @RequestBody Place place) {
-        Place oldPlace = placeRepository.getPlacesByUserId(place.getUserId());
-        Place newPlace = placeRepository.getPlaceById(id);
-        if (oldPlace == null) {
-            return new ResponseEntity<>("Old place can't be found", HttpStatus.BAD_REQUEST);
-        }
-        if (newPlace == null) {
-            return new ResponseEntity<>("New place can't be found", HttpStatus.BAD_REQUEST);
-        } else if (newPlace.getUserId() != null) {
-            return new ResponseEntity<>("Place is busy", HttpStatus.CONFLICT);
-        } else {
-            oldPlace.setUserId(null);
-            newPlace.setUserId(place.getUserId());
-            placeRepository.save(oldPlace);
-            placeRepository.saveAndFlush(newPlace);
-            return new ResponseEntity<>("Success", HttpStatus.OK);
-        }
+    @RequestMapping(value = "/places", method = RequestMethod.PUT)
+    public ResponseEntity moveUserPlace(@RequestParam("office") int office, @RequestParam("coordinateX") int coordinateX, @RequestParam("coordinateY") int coordinateY, @RequestBody Place place) {
+        Place movePlace = placeService.moveUserPlace(office, coordinateX, coordinateY, place);
+        return ResponseEntity.ok().body(movePlace);
+    }
+
+    @RequestMapping(value = "/places/available", method = RequestMethod.GET)
+    public ResponseEntity getAvailablePlaces() {
+        List<Place> availableOffices = placeService.getAvailablePlaces();
+        return ResponseEntity.ok().body(availableOffices);
+    }
+
+    @RequestMapping(value = "/places/available", params = "office", method = RequestMethod.GET)
+    public ResponseEntity getAvailablePlacesByOfficeNumber(@RequestParam("office") int officeNumber) {
+        List<Place> availablePlaces = placeService.getAvailablePlacesByOfficeNumber(officeNumber);
+        if (availablePlaces.isEmpty()) {
+            RuntimeException exception = new NotAvailableException("There are no available places");
+            throw exception;
+        } else
+            return ResponseEntity.ok().body(availablePlaces);
+    }
+
+    @RequestMapping(value = "/places", method = RequestMethod.GET)
+    public ResponseEntity getAllPlaces() {
+        List<Place> places = placeService.getAllPlaces();
+        return ResponseEntity.ok().body(places);
     }
 }
 

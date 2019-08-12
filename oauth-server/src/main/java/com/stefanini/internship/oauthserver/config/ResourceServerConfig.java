@@ -32,7 +32,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable();
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/v2/api-docs",
+                "/config/**",
+                "/swagger*/**",
+                "/webjars/**").permitAll().anyRequest().authenticated();
     }
 
     @Primary

@@ -8,11 +8,15 @@ import java.util.List;
 
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long> {
-    List<Place> getPlacesByOfficeId(Long officeId);
+    List<Place> getPlacesByOfficeNumber(int officeNumber);
 
     Place getPlaceById(Long placeId);
 
-    Place getPlaceByUserId(Long userId);
+    Place getPlaceByUsername(String username);
 
-    Place getPlacesByUserId(Long userId);
+    Place getPlaceByOfficeNumberAndCoordinateXAndCoordinateY(int officeNumber, int coordinateX, int coordinateY);
+
+    List<Place> getPlacesByUsernameIsNull();
+
+    List<Place> getPlacesByOfficeNumberAndUsernameIsNull(int officeNumber);
 }
